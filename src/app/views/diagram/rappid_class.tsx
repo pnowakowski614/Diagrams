@@ -31,7 +31,7 @@ class Rappid {
           width: 200,
           height: 300
       });
-  
+
       this.paperElement.appendChild(scroller.el);
       scroller.render().center();
 
