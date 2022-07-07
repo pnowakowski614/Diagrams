@@ -9,8 +9,6 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.41",
-    "@types/react": "^18.0.14",
-    "@types/react-dom": "^18.0.5",
     "@types/react-router": "^5.1.18",
     "node-sass": "^7.0.1",
     "react": "^18.2.0",
@@ -47,6 +45,8 @@
   "devDependencies": {
     "@types/backbone": "^1.4.15",
     "@types/jquery": "^3.5.14",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
     "@types/react-router-dom": "^5.3.3"
   }
 }
