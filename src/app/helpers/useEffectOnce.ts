@@ -4,7 +4,7 @@ const useEffectOnce = (effect: () => void | (() => void)) => {
     const destroyFunc = useRef<void | (() => void)>();
     const effectCalled = useRef(false);
     const renderAfterCalled = useRef(false);
-    const [val, setVal] = useState<number>(0);
+    const [, setVal] = useState<number>(0);
 
     if (effectCalled.current) {
         renderAfterCalled.current = true;
@@ -18,7 +18,7 @@ const useEffectOnce = (effect: () => void | (() => void)) => {
         }
 
         // this forces one render after the effect is run
-        setVal((val) => val + 1);
+        setVal(1);
 
         return () => {
             // if the comp didn't render since the useEffect was called,

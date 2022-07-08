@@ -1,7 +1,8 @@
 import React from "react";
+import '../login.scss';
 
 interface FormProps {
-    placeholder: string
+    placeholder: string,
 }
 
 const FormInput = (props: FormProps) => {
