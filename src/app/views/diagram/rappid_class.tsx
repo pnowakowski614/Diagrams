@@ -25,18 +25,29 @@ class Rappid {
   
       const scroller = new ui.PaperScroller({
           paper,
-          autoResizePaper: true,
           cursor: 'grab'
       });
 
+        const c = new shapes.basic.Circle({
+            position: { x: 70, y: 10 }, size: { width: 50, height: 30 }
+        });
+
       const stencil = new ui.Stencil({
           paper,
+          groups: {
+              basic: {
+                  label: 'Shapes',
+                  index: 1
+              }
+          }
       });
 
       this.paperElement.appendChild(scroller.el);
       scroller.render();
       this.stencilElement.appendChild(stencil.el);
-      stencil.render()
+      stencil.render();
+
+      stencil.loadGroup([c], 'basic');
     }
   }
 
