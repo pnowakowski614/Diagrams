@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import styles from './diagram.module.scss';
-import "./rappid-styles.scss"
-import Rappid from './rappid_class';
+import "./rappid.scss"
+import Rappid from './rappid';
 import useEffectOnce from "../../helpers/useEffectOnce";
 
 const Diagram = () => {
