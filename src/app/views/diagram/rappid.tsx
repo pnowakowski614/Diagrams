@@ -13,8 +13,8 @@ class Rappid {
   
       const paper = new dia.Paper({
           model: graph,
-          width: '100%',
-          height: '100%',
+          width: 3000,
+          height: 3000,
           background: {
           color: '#F8F9FA',
           },
@@ -24,9 +24,10 @@ class Rappid {
       });
   
       const scroller = new ui.PaperScroller({
-          paper,
+          paper: paper,
           cursor: 'grab',
           scrollWhileDragging: true,
+          autoResizePaper: true
       });
 
         const c = new shapes.basic.Circle({
@@ -43,13 +44,12 @@ class Rappid {
           }
       });
 
-
       this.paperElement.appendChild(scroller.el);
-      scroller.render();
+      scroller.render().center();
       this.stencilElement.appendChild(stencil.el);
       stencil.render();
 
-      paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
+      paper.on('blank:pointerdown', (evt)=> scroller.startPanning(evt));
       stencil.loadGroup([c], 'basic');
     }
   }
