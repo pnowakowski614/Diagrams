@@ -1,4 +1,4 @@
-@import './app/shared_components/shared_components.scss';
+@import 'app/components/shared_components.scss';
 
 body {
   margin: 0;
