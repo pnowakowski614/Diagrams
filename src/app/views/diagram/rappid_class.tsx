@@ -12,11 +12,11 @@ class Rappid {
   
       const paper = new dia.Paper({
           model: graph,
+          width: '100%',
+          height: '100%',
           background: {
           color: '#F8F9FA',
           },
-          frozen: true,
-          async: true,
           cellViewNamespace: shapes
       });
   
@@ -26,16 +26,15 @@ class Rappid {
           cursor: 'grab'
       });
 
-      const stencil = new ui.Stencil({
-          paper,
-          width: 200,
-          height: 300
-      });
+      // const stencil = new ui.Stencil({
+      //     paper,
+      //     width: 200,
+      //     height: 300
+      // });
 
       this.paperElement.appendChild(scroller.el);
-      scroller.render().center();
+      scroller.render();
 
-      paper.unfreeze();
     }
   }
 
