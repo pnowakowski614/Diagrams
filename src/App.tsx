@@ -4,12 +4,13 @@ import { Route } from "react-router-dom";
 import Login from "./app/views/login/login";
 import List from "./app/views/list/list";
 import Header from "./app/components/Header"
-import "./App.scss";
+import styles from "./App.module.scss";
+
 const App = () => {
     return(
-        <div className='wrapper'>
+        <div className={styles.wrapper}>
             <Header />
-            <main className='content'>
+            <main className={styles.content}>
                 <Route path="/" exact component={Login} />
                 <Route path="/login" component={Login} />
                 <Route path="/diagram" component={Diagram} />

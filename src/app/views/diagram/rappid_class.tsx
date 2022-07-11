@@ -2,9 +2,10 @@ import { dia, ui, shapes } from '@clientio/rappid';
 
 class Rappid {
     paperElement: HTMLElement;
-  
-    constructor(paperElement: HTMLElement) {
-      this.paperElement = paperElement
+    stencilElement: HTMLElement;
+    constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
+      this.paperElement = paperElement;
+      this.stencilElement = stencilElement;
     }
   
     init() {
@@ -17,7 +18,9 @@ class Rappid {
           background: {
           color: '#F8F9FA',
           },
-          cellViewNamespace: shapes
+          cellViewNamespace: shapes,
+          drawGrid: true,
+          gridSize: 10,
       });
   
       const scroller = new ui.PaperScroller({
@@ -26,15 +29,14 @@ class Rappid {
           cursor: 'grab'
       });
 
-      // const stencil = new ui.Stencil({
-      //     paper,
-      //     width: 200,
-      //     height: 300
-      // });
+      const stencil = new ui.Stencil({
+          paper,
+      });
 
       this.paperElement.appendChild(scroller.el);
       scroller.render();
-
+      this.stencilElement.appendChild(stencil.el);
+      stencil.render()
     }
   }
 
