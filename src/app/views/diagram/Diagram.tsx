@@ -1,21 +1,29 @@
-import React, { useRef } from 'react';
-import './diagram.scss';
-import Rappid from './rappid_class';
+import React, { useRef, useState } from 'react';
+import styles from './diagram.module.scss';
+import "./rappid.scss"
+import Rappid from './rappid';
 import useEffectOnce from "../../helpers/useEffectOnce";
 
 const Diagram = () => {
-  const canvas = useRef(null);
+    const canvas = useRef(null);
+    const stencil = useRef(null);
 
-  useEffectOnce(() => {
-    if(canvas.current) {
-      const rappidInst = new Rappid(canvas.current);
-      rappidInst.init();
-    }
-  });
+    const [isInspectorDisplay, setIsInspectorDisplay] = useState(false);
 
-  return (
-    <div className="canvas" ref={canvas}/>
-  );
+    useEffectOnce(() => {
+        const rappidInst = new Rappid(canvas.current!, stencil.current!);
+        rappidInst.init();
+    });
+
+    return (
+        <div className={styles.wrapper}>
+            <div className={styles.stencilHolder} ref={stencil}/>
+            <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
+                 onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}>
+                {isInspectorDisplay && <div className={styles.inspector}>inspector</div>}
+            </div>
+        </div>
+    );
 }
 
 export default Diagram;

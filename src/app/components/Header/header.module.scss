@@ -15,13 +15,12 @@ header {
   color: var(--secondary);
   display: flex;
   justify-content: space-between;
-  align-items: stretch;
-  padding: 1rem 3rem;
+  align-items: center;
+  padding: 0.5rem 3rem;
 }
 
-.site-name {
-  padding-top: 0.5rem;
-  font-size: 35px;
+.siteName {
+  font-size: 1.5rem;
 }
 
 .navbar ul {
@@ -36,7 +35,6 @@ header {
 .link {
   color: inherit;
   text-decoration: none;
-  height: 100%;
 }
 
 .link:hover {
@@ -44,12 +42,11 @@ header {
   color: var(--hover-color);
 }
 
-#sign-up {
+.signUp {
   background-color: var(--accent);
   display: inline-block;
   position: relative;
-  z-index: 1;
-  padding: 1em;
+  padding: 8px;
   border-radius: 4px;
   box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
   cursor: pointer;
@@ -57,7 +54,7 @@ header {
   transition: 0.2s all;
 }
 
-#sign-up:active {
+.signUp:active {
   transform: scale(0.95);
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
