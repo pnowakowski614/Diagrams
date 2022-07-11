@@ -8,7 +8,7 @@ const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
 
-    const [isInspectorDisp, setInspectorDisp] = useState(false);
+    const [isInspectorDisplay, setIsInspectorDisplay] = useState(false);
 
     useEffectOnce(() => {
         const rappidInst = new Rappid(canvas.current!, stencil.current!);
@@ -18,9 +18,9 @@ const Diagram = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.stencilHolder} ref={stencil}/>
-            <div className={styles.canvas} onMouseEnter={() => setInspectorDisp(true)}
-                 onMouseLeave={() => setInspectorDisp(false)} ref={canvas}>
-                {isInspectorDisp && <div className={styles.inspector}>inspector</div>}
+            <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
+                 onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}>
+                {isInspectorDisplay && <div className={styles.inspector}>inspector</div>}
             </div>
         </div>
     );

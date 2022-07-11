@@ -25,7 +25,8 @@ class Rappid {
   
       const scroller = new ui.PaperScroller({
           paper,
-          cursor: 'grab'
+          cursor: 'grab',
+          scrollWhileDragging: true,
       });
 
         const c = new shapes.basic.Circle({
@@ -42,11 +43,13 @@ class Rappid {
           }
       });
 
+
       this.paperElement.appendChild(scroller.el);
       scroller.render();
       this.stencilElement.appendChild(stencil.el);
       stencil.render();
 
+      paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
       stencil.loadGroup([c], 'basic');
     }
   }
