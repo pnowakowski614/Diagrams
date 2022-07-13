@@ -1,7 +1,7 @@
 import Diagram from "./app/views/diagram/Diagram";
 import React from "react";
 import { Route } from "react-router-dom";
-import Login from "./app/views/login/login";
+import Login from "./app/views/login/Login";
 import List from "./app/views/list/list";
 import Header from "./app/components/Header/Header"
 import styles from "./App.module.scss";

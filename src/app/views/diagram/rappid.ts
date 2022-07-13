@@ -3,6 +3,7 @@ import { dia, ui, shapes } from '@clientio/rappid';
 class Rappid {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
+
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
       this.paperElement = paperElement;
       this.stencilElement = stencilElement;
@@ -27,7 +28,7 @@ class Rappid {
           paper: paper,
           cursor: 'grab',
           scrollWhileDragging: true,
-          autoResizePaper: true
+          autoResizePaper: true,
       });
 
         const c = new shapes.basic.Circle({
@@ -46,8 +47,7 @@ class Rappid {
 
       this.paperElement.appendChild(scroller.el);
       scroller.render().center();
-      this.stencilElement.appendChild(stencil.el);
-      stencil.render();
+      this.stencilElement.appendChild(stencil.render().el);
 
       paper.on('blank:pointerdown', (evt)=> scroller.startPanning(evt));
       stencil.loadGroup([c], 'basic');

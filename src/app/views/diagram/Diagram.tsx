@@ -16,10 +16,12 @@ const Diagram = () => {
     });
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.stencilHolder} ref={stencil}/>
-            <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
-                 onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}>
+        <div className={styles.diagramContainer}>
+            <div className={styles.toolbar}/>
+            <div className={styles.wrapper}>
+                <div className={styles.stencilHolder} ref={stencil}/>
+                <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
+                     onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}/>
                 {isInspectorDisplay && <div className={styles.inspector}>inspector</div>}
             </div>
         </div>
