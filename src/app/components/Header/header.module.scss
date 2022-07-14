@@ -32,6 +32,16 @@ header {
   gap: 3em;
 }
 
+.link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+  color: var(--hover-color);
+}
+
 .signUp {
   background-color: var(--accent);
   display: inline-block;

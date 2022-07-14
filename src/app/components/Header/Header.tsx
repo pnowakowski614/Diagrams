@@ -1,24 +1,24 @@
 import React from 'react';
 import styles from './header.module.scss';
-import NavLink from "../NavLink/NavLink";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
     return <header>
         <nav className={styles.navbar}>
             <span className={styles.siteName}>DIAGRAMS</span>
             <ul>
-                <NavLink to={"/diagram"}>
+                <Link className={styles.link} to={"/diagram"}>
                     Create a Diagram
-                </NavLink>
-                <NavLink to={"/list"}>
+                </Link>
+                <Link className={styles.link} to={"/list"}>
                     Diagram list
-                </NavLink>
-                <NavLink to={"/login"}>
+                </Link>
+                <Link className={styles.link} to={"/login"}>
                     Login
-                </NavLink>
-                <NavLink customClassName={styles.signUp} to={"/login"}>
+                </Link>
+                <Link className={`${styles.link} ${styles.signUp}`} to={"/login"}>
                     Sign Up
-                </NavLink>
+                </Link>
             </ul>
         </nav>
     </header>
