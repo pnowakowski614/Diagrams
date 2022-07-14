@@ -1,8 +1,9 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
-import "./rappid.scss"
-import Rappid from './rappid';
+import "../../services/Rappid/rappid.scss"
+import Rappid from '../../services/Rappid/rappid';
 import useEffectOnce from "../../helpers/useEffectOnce";
+import Toolbar from "./components/Toolbar/Toolbar";
 
 const Diagram = () => {
     const canvas = useRef(null);
@@ -17,7 +18,7 @@ const Diagram = () => {
 
     return (
         <div className={styles.diagramContainer}>
-            <div className={styles.toolbar}/>
+            <Toolbar/>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
