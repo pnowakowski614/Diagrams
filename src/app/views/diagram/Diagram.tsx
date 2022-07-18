@@ -12,8 +12,10 @@ const Diagram = () => {
     const [isInspectorDisplay, setIsInspectorDisplay] = useState(false);
 
     useEffectOnce(() => {
-        const rappidInst = new Rappid(canvas.current!, stencil.current!);
-        rappidInst.init();
+        if (canvas.current && stencil.current) {
+            const rappidInst = new Rappid(canvas.current!, stencil.current!);
+            rappidInst.init();
+        }
     });
 
     return (
