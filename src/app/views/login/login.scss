@@ -1,3 +1,5 @@
+@import '../../../index.scss';
+
 .login-page-container {
   display: flex;
   justify-content: center;
@@ -29,7 +31,7 @@
 
 .login-header {
   text-align: center;
-  color: var(--secondary);
+  color: $secondary;
 }
 
 .continue-button-container {
@@ -41,9 +43,9 @@
 .continue-button {
   height: 3rem;
   width: 10rem;
-  background-color: var(--accent);
+  background-color: $accent;
   border-radius: 4px;
-  color: var(--secondary);
+  color: $secondary;
   cursor: pointer;
   border: none;
   font-size: 20px;
@@ -59,7 +61,7 @@
 .change-mode-message {
   margin-top: 0;
   text-align: center;
-  color: var(--secondary);
+  color: $secondary;
 }
 
 input {
@@ -76,6 +78,6 @@ input {
 
 #change-mode-link:hover {
   text-decoration: underline;
-  color: var(--hover-color);
+  color: $hover-color;
 }
 
