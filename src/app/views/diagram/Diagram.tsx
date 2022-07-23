@@ -9,12 +9,15 @@ const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
 
-    const [isInspectorDisplay, setIsInspectorDisplay] = useState(false);
+    // const [rappidState, setRappidState] = useState<Rappid | null>();
+    const [inspectorOpened, setInspectorOpened] = useState<boolean>(false);
 
     useEffectOnce(() => {
         if (canvas.current && stencil.current) {
             const rappidInst = new Rappid(canvas.current!, stencil.current!);
             rappidInst.init();
+            rappidInst.setInspectorFunction(setInspectorOpened);
+            // setRappidState(rappidInst);
         }
     });
 
@@ -23,9 +26,8 @@ const Diagram = () => {
             <Toolbar/>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
-                <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
-                     onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}/>
-                {isInspectorDisplay && <div className={styles.inspector}>inspector</div>}
+                <div className={styles.canvas} ref={canvas}/>
+                {inspectorOpened && <div className={styles.inspector}>inspector</div>}
             </div>
         </div>
     );
