@@ -9,7 +9,6 @@ const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
 
-    // const [rappidState, setRappidState] = useState<Rappid | null>();
     const [inspectorOpened, setInspectorOpened] = useState<boolean>(false);
 
     useEffectOnce(() => {
@@ -17,7 +16,6 @@ const Diagram = () => {
             const rappidInst = new Rappid(canvas.current!, stencil.current!);
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorOpened);
-            // setRappidState(rappidInst);
         }
     });
 
@@ -27,8 +25,8 @@ const Diagram = () => {
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} ref={canvas}/>
-                {inspectorOpened && <div className={styles.inspector}>inspector</div>}
             </div>
+            {inspectorOpened && <div className={styles.inspector}>inspector</div>}
         </div>
     );
 }

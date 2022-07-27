@@ -1,74 +1,124 @@
 import '@clientio/rappid';
-import { ui } from "@clientio/rappid";
-import * as shape from '../../../../shapes/shapes';
+import { dia, ui } from "@clientio/rappid";
+import * as node from '../../../../shapes/Node';
 
 class Stencil {
-    paperScroller: ui.PaperScroller;
+    paper: dia.Paper;
     stencilElement: HTMLElement;
     stencil!: ui.Stencil;
 
-    constructor(paperScroller: ui.PaperScroller, stencilElement: HTMLElement) {
-        this.paperScroller = paperScroller;
+    constructor(paper: dia.Paper, stencilElement: HTMLElement) {
+        this.paper = paper;
         this.stencilElement = stencilElement;
     }
 
     initStencil() {
         this.stencil = new ui.Stencil({
-            paper: this.paperScroller,
+            paper: this.paper,
             groups: this.setGroups(),
+            label: "Elements",
             layout: {
+                marginX: -13,
                 columns: 1,
-                marginX: 40,
+                rowHeight: 65
             },
-            groupsToggleButtons: true
+            groupsToggleButtons: true,
+            dragStartClone: this.cloneNode,
+            dragEndClone: this.cloneNode
         });
 
         this.stencilElement.appendChild(this.stencil.el);
         this.stencil.render();
         this.stencil.load({
-            common:
-                [shape.block, shape.textArea, shape.image],
+            analytics:
+                [node.kinesisStreamNode, node.redshiftNode, node.dataPipelineNode],
+            appIntegration:
+                [node.amazonSNSNode, node.amazonSQSNode],
             compute:
-                [shape.block3],
+                [node.lambdaNode, node.batchNode],
             containers:
-                [shape.block4]
+                [],
+            database:
+                [node.auroraNode, node.dynamoDBNode],
+            endUser:
+                [node.appStreamNode, node.workspacesNode],
+            management:
+                [node.cloudwatchNode, node.cloudtrailNode],
+            networking:
+                [node.route53Node, node.privateLinkNode],
+            security:
+                [node.wafNode, node.shieldNode, node.securityHubNode],
+            storage:
+                [node.backupNode, node.snowballNode]
         });
+    }
 
-        // this.stencil.on('element:drop', (elementView) => {
-        //     elementView.selectors.label.textContent = "";
-        // })
+    cloneNode(el: dia.Cell) {
+        let clone = el.clone();
+        clone.attr({
+            label: {
+                text: "",
+            }
+        })
+
+        if (el.attributes.attrs?.prop?.elementType === "Node") {
+            // @ts-ignore
+            clone.markup[2].attributes.href = el.markup[2].attributes.href
+        }
+        return clone;
     }
 
     setGroups() {
         return {
-            common: {
-                label: 'Common',
+            analytics: {
+                label: 'Analytics',
                 index: 1
+            },
+            appIntegration: {
+                label: 'App Integration',
+                index: 2,
+                closed: true
             },
             compute: {
                 label: 'Compute',
-                index: 2
+                index: 3,
+                closed: true,
             },
             containers: {
                 label: 'Containers',
-                index: 3
-            },
-            networking: {
-                label: 'Networking and Content Delivery',
-                index: 4
-            },
-            storage: {
-                label: "Storage",
-                index: 5
+                index: 4,
+                closed: true,
             },
             database: {
                 label: "Database",
-                index: 6
+                index: 5,
+                closed: true,
             },
-            misc: {
-                label: "Misc",
-                index: 7
-            }
+            endUser: {
+                label: "End User Computing",
+                index: 6,
+                closed: true
+            },
+            management: {
+                label: "Management",
+                index: 7,
+                closed: true
+            },
+            networking: {
+                label: "Networking",
+                index: 8,
+                closed: true
+            },
+            security: {
+                label: "Security",
+                index: 9,
+                closed: true
+            },
+            storage: {
+                label: "Storage",
+                index: 10,
+                closed: true
+            },
         }
     }
 }

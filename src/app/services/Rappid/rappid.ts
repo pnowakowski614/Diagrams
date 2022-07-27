@@ -4,7 +4,6 @@ import Stencil from "../../views/diagram/components/Stencil/Stencil";
 class Rappid {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
-    //inspectorDisplayed = false;
     setInspectorOpened!: Function;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
@@ -40,14 +39,13 @@ class Rappid {
 
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
-            // this.inspectorDisplayed = true;
         })
 
         this.paperElement.appendChild(scroller.el);
         scroller.render().center();
 
         paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
-        const stencilInst = new Stencil(scroller, this.stencilElement);
+        const stencilInst = new Stencil(paper, this.stencilElement);
         stencilInst.initStencil();
     }
 }
