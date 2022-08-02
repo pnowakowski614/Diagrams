@@ -25,10 +25,11 @@ export class Node extends shapes.standard.Rectangle {
         }
     }
 
-    markup = [{
-        tagName: 'rect',
-        selector: 'body',
-    },
+    markup = [
+        {
+            tagName: 'rect',
+            selector: 'body',
+        },
         {
             tagName: 'text',
             selector: 'label'
@@ -42,3 +43,9 @@ export class Node extends shapes.standard.Rectangle {
             }
         }]
 }
+
+Object.assign(shapes, {
+    app: {
+        Node
+    }
+});

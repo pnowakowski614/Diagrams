@@ -4,6 +4,7 @@ import { Node } from '../../shapes/node/node';
 import { nodeConfig } from "../../shapes/node/node-config";
 import { groupElementsConfig } from "./groupElementsConfig";
 import { groupConfig } from "./groupConfig";
+import { AutoScaling } from "../../shapes/auto-scaling/autoScaling";
 
 class StencilService {
     paper: dia.Paper;
@@ -44,21 +45,31 @@ class StencilService {
                 icon: {
                     href: value.link
                 }
-            })
+            });
+            newNode.prop("type", value.type);
             groupElementsConfig[value.group].push(newNode);
         })
     }
 
     cloneNode(el: dia.Cell) {
         let clone = el.clone();
-        clone.attr({
-            label: {
-                fontSize: 10,
-                textAnchor: "middle",
-                refX: 23,
-                refY: 52
-            }
-        })
+        switch (clone.attributes.type) {
+            case "Node":
+                clone.attr({
+                    label: {
+                        fontSize: 10,
+                        textAnchor: "middle",
+                        refX: 23,
+                        refY: 52
+                    }
+                })
+                break;
+            case "autoScaling":
+                clone = new AutoScaling();
+                break;
+            default:
+                break;
+        }
         return clone;
     }
 
