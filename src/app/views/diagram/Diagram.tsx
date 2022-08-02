@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
-import "../../services/Rappid/rappid.scss"
-import Rappid from '../../services/Rappid/rappid';
+import "@clientio/rappid/rappid.css";
+import RappidService from '../../services/RappidService/rappidService';
 import useEffectOnce from "../../helpers/useEffectOnce";
 import Toolbar from "./components/Toolbar/Toolbar";
 
@@ -13,7 +13,7 @@ const Diagram = () => {
 
     useEffectOnce(() => {
         if (canvas.current && stencil.current) {
-            const rappidInst = new Rappid(canvas.current!, stencil.current!);
+            const rappidInst = new RappidService(canvas.current!, stencil.current!);
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorOpened);
         }

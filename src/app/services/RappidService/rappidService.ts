@@ -1,7 +1,7 @@
 import { dia, shapes, ui } from '@clientio/rappid';
-import Stencil from "../../views/diagram/components/Stencil/Stencil";
+import StencilService from "../StencilService/stencilService";
 
-class Rappid {
+class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
     setInspectorOpened!: Function;
@@ -45,9 +45,9 @@ class Rappid {
         scroller.render().center();
 
         paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
-        const stencilInst = new Stencil(paper, this.stencilElement);
+        const stencilInst = new StencilService(paper, this.stencilElement);
         stencilInst.initStencil();
     }
 }
 
-export default Rappid;
+export default RappidService;

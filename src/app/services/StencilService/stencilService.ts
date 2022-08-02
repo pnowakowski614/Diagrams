@@ -1,8 +1,32 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import * as node from '../../../../shapes/Node';
+import { Node } from '../../shapes/node/node';
+import { nodeConfig } from "../../shapes/node/node-config";
 
-class Stencil {
+const groupElementsConfig: { [index: string]: Node[] } = {
+    "analytics":
+        [],
+    "appIntegration":
+        [],
+    "compute":
+        [],
+    "containers":
+        [],
+    "database":
+        [],
+    "endUser":
+        [],
+    "management":
+        [],
+    "networking":
+        [],
+    "security":
+        [],
+    "storage":
+        []
+};
+
+class StencilService {
     paper: dia.Paper;
     stencilElement: HTMLElement;
     stencil!: ui.Stencil;
@@ -12,7 +36,7 @@ class Stencil {
         this.stencilElement = stencilElement;
     }
 
-    initStencil() {
+    initStencil(): void {
         this.stencil = new ui.Stencil({
             paper: this.paper,
             groups: this.setGroups(),
@@ -23,48 +47,39 @@ class Stencil {
                 rowHeight: 65
             },
             groupsToggleButtons: true,
-            dragStartClone: this.cloneNode,
-            dragEndClone: this.cloneNode
+            dragStartClone: this.cloneNode
         });
 
+        this.setElements();
         this.stencilElement.appendChild(this.stencil.el);
         this.stencil.render();
-        this.stencil.load({
-            analytics:
-                [node.kinesisStreamNode, node.redshiftNode, node.dataPipelineNode],
-            appIntegration:
-                [node.amazonSNSNode, node.amazonSQSNode],
-            compute:
-                [node.lambdaNode, node.batchNode],
-            containers:
-                [],
-            database:
-                [node.auroraNode, node.dynamoDBNode],
-            endUser:
-                [node.appStreamNode, node.workspacesNode],
-            management:
-                [node.cloudwatchNode, node.cloudtrailNode],
-            networking:
-                [node.route53Node, node.privateLinkNode],
-            security:
-                [node.wafNode, node.shieldNode, node.securityHubNode],
-            storage:
-                [node.backupNode, node.snowballNode]
-        });
+        this.stencil.load(groupElementsConfig);
+    }
+
+    setElements() {
+        Object.values(nodeConfig).map((value) => {
+            let newNode = new Node().attr({
+                label: {
+                    text: value.label
+                },
+                icon: {
+                    href: value.link
+                }
+            })
+            groupElementsConfig[value.group].push(newNode);
+        })
     }
 
     cloneNode(el: dia.Cell) {
         let clone = el.clone();
         clone.attr({
             label: {
-                text: "",
+                fontSize: 10,
+                textAnchor: "middle",
+                refX: 23,
+                refY: 52
             }
         })
-
-        if (el.attributes.attrs?.prop?.elementType === "Node") {
-            // @ts-ignore
-            clone.markup[2].attributes.href = el.markup[2].attributes.href
-        }
         return clone;
     }
 
@@ -123,4 +138,4 @@ class Stencil {
     }
 }
 
-export default Stencil;
+export default StencilService;

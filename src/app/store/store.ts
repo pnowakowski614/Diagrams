@@ -1,7 +1,7 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import Rappid from "../services/Rappid/rappid";
+import RappidService from "../services/RappidService/rappidService";
 
-const initialState: Rappid | null = null;
+const initialState: RappidService | null = null;
 
 const rappidSlice = createSlice({
     name: 'rappidInstance',
