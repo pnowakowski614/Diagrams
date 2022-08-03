@@ -6,6 +6,7 @@ import { groupElementsConfig } from "./groupElementsConfig";
 import { groupConfig } from "./groupConfig";
 import { autoScaling } from "../../shapes/auto-scaling/autoScaling";
 import { ecsCluster } from "../../shapes/ecs-cluster/ecsCluster";
+import { ecsService } from "../../shapes/ecs-service/ecsService";
 
 class StencilService {
     paper: dia.Paper;
@@ -70,6 +71,9 @@ class StencilService {
                 break;
             case "ecsCluster":
                 clone = new ecsCluster();
+                break;
+            case "ecsService":
+                clone = new ecsService();
                 break;
             default:
                 break;
