@@ -1,28 +1,25 @@
 import { shapes } from '@clientio/rappid';
 
-export class node extends shapes.standard.Rectangle {
+export class ecsCluster extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.node',
+            type: 'app.ecsCluster',
             attrs: {
                 body: {
-                    width: 45,
-                    height: 45
+                    width: 200,
+                    height: 200,
+                    fill: "#9c9e9a",
+                    stroke: "black"
                 },
                 label: {
-                    text: "default",
+                    text: "ECS Cluster",
                     textAnchor: "right",
-                    refX: 55,
-                    refY: 15,
-                    fontSize: 14,
+                    refX: 5,
+                    refY: 5,
+                    fontSize: 10,
                     fontWeight: "bold"
                 },
-                icon: {
-                    width: 45,
-                    height: 45,
-                    href: "link"
-                }
             }
         }
     }
@@ -35,15 +32,11 @@ export class node extends shapes.standard.Rectangle {
         {
             tagName: 'text',
             selector: 'label'
-        },
-        {
-            tagName: "image",
-            selector: "icon",
         }]
 }
 
 Object.assign(shapes, {
     app: {
-        Node
+        ecsCluster
     }
 });

@@ -1,6 +1,6 @@
-import { Node } from "../../shapes/node/node";
+import { node } from "../../shapes/node/node";
 
-export const groupElementsConfig: { [index: string]: Node[] } = {
+export const groupElementsConfig: { [index: string]: node[] } = {
     "analytics":
         [],
     "appIntegration":

@@ -1,5 +1,5 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import RappidService from "../services/RappidService/rappidService";
+import RappidService from "../services/rappid-service/rappidService";
 
 const initialState: RappidService | null = null;
 

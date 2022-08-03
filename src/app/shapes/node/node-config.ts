@@ -47,6 +47,12 @@ export const nodeConfig = {
         link: "http://127.0.0.1:8887/Arch_Compute/64/Arch_Amazon-EC2-Auto-Scaling_64.svg",
         type: "autoScaling"
     },
+    ecsCluster: {
+        group: "containers",
+        label: "ECS Cluster",
+        link: "http://127.0.0.1:8887/Arch_Containers/64/Arch_Amazon-Elastic-Container-Service_64.svg",
+        type: "ecsCluster"
+    },
     aurora: {
         group: "database",
         label: "Aurora",

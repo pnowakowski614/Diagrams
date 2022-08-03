@@ -1,5 +1,5 @@
 import { dia, shapes, ui } from '@clientio/rappid';
-import StencilService from "../StencilService/stencilService";
+import StencilService from "../stencil-service/stencilService";
 
 class RappidService {
     paperElement: HTMLElement;
@@ -39,7 +39,18 @@ class RappidService {
 
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
-        })
+        });
+
+        paper.on('cell:pointerclick', (cellView) => {
+            console.log(cellView);
+            if (cellView.model instanceof dia.Link) return;
+            const freeTransform = new ui.FreeTransform({
+                cellView,
+                allowRotation: false,
+            });
+            console.log(freeTransform);
+            freeTransform.render();
+        });
 
         this.paperElement.appendChild(scroller.el);
         scroller.render().center();

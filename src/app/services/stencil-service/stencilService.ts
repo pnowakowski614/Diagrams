@@ -1,10 +1,11 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import { Node } from '../../shapes/node/node';
+import { node } from '../../shapes/node/node';
 import { nodeConfig } from "../../shapes/node/node-config";
 import { groupElementsConfig } from "./groupElementsConfig";
 import { groupConfig } from "./groupConfig";
-import { AutoScaling } from "../../shapes/auto-scaling/autoScaling";
+import { autoScaling } from "../../shapes/auto-scaling/autoScaling";
+import { ecsCluster } from "../../shapes/ecs-cluster/ecsCluster";
 
 class StencilService {
     paper: dia.Paper;
@@ -38,7 +39,7 @@ class StencilService {
 
     setElements() {
         Object.values(nodeConfig).map((value) => {
-            let newNode = new Node().attr({
+            let newNode = new node().attr({
                 label: {
                     text: value.label
                 },
@@ -65,7 +66,10 @@ class StencilService {
                 })
                 break;
             case "autoScaling":
-                clone = new AutoScaling();
+                clone = new autoScaling();
+                break;
+            case "ecsCluster":
+                clone = new ecsCluster();
                 break;
             default:
                 break;

@@ -1,6 +1,6 @@
-import { dia, shapes } from '@clientio/rappid';
+import { shapes } from '@clientio/rappid';
 
-export class AutoScaling extends dia.Element {
+export class autoScaling extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
@@ -53,6 +53,6 @@ export class AutoScaling extends dia.Element {
 
 Object.assign(shapes, {
     app: {
-        AutoScaling
+        autoScaling
     }
 });

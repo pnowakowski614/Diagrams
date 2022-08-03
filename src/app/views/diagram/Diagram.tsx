@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
 import "@clientio/rappid/rappid.css";
-import RappidService from '../../services/RappidService/rappidService';
+import RappidService from '../../services/rappid-service/rappidService';
 import useEffectOnce from "../../helpers/useEffectOnce";
 import Toolbar from "./components/Toolbar/Toolbar";
 
