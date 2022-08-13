@@ -1,6 +1,6 @@
 import { shapes } from '@clientio/rappid';
 
-export class autoScaling extends shapes.standard.Rectangle {
+export class AutoScaling extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
@@ -53,6 +53,6 @@ export class autoScaling extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
-        autoScaling
+        AutoScaling
     }
 });

@@ -1,4 +1,4 @@
-export const nodeConfig = {
+export const shapesConfig = {
     kinesisStream: {
         group: "analytics",
         label: "Kinesis Stream",
@@ -106,6 +106,12 @@ export const nodeConfig = {
         label: "PrivateLink",
         link: "http://127.0.0.1:8887/Arch_Networking-Content-Delivery/64/Arch_AWS-PrivateLink_64.svg",
         type: "Node"
+    },
+    securityGroup: {
+        group: "networking",
+        label: "Sec Group Test",
+        link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
+        type: "securityGroup"
     },
     waf: {
         group: "security",

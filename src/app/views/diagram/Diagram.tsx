@@ -3,7 +3,7 @@ import styles from './diagram.module.scss';
 import "@clientio/rappid/rappid.css";
 import RappidService from '../../services/rappid-service/rappidService';
 import useEffectOnce from "../../helpers/useEffectOnce";
-import Toolbar from "./components/Toolbar/Toolbar";
+import Toolbar from "./Toolbar/Toolbar";
 
 const Diagram = () => {
     const canvas = useRef(null);

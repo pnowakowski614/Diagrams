@@ -1,14 +1,18 @@
 import { shapes } from '@clientio/rappid';
 
-export class node extends shapes.standard.Rectangle {
+export class Node extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.node',
+            type: 'app.Node',
+            size: {
+                width: 45,
+                height: 45
+            },
             attrs: {
                 body: {
-                    width: 45,
-                    height: 45
+                    refWidth: "100%",
+                    refHeight: "100%"
                 },
                 label: {
                     text: "default",
@@ -19,19 +23,18 @@ export class node extends shapes.standard.Rectangle {
                     fontWeight: "bold"
                 },
                 icon: {
-                    width: 45,
-                    height: 45,
+                    refWidth: "100%",
+                    refHeight: "100%",
                     href: "link"
                 }
             }
         }
     }
 
-    markup = [
-        {
-            tagName: 'rect',
-            selector: 'body',
-        },
+    markup = [{
+        tagName: 'rect',
+        selector: 'body',
+    },
         {
             tagName: 'text',
             selector: 'label'
@@ -44,6 +47,7 @@ export class node extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
+        ...(shapes as any).app,
         Node
     }
 });

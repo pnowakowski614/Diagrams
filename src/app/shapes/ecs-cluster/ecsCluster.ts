@@ -1,10 +1,10 @@
 import { shapes } from '@clientio/rappid';
 
-export class ecsCluster extends shapes.standard.Rectangle {
+export class ECSCluster extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.ecsCluster',
+            type: 'app.ECSCluster',
             attrs: {
                 body: {
                     width: 200,
@@ -37,6 +37,6 @@ export class ecsCluster extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
-        ecsCluster
+        ECSCluster
     }
 });
