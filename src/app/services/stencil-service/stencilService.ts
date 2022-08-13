@@ -1,12 +1,14 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import { node } from '../../shapes/node/node';
-import { nodeConfig } from "../../shapes/node/node-config";
+import { shapesConfig } from "../../shapes/node/shapes-config";
 import { groupElementsConfig } from "./groupElementsConfig";
 import { groupConfig } from "./groupConfig";
-import { autoScaling } from "../../shapes/auto-scaling/autoScaling";
-import { ecsCluster } from "../../shapes/ecs-cluster/ecsCluster";
-import { ecsService } from "../../shapes/ecs-service/ecsService";
+import { AutoScaling } from "../../shapes/auto-scaling/autoScaling";
+import { ECSCluster } from "../../shapes/ecs-cluster/ecsCluster";
+import { ECSService } from "../../shapes/ecs-service/ecsService";
+import { Node } from "../../shapes/node/node";
+import { SecurityGroup } from "../../shapes/security-group/securityGroup";
+
 
 class StencilService {
     paper: dia.Paper;
@@ -39,8 +41,9 @@ class StencilService {
     }
 
     setElements() {
-        Object.values(nodeConfig).map((value) => {
-            let newNode = new node().attr({
+        Object.values(shapesConfig).map((value) => {
+            let newNode = new Node()
+            newNode.attr({
                 label: {
                     text: value.label
                 },
@@ -48,7 +51,7 @@ class StencilService {
                     href: value.link
                 }
             });
-            newNode.prop("type", value.type);
+            newNode.prop("localType", value.type);
             groupElementsConfig[value.group].push(newNode);
         })
     }
@@ -67,13 +70,16 @@ class StencilService {
                 })
                 break;
             case "autoScaling":
-                clone = new autoScaling();
+                clone = new AutoScaling();
                 break;
             case "ecsCluster":
-                clone = new ecsCluster();
+                clone = new ECSCluster();
                 break;
             case "ecsService":
-                clone = new ecsService();
+                clone = new ECSService();
+                break;
+            case "securityGroup":
+                clone = new SecurityGroup();
                 break;
             default:
                 break;
