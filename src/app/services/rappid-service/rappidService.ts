@@ -41,14 +41,12 @@ class RappidService {
             this.setInspectorOpened(true);
         });
 
-        paper.on('cell:pointerclick', (cellView) => {
-            console.log(cellView);
-            if (cellView.model instanceof dia.Link) return;
+        paper.on('element:pointerclick', (elementView) => {
             const freeTransform = new ui.FreeTransform({
-                cellView,
+                cellView: elementView,
                 allowRotation: false,
+                preserveAspectRatio: true
             });
-            console.log(freeTransform);
             freeTransform.render();
         });
 
