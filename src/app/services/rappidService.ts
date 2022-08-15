@@ -46,7 +46,7 @@ class RappidService {
             const freeTransform = new ui.FreeTransform({
                 cellView: elementView,
                 allowRotation: false,
-                preserveAspectRatio: true
+                preserveAspectRatio: true,
             });
             freeTransform.render();
         });

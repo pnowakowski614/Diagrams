@@ -1,12 +1,12 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import { shapesConfig } from "app/shapes/node/shapes-config";
+import { shapesConfig } from "app/utils/shapesConfig";
 import { groupConfig } from "../utils/groupConfig";
-import { AutoScaling } from "app/shapes/auto-scaling/autoScaling";
-import { ECSCluster } from "app/shapes/ecs-cluster/ecsCluster";
-import { ECSService } from "app/shapes/ecs-service/ecsService";
-import { Node } from "app/shapes/node/node";
-import { SecurityGroup } from "app/shapes/security-group/securityGroup";
+import { AutoScaling } from "app/shapes/autoScaling";
+import { ECSCluster } from "app/shapes/ecsCluster";
+import { ECSService } from "app/shapes/ecsService";
+import { Node } from "app/shapes/node";
+import { SecurityGroup } from "app/shapes/securityGroup";
 
 
 class StencilService {
