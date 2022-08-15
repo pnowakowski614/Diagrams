@@ -1,5 +1,6 @@
 import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
+import React from "react";
 
 class RappidService {
     paperElement: HTMLElement;
@@ -11,7 +12,7 @@ class RappidService {
         this.stencilElement = stencilElement;
     }
 
-    setInspectorFunction(callback: Function) {
+    setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>) {
         this.setInspectorOpened = callback;
     }
 
