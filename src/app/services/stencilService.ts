@@ -55,7 +55,7 @@ class StencilService {
                     href: value.link
                 }
             });
-            newNode.prop("localType", value.type);
+            newNode.prop("localType", value.localType);
             groupList[value.group].push(newNode);
         })
 
@@ -64,7 +64,7 @@ class StencilService {
 
     cloneNode(el: dia.Cell) {
         let clone = el.clone();
-        switch (clone.attributes.type) {
+        switch (clone.attributes.localType) {
             case "Node":
                 clone.attr({
                     label: {

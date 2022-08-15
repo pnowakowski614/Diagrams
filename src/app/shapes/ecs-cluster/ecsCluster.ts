@@ -4,11 +4,15 @@ export class ECSCluster extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.ECSCluster',
+            type: 'app.ecsCluster',
+            size: {
+                width: 200,
+                height: 200
+            },
             attrs: {
                 body: {
-                    width: 200,
-                    height: 200,
+                    refWidth: "100%",
+                    refHeight: "100%",
                     fill: "#9c9e9a",
                     stroke: "black"
                 },
@@ -37,6 +41,7 @@ export class ECSCluster extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
+        ...(shapes as any).app,
         ECSCluster
     }
 });

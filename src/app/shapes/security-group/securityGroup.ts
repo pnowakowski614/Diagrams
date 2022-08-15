@@ -11,6 +11,8 @@ export class SecurityGroup extends shapes.standard.Rectangle {
             },
             attrs: {
                 body: {
+                    refWidth: "100%",
+                    refHeight: "100%",
                     fill: "transparent",
                     stroke: "blue",
                     strokeWidth: "3px"
@@ -55,6 +57,7 @@ export class SecurityGroup extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
+        ...(shapes as any).app,
         SecurityGroup
     }
 });

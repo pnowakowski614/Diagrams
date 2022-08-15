@@ -5,10 +5,14 @@ export class AutoScaling extends shapes.standard.Rectangle {
         return {
             ...super.defaults,
             type: 'app.autoScaling',
+            size: {
+                width: 70,
+                height: 50,
+            },
             attrs: {
                 body: {
-                    width: 70,
-                    height: 50,
+                    refWidth: "100%",
+                    refHeight: "100%",
                     fill: "orange",
                 },
                 label: {
@@ -53,6 +57,7 @@ export class AutoScaling extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
+        ...(shapes as any).app,
         AutoScaling
     }
 });

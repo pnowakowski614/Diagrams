@@ -4,11 +4,15 @@ export class ECSService extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.ECSService',
+            type: 'app.ecsService',
+            size: {
+                width: 140,
+                height: 140,
+            },
             attrs: {
                 body: {
-                    width: 140,
-                    height: 140,
+                    refWidth: "100%",
+                    refHeight: "100%",
                     fill: "white",
                     stroke: "black"
                 },
@@ -37,6 +41,7 @@ export class ECSService extends shapes.standard.Rectangle {
 
 Object.assign(shapes, {
     app: {
+        ...(shapes as any).app,
         ECSService
     }
 });
