@@ -1,7 +1,6 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
 import { shapesConfig } from "app/shapes/node/shapes-config";
-import { groupElementsConfig } from "../utils/groupElementsConfig";
 import { groupConfig } from "../utils/groupConfig";
 import { AutoScaling } from "app/shapes/auto-scaling/autoScaling";
 import { ECSCluster } from "app/shapes/ecs-cluster/ecsCluster";
@@ -34,13 +33,18 @@ class StencilService {
             dragStartClone: this.cloneNode
         });
 
-        this.setElements();
         this.stencilElement.appendChild(this.stencil.el);
         this.stencil.render();
-        this.stencil.load(groupElementsConfig);
+        this.stencil.load(this.setElements());
     }
 
     setElements() {
+        let groupList: { [index: string]: Node[] } = {};
+
+        Object.keys(groupConfig).map((key) => {
+            groupList[key] = [];
+        })
+
         Object.values(shapesConfig).map((value) => {
             let newNode = new Node()
             newNode.attr({
@@ -52,8 +56,10 @@ class StencilService {
                 }
             });
             newNode.prop("localType", value.type);
-            groupElementsConfig[value.group].push(newNode);
+            groupList[value.group].push(newNode);
         })
+
+        return groupList;
     }
 
     cloneNode(el: dia.Cell) {
