@@ -1,8 +1,8 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
 import { shapesConfig } from "app/shapes/node/shapes-config";
-import { groupElementsConfig } from "./groupElementsConfig";
-import { groupConfig } from "./groupConfig";
+import { groupElementsConfig } from "../utils/groupElementsConfig";
+import { groupConfig } from "../utils/groupConfig";
 import { AutoScaling } from "app/shapes/auto-scaling/autoScaling";
 import { ECSCluster } from "app/shapes/ecs-cluster/ecsCluster";
 import { ECSService } from "app/shapes/ecs-service/ecsService";

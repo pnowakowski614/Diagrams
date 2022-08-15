@@ -1,5 +1,5 @@
 import { dia, shapes, ui } from '@clientio/rappid';
-import StencilService from "../stencil-service/stencilService";
+import StencilService from "./stencilService";
 
 class RappidService {
     paperElement: HTMLElement;

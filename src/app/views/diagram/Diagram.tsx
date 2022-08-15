@@ -1,8 +1,8 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
 import "@clientio/rappid/rappid.css";
-import RappidService from '../../services/rappid-service/rappidService';
-import useEffectOnce from "../../helpers/useEffectOnce";
+import RappidService from 'app/services/rappidService';
+import useEffectOnce from "app/helpers/useEffectOnce";
 import Toolbar from "./Toolbar/Toolbar";
 
 const Diagram = () => {

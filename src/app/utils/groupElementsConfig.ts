@@ -1,4 +1,4 @@
-import { Node } from "../../shapes/node/node";
+import { Node } from "../shapes/node/node";
 
 export const groupElementsConfig: { [index: string]: Node[] } = {
     "analytics":
