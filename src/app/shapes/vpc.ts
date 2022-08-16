@@ -4,7 +4,7 @@ export class VPC extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.vpcGroup',
+            type: 'app.VPC',
             size: {
                 width: 300,
                 height: 300

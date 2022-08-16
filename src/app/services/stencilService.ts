@@ -88,7 +88,7 @@ class StencilService {
             case "securityGroup":
                 clone = new SecurityGroup();
                 break;
-            case "vpcGroup":
+            case "VPC":
                 clone = new VPC();
                 break;
             default:
