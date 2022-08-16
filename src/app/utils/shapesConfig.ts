@@ -108,10 +108,16 @@ export const shapesConfig = {
         localType: "Node"
     },
     securityGroup: {
-        group: "networking",
-        label: "Sec Group Test",
+        group: "groups",
+        label: "Security",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
         localType: "securityGroup"
+    },
+    vpcGroup: {
+        group: "groups",
+        label: "VPC",
+        link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
+        localType: "vpcGroup"
     },
     waf: {
         group: "security",

@@ -1,30 +1,30 @@
 import { shapes } from '@clientio/rappid';
 
-export class SecurityGroup extends shapes.standard.Rectangle {
+export class VPCGroup extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.securityGroup',
+            type: 'app.vpcGroup',
             size: {
-                width: 200,
-                height: 200
+                width: 300,
+                height: 300
             },
             attrs: {
                 body: {
                     refWidth: "100%",
                     refHeight: "100%",
                     fill: "transparent",
-                    stroke: "blue",
+                    stroke: "green",
                     strokeWidth: "3px"
                 },
                 background: {
-                    fill: "blue",
+                    fill: "green",
                     x: "-25px",
                     width: 25,
                     height: 120,
                 },
                 label: {
-                    text: "Security",
+                    text: "VPC",
                     fill: "white",
                     transform: "translate(-20, 100) rotate(-90)",
                     textAnchor: "right",
@@ -58,6 +58,6 @@ export class SecurityGroup extends shapes.standard.Rectangle {
 Object.assign(shapes, {
     app: {
         ...(shapes as any).app,
-        SecurityGroup
+        VPCGroup
     }
 });

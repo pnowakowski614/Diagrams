@@ -28,24 +28,29 @@ export const groupConfig = {
         index: 6,
         closed: true
     },
+    groups: {
+        label: "Groups",
+        index: 7,
+        closed: true
+    },
     management: {
         label: "Management",
-        index: 7,
+        index: 8,
         closed: true
     },
     networking: {
         label: "Networking",
-        index: 8,
+        index: 9,
         closed: true
     },
     security: {
         label: "Security",
-        index: 9,
+        index: 10,
         closed: true
     },
     storage: {
         label: "Storage",
-        index: 10,
+        index: 11,
         closed: true
     }
 }

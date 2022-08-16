@@ -7,6 +7,7 @@ import { ECSCluster } from "app/shapes/ecsCluster";
 import { ECSService } from "app/shapes/ecsService";
 import { Node } from "app/shapes/node";
 import { SecurityGroup } from "app/shapes/securityGroup";
+import { VPCGroup } from "../shapes/vpcGroup";
 
 
 class StencilService {
@@ -86,6 +87,9 @@ class StencilService {
                 break;
             case "securityGroup":
                 clone = new SecurityGroup();
+                break;
+            case "vpcGroup":
+                clone = new VPCGroup();
                 break;
             default:
                 break;
