@@ -1,6 +1,6 @@
 import { shapes } from '@clientio/rappid';
 
-export class VPCGroup extends shapes.standard.Rectangle {
+export class VPC extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
@@ -58,6 +58,6 @@ export class VPCGroup extends shapes.standard.Rectangle {
 Object.assign(shapes, {
     app: {
         ...(shapes as any).app,
-        VPCGroup
+        VPC
     }
 });

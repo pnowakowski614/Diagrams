@@ -18,7 +18,7 @@ enum shapes {
     ecsCluster = "ecsCluster",
     ecsService = "ecsService",
     securityGroup = "securityGroup",
-    vpcGroup = "vpcGroup"
+    vpc = "VPC"
 }
 
 export const shapesConfig = {
@@ -140,7 +140,7 @@ export const shapesConfig = {
         group: groupEnum.groups,
         label: "VPC",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
-        localType: shapes.vpcGroup
+        localType: shapes.vpc
     },
     waf: {
         group: groupEnum.security,
