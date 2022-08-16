@@ -1,13 +1,13 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
 import { shapesConfig } from "app/utils/shapesConfig";
-import { groupConfig } from "../utils/groupConfig";
+import { groupConfig } from "app/utils/groupConfig";
 import { AutoScaling } from "app/shapes/autoScaling";
 import { ECSCluster } from "app/shapes/ecsCluster";
 import { ECSService } from "app/shapes/ecsService";
 import { Node } from "app/shapes/node";
 import { SecurityGroup } from "app/shapes/securityGroup";
-import { VPC } from "../shapes/vpc";
+import { VPC } from "app/shapes/vpc";
 
 
 class StencilService {
@@ -50,7 +50,7 @@ class StencilService {
             let newNode = new Node()
             newNode.attr({
                 label: {
-                    text: value.label
+                    text: value.label,
                 },
                 icon: {
                     href: value.link
@@ -71,8 +71,8 @@ class StencilService {
                     label: {
                         fontSize: 10,
                         textAnchor: "middle",
-                        refX: 23,
-                        refY: 52
+                        refX: "50%",
+                        refY: "105%"
                     }
                 })
                 break;
