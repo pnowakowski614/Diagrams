@@ -1,152 +1,175 @@
+enum groupEnum {
+    analytics = "analytics",
+    appIntegration = "appIntegration",
+    compute = "compute",
+    containers = "containers",
+    database = "database",
+    endUser = "endUser",
+    management = "management",
+    networking = "networking",
+    groups = "groups",
+    security = "security",
+    storage = "storage"
+}
+
+enum shapes {
+    node = "Node",
+    autoScaling = "autoScaling",
+    ecsCluster = "ecsCluster",
+    ecsService = "ecsService",
+    securityGroup = "securityGroup",
+    vpcGroup = "vpcGroup"
+}
+
 export const shapesConfig = {
     kinesisStream: {
-        group: "analytics",
+        group: groupEnum.analytics,
         label: "Kinesis Stream",
         link: "http://127.0.0.1:8887/Arch_Analytics/Arch_64/Arch_Amazon-Kinesis_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     redshift: {
-        group: "analytics",
+        group: groupEnum.analytics,
         label: "Redshift",
         link: "http://127.0.0.1:8887/Arch_Analytics/Arch_64/Arch_Amazon-Redshift_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     dataPipeline: {
-        group: "analytics",
+        group: groupEnum.analytics,
         label: "Data Pipeline",
         link: "http://127.0.0.1:8887/Arch_Analytics/Arch_64/Arch_AWS-Data-Pipeline_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     amazonSNS: {
-        group: "appIntegration",
+        group: groupEnum.appIntegration,
         label: "Amazon SNS",
         link: "http://127.0.0.1:8887/Arch_App-Integration/Arch_64/Arch_Amazon-Simple-Notification-Service_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     amazonSQS: {
-        group: "appIntegration",
+        group: groupEnum.appIntegration,
         label: "Amazon SQS",
         link: "http://127.0.0.1:8887/Arch_App-Integration/Arch_64/Arch_Amazon-Simple-Queue-Service_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     lambda: {
-        group: "compute",
+        group: groupEnum.compute,
         label: "AWS Lambda",
         link: "http://127.0.0.1:8887/Arch_Compute/64/Arch_AWS-Lambda_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     batch: {
-        group: "compute",
+        group: groupEnum.compute,
         label: "AWS Batch",
         link: "http://127.0.0.1:8887/Arch_Compute/64/Arch_AWS-Batch_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     autoScaling: {
-        group: "compute",
+        group: groupEnum.compute,
         label: "Auto Scaling",
         link: "http://127.0.0.1:8887/Arch_Compute/64/Arch_Amazon-EC2-Auto-Scaling_64.svg",
-        localType: "autoScaling"
+        localType: shapes.autoScaling
     },
     ecsCluster: {
-        group: "containers",
+        group: groupEnum.containers,
         label: "ECS Cluster",
         link: "http://127.0.0.1:8887/Arch_Containers/64/Arch_Amazon-Elastic-Container-Service_64.svg",
-        localType: "ecsCluster"
+        localType: shapes.ecsCluster
     },
     ecsService: {
-        group: "containers",
+        group: groupEnum.containers,
         label: "ECS Service",
         link: "http://127.0.0.1:8887/Arch_Containers/64/Arch_Amazon-Elastic-Container-Service_64.svg",
-        localType: "ecsService"
+        localType: shapes.ecsService
     },
     aurora: {
-        group: "database",
+        group: groupEnum.containers,
         label: "Aurora",
         link: "http://127.0.0.1:8887/Arch_Database/64/Arch_Amazon-Aurora_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     dynamoDB: {
-        group: "database",
+        group: groupEnum.database,
         label: "Dynamo DB",
         link: "http://127.0.0.1:8887/Arch_Database/64/Arch_Amazon-DynamoDB_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     appStream: {
-        group: "endUser",
+        group: groupEnum.endUser,
         label: "App Stream 2.0",
         link: "http://127.0.0.1:8887/Arch_End-User-Computing/64/Arch_Amazon-AppStream_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     workspaces: {
-        group: "endUser",
+        group: groupEnum.endUser,
         label: "Workspace",
         link: "http://127.0.0.1:8887/Arch_End-User-Computing/64/Arch_Amazon-WorkSpaces_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     cloudwatch: {
-        group: "management",
+        group: groupEnum.management,
         label: "CloudWatch",
         link: "http://127.0.0.1:8887/Arch_Management-Governance/64/Arch_Amazon-CloudWatch_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     cloudtrail: {
-        group: "management",
+        group: groupEnum.management,
         label: "CloudTrail",
         link: "http://127.0.0.1:8887/Arch_Management-Governance/64/Arch_AWS-CloudTrail_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     route53: {
-        group: "networking",
+        group: groupEnum.networking,
         label: "Route 53",
         link: "http://127.0.0.1:8887/Arch_Networking-Content-Delivery/64/Arch_Amazon-Route-53_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     privateLink: {
-        group: "networking",
+        group: groupEnum.networking,
         label: "PrivateLink",
         link: "http://127.0.0.1:8887/Arch_Networking-Content-Delivery/64/Arch_AWS-PrivateLink_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     securityGroup: {
-        group: "groups",
+        group: groupEnum.groups,
         label: "Security",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
-        localType: "securityGroup"
+        localType: shapes.securityGroup
     },
     vpcGroup: {
-        group: "groups",
+        group: groupEnum.groups,
         label: "VPC",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
-        localType: "vpcGroup"
+        localType: shapes.vpcGroup
     },
     waf: {
-        group: "security",
+        group: groupEnum.security,
         label: "WAF",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-WAF_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     shield: {
-        group: "security",
+        group: groupEnum.security,
         label: "Shield",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Shield_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     securityHub: {
-        group: "security",
+        group: groupEnum.security,
         label: "Security Hub",
         link: "http://127.0.0.1:8887/Arch_Security-Identity-Compliance/64/Arch_AWS-Security-Hub_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     backup: {
-        group: "storage",
+        group: groupEnum.storage,
         label: "Backup",
         link: "http://127.0.0.1:8887/Arch_Storage/64/Arch_AWS-Backup_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
     snowball: {
-        group: "storage",
+        group: groupEnum.storage,
         label: "Snowball",
         link: "http://127.0.0.1:8887/Arch_Storage/64/Arch_AWS-Snowball_64.svg",
-        localType: "Node"
+        localType: shapes.node
     },
 }
