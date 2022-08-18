@@ -1,22 +1,36 @@
 export enum StencilGroups {
-    analytics = "analytics",
-    appIntegration = "appIntegration",
-    compute = "compute",
-    containers = "containers",
-    database = "database",
-    endUser = "endUser",
-    management = "management",
-    networking = "networking",
-    groups = "groups",
-    security = "security",
-    storage = "storage"
+    Analytics = "Analytics",
+    AppIntegration = "AppIntegration",
+    Compute = "Compute",
+    Containers = "Containers",
+    Database = "Database",
+    EndUser = "EndUser",
+    Management = "Management",
+    Networking = "Networking",
+    Groups = "Groups",
+    Security = "Security",
+    Storage = "Storage"
 }
 
 export enum LocalShapesTypes {
-    node = "Node",
-    autoScaling = "autoScaling",
-    ecsCluster = "ecsCluster",
-    ecsService = "ecsService",
-    securityGroup = "securityGroup",
-    vpc = "VPC"
+    Node = "Node",
+    AutoScaling = "AutoScaling",
+    EcsCluster = "EcsCluster",
+    EcsService = "EcsService",
+    SecurityGroup = "SecurityGroup",
+    VPC = "VPC"
 }
+
+export enum DefaultCanvasNodeAttrs {
+    NodeFontSize = 10,
+    NodeTextAnchor = "middle",
+    NodeRefX = "50%",
+    NodeRefY = "105%"
+}
+
+export enum DefaultStencilLayoutOptions {
+    StencilMarginX = -13,
+    StencilColumns = 1,
+    StencilRowHeight = 65
+}
+
