@@ -3,7 +3,7 @@ import styles from './diagram.module.scss';
 import "@clientio/rappid/rappid.css";
 import RappidService from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
-import Toolbar from "./Toolbar/Toolbar";
+import DiagramToolbar from "./DiagramToolbar/DiagramToolbar";
 
 const Diagram = () => {
     const canvas = useRef(null);
@@ -21,7 +21,7 @@ const Diagram = () => {
 
     return (
         <div className={styles.diagramContainer}>
-            <Toolbar/>
+            <DiagramToolbar/>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} ref={canvas}/>
