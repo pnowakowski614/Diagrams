@@ -2,153 +2,153 @@ import { LocalShapesTypes, StencilGroups } from "../types/enums";
 
 export const shapesConfig = {
     kinesisStream: {
-        group: StencilGroups.analytics,
+        group: StencilGroups.Analytics,
         label: "Kinesis Stream",
         link: "icons/Arch_Analytics/Arch_Amazon-Kinesis_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     redshift: {
-        group: StencilGroups.analytics,
+        group: StencilGroups.Analytics,
         label: "Redshift",
         link: "icons/Arch_Analytics/Arch_Amazon-Redshift_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     dataPipeline: {
-        group: StencilGroups.analytics,
+        group: StencilGroups.Analytics,
         label: "Data Pipeline",
         link: "icons/Arch_Analytics/Arch_AWS-Data-Pipeline_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     amazonSNS: {
-        group: StencilGroups.appIntegration,
+        group: StencilGroups.AppIntegration,
         label: "Amazon SNS",
         link: "icons/Arch_App-Integration/Arch_Amazon-Simple-Notification-Service_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     amazonSQS: {
-        group: StencilGroups.appIntegration,
+        group: StencilGroups.AppIntegration,
         label: "Amazon SQS",
         link: "icons/Arch_App-Integration/Arch_Amazon-Simple-Queue-Service_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     lambda: {
-        group: StencilGroups.compute,
+        group: StencilGroups.Compute,
         label: "AWS Lambda",
         link: "icons/Arch_Compute/Arch_AWS-Lambda_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     batch: {
-        group: StencilGroups.compute,
+        group: StencilGroups.Compute,
         label: "AWS Batch",
         link: "icons/Arch_Compute/Arch_AWS-Batch_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     autoScaling: {
-        group: StencilGroups.compute,
+        group: StencilGroups.Compute,
         label: "Auto Scaling",
         link: "icons/Arch_Compute/Arch_Amazon-EC2-Auto-Scaling_64.svg",
-        localType: LocalShapesTypes.autoScaling
+        localType: LocalShapesTypes.AutoScaling
     },
     ecsCluster: {
-        group: StencilGroups.containers,
+        group: StencilGroups.Containers,
         label: "ECS Cluster",
         link: "icons/Arch_Containers/Arch_Amazon-Elastic-Container-Service_64.svg",
-        localType: LocalShapesTypes.ecsCluster
+        localType: LocalShapesTypes.EcsCluster
     },
     ecsService: {
-        group: StencilGroups.containers,
+        group: StencilGroups.Containers,
         label: "ECS Service",
         link: "icons/Arch_Containers/Arch_Amazon-Elastic-Container-Service_64.svg",
-        localType: LocalShapesTypes.ecsService
+        localType: LocalShapesTypes.EcsService
     },
     aurora: {
-        group: StencilGroups.database,
+        group: StencilGroups.Database,
         label: "Aurora",
         link: "icons/Arch_Database/Arch_Amazon-Aurora_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     dynamoDB: {
-        group: StencilGroups.database,
+        group: StencilGroups.Database,
         label: "Dynamo DB",
         link: "icons/Arch_Database/Arch_Amazon-DynamoDB_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     appStream: {
-        group: StencilGroups.endUser,
+        group: StencilGroups.EndUser,
         label: "App Stream 2.0",
         link: "icons/Arch_End-User-Computing/Arch_Amazon-AppStream_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     workspaces: {
-        group: StencilGroups.endUser,
+        group: StencilGroups.EndUser,
         label: "Workspace",
         link: "icons/Arch_End-User-Computing/Arch_Amazon-WorkSpaces_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     cloudwatch: {
-        group: StencilGroups.management,
+        group: StencilGroups.Management,
         label: "CloudWatch",
         link: "icons/Arch_Management-Governance/Arch_Amazon-CloudWatch_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     cloudtrail: {
-        group: StencilGroups.management,
+        group: StencilGroups.Management,
         label: "CloudTrail",
         link: "icons/Arch_Management-Governance/Arch_AWS-CloudTrail_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     route53: {
-        group: StencilGroups.networking,
+        group: StencilGroups.Networking,
         label: "Route 53",
         link: "icons/Arch_Networking-Content-Delivery/Arch_Amazon-Route-53_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     privateLink: {
-        group: StencilGroups.networking,
+        group: StencilGroups.Networking,
         label: "PrivateLink",
         link: "icons/Arch_Networking-Content-Delivery/Arch_AWS-PrivateLink_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     securityGroup: {
-        group: StencilGroups.groups,
+        group: StencilGroups.Groups,
         label: "Security",
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
-        localType: LocalShapesTypes.securityGroup
+        localType: LocalShapesTypes.SecurityGroup
     },
     vpcGroup: {
-        group: StencilGroups.groups,
+        group: StencilGroups.Groups,
         label: "VPC",
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
-        localType: LocalShapesTypes.vpc
+        localType: LocalShapesTypes.VPC
     },
     waf: {
-        group: StencilGroups.security,
+        group: StencilGroups.Security,
         label: "WAF",
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-WAF_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     shield: {
-        group: StencilGroups.security,
+        group: StencilGroups.Security,
         label: "Shield",
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Shield_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     securityHub: {
-        group: StencilGroups.security,
+        group: StencilGroups.Security,
         label: "Security Hub",
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     backup: {
-        group: StencilGroups.storage,
+        group: StencilGroups.Storage,
         label: "Backup",
         link: "icons/Arch_Storage/Arch_AWS-Backup_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
     snowball: {
-        group: StencilGroups.storage,
+        group: StencilGroups.Storage,
         label: "Snowball",
         link: "icons/Arch_Storage/Arch_AWS-Snowball_64.svg",
-        localType: LocalShapesTypes.node
+        localType: LocalShapesTypes.Node
     },
 }

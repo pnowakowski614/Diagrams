@@ -1,54 +1,54 @@
 export const groupConfig = {
-    analytics: {
+    Analytics: {
         label: 'Analytics',
         index: 1
     },
-    appIntegration: {
+    AppIntegration: {
         label: 'App Integration',
         index: 2,
         closed: true
     },
-    compute: {
+    Compute: {
         label: 'Compute',
         index: 3,
         closed: true,
     },
-    containers: {
+    Containers: {
         label: 'Containers',
         index: 4,
         closed: true,
     },
-    database: {
+    Database: {
         label: "Database",
         index: 5,
         closed: true,
     },
-    endUser: {
+    EndUser: {
         label: "End User Computing",
         index: 6,
         closed: true
     },
-    groups: {
+    Groups: {
         label: "Groups",
         index: 7,
         closed: true
     },
-    management: {
+    Management: {
         label: "Management",
         index: 8,
         closed: true
     },
-    networking: {
+    Networking: {
         label: "Networking",
         index: 9,
         closed: true
     },
-    security: {
+    Security: {
         label: "Security",
         index: 10,
         closed: true
     },
-    storage: {
+    Storage: {
         label: "Storage",
         index: 11,
         closed: true
