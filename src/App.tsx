@@ -7,14 +7,14 @@ import Header from "./app/components/Header/Header"
 import styles from "./App.module.scss";
 
 const App = () => {
-    return(
+    return (
         <div className={styles.wrapper}>
-            <Header />
+            <Header/>
             <main className={styles.content}>
-                <Route path="/" exact component={Login} />
-                <Route path="/login" component={Login} />
-                <Route path="/diagram" component={Diagram} />
-                <Route path="/list" component={List} />
+                <Route path="/" exact component={Login}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/diagram" component={Diagram}/>
+                <Route path="/list" component={List}/>
             </main>
         </div>
     )

@@ -1,20 +1,21 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
-import "../../services/Rappid/rappid.scss"
-import Rappid from '../../services/Rappid/rappid';
-import useEffectOnce from "../../helpers/useEffectOnce";
-import Toolbar from "./components/Toolbar/Toolbar";
+import "@clientio/rappid/rappid.css";
+import RappidService from 'app/services/rappidService';
+import useEffectOnce from "app/helpers/useEffectOnce";
+import Toolbar from "./Toolbar/Toolbar";
 
 const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
 
-    const [isInspectorDisplay, setIsInspectorDisplay] = useState(false);
+    const [inspectorOpened, setInspectorOpened] = useState<boolean>(false);
 
     useEffectOnce(() => {
         if (canvas.current && stencil.current) {
-            const rappidInst = new Rappid(canvas.current!, stencil.current!);
+            const rappidInst = new RappidService(canvas.current!, stencil.current!);
             rappidInst.init();
+            rappidInst.setInspectorFunction(setInspectorOpened);
         }
     });
 
@@ -23,10 +24,9 @@ const Diagram = () => {
             <Toolbar/>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
-                <div className={styles.canvas} onMouseEnter={() => setIsInspectorDisplay(true)}
-                     onMouseLeave={() => setIsInspectorDisplay(false)} ref={canvas}/>
-                {isInspectorDisplay && <div className={styles.inspector}>inspector</div>}
+                <div className={styles.canvas} ref={canvas}/>
             </div>
+            {inspectorOpened && <div className={styles.inspector}>inspector</div>}
         </div>
     );
 }

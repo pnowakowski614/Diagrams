@@ -1,9 +1,4 @@
-:root {
-  --main: #B68839;
-  --secondary: #FBF8F4;
-  --accent: #973830;
-  --hover-color: #ecd4b6;
-}
+@import '../../../styles/colors';
 
 header {
   box-sizing: border-box;
@@ -11,8 +6,8 @@ header {
 }
 
 .navbar {
-  background-color: var(--main);
-  color: var(--secondary);
+  background-color: $main;
+  color: $secondary;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -33,7 +28,7 @@ header {
 }
 
 .signUp {
-  background-color: var(--accent);
+  background-color: $accent;
   display: inline-block;
   position: relative;
   padding: 8px;
