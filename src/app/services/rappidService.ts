@@ -45,6 +45,14 @@ class RappidService {
 
         const stencilInst = new StencilService(paper, this.stencilElement);
         stencilInst.initStencil();
+
+        new ui.Tooltip({
+            rootTarget: document.body,
+            target: '[data-tooltip]',
+            direction: ui.Tooltip.TooltipArrowPosition.Auto,
+            position: ui.Tooltip.TooltipPosition.Left,
+            padding: 10
+        });
     }
 
     initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller) {

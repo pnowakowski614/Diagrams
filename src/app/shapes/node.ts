@@ -10,9 +10,12 @@ export class Node extends shapes.standard.Rectangle {
                 height: 45
             },
             attrs: {
+                root: {
+                    dataTooltip: "default"
+                },
                 body: {
                     refWidth: "100%",
-                    refHeight: "100%"
+                    refHeight: "100%",
                 },
                 label: {
                     text: "default",
