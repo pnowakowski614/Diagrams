@@ -8,7 +8,8 @@ import { ECSService } from "app/shapes/ecsService";
 import { Node } from "app/shapes/node";
 import { SecurityGroup } from "app/shapes/securityGroup";
 import { VPC } from "app/shapes/vpc";
-import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions, LocalShapesTypes } from "../types/enums";
+import { LocalShapesTypes } from "../types/enums";
+import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions } from "../utils/rappid-utils";
 
 class StencilService {
     paper: dia.Paper;
@@ -49,6 +50,9 @@ class StencilService {
         Object.values(shapesConfig).map((value) => {
             let newNode = new Node()
             newNode.attr({
+                root: {
+                    dataTooltip: value.label
+                },
                 label: {
                     text: value.label,
                 },

@@ -21,16 +21,3 @@ export enum LocalShapesTypes {
     VPC = "VPC"
 }
 
-export enum DefaultCanvasNodeAttrs {
-    NodeFontSize = 10,
-    NodeTextAnchor = "middle",
-    NodeRefX = "50%",
-    NodeRefY = "105%"
-}
-
-export enum DefaultStencilLayoutOptions {
-    StencilMarginX = -13,
-    StencilColumns = 1,
-    StencilRowHeight = 65
-}
-
