@@ -5,7 +5,7 @@ import React from "react";
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
-    setInspectorOpened!: Function;
+    setInspectorOpened!: React.Dispatch<React.SetStateAction<boolean>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
         this.paperElement = paperElement;
@@ -38,6 +38,18 @@ class RappidService {
             autoResizePaper: true,
         });
 
+        this.paperElement.appendChild(scroller.el);
+        scroller.render().center();
+
+        this.initPaperEvents(paper, scroller);
+
+        const stencilInst = new StencilService(paper, this.stencilElement);
+        stencilInst.initStencil();
+    }
+
+    initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller) {
+        paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
+
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
         });
@@ -50,14 +62,8 @@ class RappidService {
             });
             freeTransform.render();
         });
-
-        this.paperElement.appendChild(scroller.el);
-        scroller.render().center();
-
-        paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
-        const stencilInst = new StencilService(paper, this.stencilElement);
-        stencilInst.initStencil();
     }
+
 }
 
 export default RappidService;

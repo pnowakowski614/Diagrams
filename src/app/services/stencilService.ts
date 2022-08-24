@@ -8,7 +8,7 @@ import { ECSService } from "app/shapes/ecsService";
 import { Node } from "app/shapes/node";
 import { SecurityGroup } from "app/shapes/securityGroup";
 import { VPC } from "app/shapes/vpc";
-
+import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions, LocalShapesTypes } from "../types/enums";
 
 class StencilService {
     paper: dia.Paper;
@@ -26,9 +26,9 @@ class StencilService {
             groups: this.setGroups(),
             label: "Elements",
             layout: {
-                marginX: -13,
-                columns: 1,
-                rowHeight: 65
+                marginX: DefaultStencilLayoutOptions.StencilMarginX,
+                columns: DefaultStencilLayoutOptions.StencilColumns,
+                rowHeight: DefaultStencilLayoutOptions.StencilRowHeight
             },
             groupsToggleButtons: true,
             dragStartClone: this.cloneNode
@@ -66,29 +66,29 @@ class StencilService {
     cloneNode(el: dia.Cell) {
         let clone = el.clone();
         switch (clone.attributes.localType) {
-            case "Node":
+            case LocalShapesTypes.Node:
                 clone.attr({
                     label: {
-                        fontSize: 10,
-                        textAnchor: "middle",
-                        refX: "50%",
-                        refY: "105%"
+                        fontSize: DefaultCanvasNodeAttrs.NodeFontSize,
+                        textAnchor: DefaultCanvasNodeAttrs.NodeTextAnchor,
+                        refX: DefaultCanvasNodeAttrs.NodeRefX,
+                        refY: DefaultCanvasNodeAttrs.NodeRefY
                     }
                 })
                 break;
-            case "autoScaling":
+            case LocalShapesTypes.AutoScaling:
                 clone = new AutoScaling();
                 break;
-            case "ecsCluster":
+            case LocalShapesTypes.EcsCluster:
                 clone = new ECSCluster();
                 break;
-            case "ecsService":
+            case LocalShapesTypes.EcsService:
                 clone = new ECSService();
                 break;
-            case "securityGroup":
+            case LocalShapesTypes.SecurityGroup:
                 clone = new SecurityGroup();
                 break;
-            case "VPC":
+            case LocalShapesTypes.VPC:
                 clone = new VPC();
                 break;
             default:
