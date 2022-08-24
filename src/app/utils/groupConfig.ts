@@ -1,54 +1,56 @@
+import { StencilGroups } from "../types/enums";
+
 export const groupConfig = {
-    Analytics: {
+    [StencilGroups.Analytics]: {
         label: 'Analytics',
         index: 1
     },
-    AppIntegration: {
+    [StencilGroups.AppIntegration]: {
         label: 'App Integration',
         index: 2,
         closed: true
     },
-    Compute: {
+    [StencilGroups.Compute]: {
         label: 'Compute',
         index: 3,
         closed: true,
     },
-    Containers: {
+    [StencilGroups.Containers]: {
         label: 'Containers',
         index: 4,
         closed: true,
     },
-    Database: {
+    [StencilGroups.Database]: {
         label: "Database",
         index: 5,
         closed: true,
     },
-    EndUser: {
+    [StencilGroups.EndUser]: {
         label: "End User Computing",
         index: 6,
         closed: true
     },
-    Groups: {
+    [StencilGroups.Groups]: {
         label: "Groups",
         index: 7,
         closed: true
     },
-    Management: {
+    [StencilGroups.Management]: {
         label: "Management",
         index: 8,
         closed: true
     },
-    Networking: {
+    [StencilGroups.Networking]: {
         label: "Networking",
         index: 9,
         closed: true
     },
-    Security: {
+    [StencilGroups.Security]: {
         label: "Security",
         index: 10,
         closed: true
     },
-    Storage: {
+    [StencilGroups.Storage]: {
         label: "Storage",
         index: 11,
         closed: true
