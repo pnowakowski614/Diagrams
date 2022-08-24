@@ -21,10 +21,10 @@ class StencilService {
         this.stencilElement = stencilElement;
     }
 
-    initStencil(): void {
+    public initStencil(): void {
         this.stencil = new ui.Stencil({
             paper: this.paper,
-            groups: this.setGroups(),
+            groups: groupConfig,
             label: "Elements",
             layout: {
                 marginX: DefaultStencilLayoutOptions.StencilMarginX,
@@ -40,7 +40,7 @@ class StencilService {
         this.stencil.load(this.setElements());
     }
 
-    setElements() {
+    private setElements() {
         let groupList: { [index: string]: Node[] } = {};
 
         Object.keys(groupConfig).map((key) => {
@@ -67,7 +67,7 @@ class StencilService {
         return groupList;
     }
 
-    cloneNode(el: dia.Cell) {
+    private cloneNode(el: dia.Cell) {
         let clone = el.clone();
         switch (clone.attributes.localType) {
             case LocalShapesTypes.Node:
@@ -99,10 +99,6 @@ class StencilService {
                 break;
         }
         return clone;
-    }
-
-    setGroups() {
-        return groupConfig;
     }
 }
 

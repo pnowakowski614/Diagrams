@@ -12,11 +12,11 @@ class RappidService {
         this.stencilElement = stencilElement;
     }
 
-    setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>) {
+    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>) {
         this.setInspectorOpened = callback;
     }
 
-    init() {
+    public init() {
         const graph = new dia.Graph({}, {cellNamespace: shapes});
 
         const paper = new dia.Paper({
@@ -46,8 +46,11 @@ class RappidService {
         const stencilInst = new StencilService(paper, this.stencilElement);
         stencilInst.initStencil();
 
-        new ui.Tooltip({
-            rootTarget: document.body,
+        this.initTooltip();
+    }
+
+    private initTooltip() {
+        return new ui.Tooltip({
             target: '[data-tooltip]',
             direction: ui.Tooltip.TooltipArrowPosition.Auto,
             position: ui.Tooltip.TooltipPosition.Left,
@@ -55,7 +58,7 @@ class RappidService {
         });
     }
 
-    initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller) {
+    private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller) {
         paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
 
         paper.on('cell:pointerclick', () => {
