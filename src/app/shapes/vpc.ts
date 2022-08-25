@@ -6,8 +6,8 @@ export class VPC extends shapes.standard.Rectangle {
             ...super.defaults,
             type: 'app.VPC',
             size: {
-                width: 300,
-                height: 300
+                width: 275,
+                height: 250
             },
             attrs: {
                 body: {
@@ -33,6 +33,13 @@ export class VPC extends shapes.standard.Rectangle {
                     fontSize: 10,
                     fontWeight: "bold"
                 },
+                icon: {
+                    href: "icons/other/cloud.png",
+                    width: 20,
+                    height: 20,
+                    refX: -20,
+                    refY: 5,
+                }
             }
         }
     }
@@ -51,6 +58,10 @@ export class VPC extends shapes.standard.Rectangle {
                 {
                     tagName: 'text',
                     selector: 'label'
+                },
+                {
+                    tagName: 'image',
+                    selector: 'icon'
                 }]
     }]
 }

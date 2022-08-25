@@ -112,19 +112,19 @@ export const shapesConfig = {
     securityGroup: {
         group: StencilGroups.Groups,
         label: "Security",
-        link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
+        link: "icons/other/securityIcon.png",
         localType: LocalShapesTypes.SecurityGroup
     },
     vpcGroup: {
         group: StencilGroups.Groups,
         label: "VPC",
-        link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
+        link: "icons/other/vpcIcon.png",
         localType: LocalShapesTypes.VPC
     },
     subnetGroup: {
         group: StencilGroups.Groups,
         label: "Subnet",
-        link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
+        link: "icons/other/subnetIcon.png",
         localType: LocalShapesTypes.Subnet
     },
     waf: {

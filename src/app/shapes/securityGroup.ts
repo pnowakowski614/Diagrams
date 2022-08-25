@@ -6,8 +6,8 @@ export class SecurityGroup extends shapes.standard.Rectangle {
             ...super.defaults,
             type: 'app.securityGroup',
             size: {
-                width: 200,
-                height: 200
+                width: 275,
+                height: 250
             },
             attrs: {
                 body: {
@@ -21,18 +21,25 @@ export class SecurityGroup extends shapes.standard.Rectangle {
                     fill: "blue",
                     x: "-25px",
                     width: 25,
-                    height: 120,
+                    refHeight: "70%",
                 },
                 label: {
                     text: "Security",
                     fill: "white",
                     transform: "translate(-20, 100) rotate(-90)",
                     textAnchor: "right",
-                    refX: 5,
-                    refY: 5,
+                    refX: 3,
+                    refY: -30,
                     fontSize: 10,
                     fontWeight: "bold"
                 },
+                icon: {
+                    href: "icons/other/shield.png",
+                    width: 15,
+                    height: 15,
+                    refX: -20,
+                    refY: 5,
+                }
             }
         }
     }
@@ -47,6 +54,10 @@ export class SecurityGroup extends shapes.standard.Rectangle {
                 {
                     tagName: 'rect',
                     selector: 'background'
+                },
+                {
+                    tagName: 'image',
+                    selector: 'icon'
                 },
                 {
                     tagName: 'text',

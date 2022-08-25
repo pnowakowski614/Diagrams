@@ -6,8 +6,8 @@ export class Subnet extends shapes.standard.Rectangle {
             ...super.defaults,
             type: 'app.Subnet',
             size: {
-                width: 150,
-                height: 150
+                width: 275,
+                height: 250
             },
             attrs: {
                 body: {
@@ -34,9 +34,9 @@ export class Subnet extends shapes.standard.Rectangle {
                     fontWeight: "bold"
                 },
                 icon: {
-                    href: "#",
-                    width: 20,
-                    height: 20,
+                    href: "icons/other/lock.png",
+                    width: 15,
+                    height: 15,
                     refX: -20,
                     refY: 5,
                 }
