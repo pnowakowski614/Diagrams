@@ -48,6 +48,7 @@ class RappidService {
         stencilInst.initStencil();
 
         this.initTooltip();
+        this.initFreeTransform(paper);
     }
 
     private initTooltip() {
@@ -65,7 +66,9 @@ class RappidService {
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
         });
+    }
 
+    private initFreeTransform(paper: dia.Paper) {
         paper.on('element:pointerclick', (elementView) => {
             const getMinDimensions = (elementView: dia.ElementView) => {
                 switch (elementView.model.attributes.type) {
@@ -83,12 +86,21 @@ class RappidService {
                 }
             }
 
+            const getResizeDirections = (elementView: dia.ElementView) => {
+                let directions: ui.FreeTransform.Directions[];
+                if (elementView.model.attributes.type === "app.autoScaling") {
+                    directions = ['left', 'right'];
+                    return directions;
+                }
+            }
+
             const freeTransform = new ui.FreeTransform({
                 cellView: elementView,
                 allowRotation: false,
-                preserveAspectRatio: true,
+                preserveAspectRatio: elementView.model.attributes.type !== "app.autoScaling",
                 minWidth: getMinDimensions(elementView),
                 minHeight: getMinDimensions(elementView),
+                resizeDirections: getResizeDirections(elementView)
             });
             freeTransform.render();
         });
