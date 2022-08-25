@@ -7,7 +7,7 @@ export class VPC extends shapes.standard.Rectangle {
             type: 'app.VPC',
             size: {
                 width: 275,
-                height: 250
+                height: 250,
             },
             attrs: {
                 body: {
@@ -21,15 +21,15 @@ export class VPC extends shapes.standard.Rectangle {
                     fill: "green",
                     x: "-25px",
                     width: 25,
-                    height: 120,
+                    refHeight: "70%",
                 },
                 label: {
                     text: "VPC",
                     fill: "white",
                     transform: "translate(-20, 100) rotate(-90)",
                     textAnchor: "right",
-                    refX: 5,
-                    refY: 5,
+                    refX: 3,
+                    refY: -30,
                     fontSize: 10,
                     fontWeight: "bold"
                 },

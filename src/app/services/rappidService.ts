@@ -1,6 +1,7 @@
 import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React from "react";
+import { GlobalShapesTypes } from "../types/enums";
 
 class RappidService {
     paperElement: HTMLElement;
@@ -66,10 +67,28 @@ class RappidService {
         });
 
         paper.on('element:pointerclick', (elementView) => {
+            const getMinDimensions = (elementView: dia.ElementView) => {
+                switch (elementView.model.attributes.type) {
+                    case GlobalShapesTypes.Node:
+                        return 30;
+                    case GlobalShapesTypes.VPC:
+                    case GlobalShapesTypes.SecurityGroup:
+                    case GlobalShapesTypes.Subnet:
+                        return 150;
+                    case GlobalShapesTypes.EcsService:
+                    case GlobalShapesTypes.EcsCluster:
+                        return 100;
+                    default:
+                        return 50;
+                }
+            }
+
             const freeTransform = new ui.FreeTransform({
                 cellView: elementView,
                 allowRotation: false,
                 preserveAspectRatio: true,
+                minWidth: getMinDimensions(elementView),
+                minHeight: getMinDimensions(elementView),
             });
             freeTransform.render();
         });

@@ -4,7 +4,7 @@ export class Subnet extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.Subnet',
+            type: 'app.subnet',
             size: {
                 width: 275,
                 height: 250

@@ -4,7 +4,7 @@ export class Node extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.Node',
+            type: 'app.node',
             size: {
                 width: 45,
                 height: 45
