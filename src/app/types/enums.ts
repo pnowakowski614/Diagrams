@@ -18,6 +18,7 @@ export enum LocalShapesTypes {
     EcsCluster = "EcsCluster",
     EcsService = "EcsService",
     SecurityGroup = "SecurityGroup",
-    VPC = "VPC"
+    VPC = "VPC",
+    Subnet = "Subnet"
 }
 

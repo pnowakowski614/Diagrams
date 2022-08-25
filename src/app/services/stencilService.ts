@@ -10,6 +10,7 @@ import { SecurityGroup } from "app/shapes/securityGroup";
 import { VPC } from "app/shapes/vpc";
 import { LocalShapesTypes } from "../types/enums";
 import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions } from "../utils/rappid-utils";
+import { Subnet } from "../shapes/subnet";
 
 class StencilService {
     paper: dia.Paper;
@@ -94,6 +95,9 @@ class StencilService {
                 break;
             case LocalShapesTypes.VPC:
                 clone = new VPC();
+                break;
+            case LocalShapesTypes.Subnet:
+                clone = new Subnet();
                 break;
             default:
                 break;

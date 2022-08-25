@@ -121,6 +121,12 @@ export const shapesConfig = {
         link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
         localType: LocalShapesTypes.VPC
     },
+    subnetGroup: {
+        group: StencilGroups.Groups,
+        label: "Subnet",
+        link: "icons/Arch_Security-Identity-Compliance/Arch_AWS-Security-Hub_64.svg",
+        localType: LocalShapesTypes.Subnet
+    },
     waf: {
         group: StencilGroups.Security,
         label: "WAF",
