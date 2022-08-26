@@ -1,10 +1,11 @@
 import { shapes } from '@clientio/rappid';
+import { GlobalShapesTypes } from "../types/enums";
 
 export class ECSService extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.ecsService',
+            type: GlobalShapesTypes.EcsService,
             size: {
                 width: 140,
                 height: 140,

@@ -1,7 +1,7 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import { shapesConfig } from "app/utils/shapesConfig";
-import { groupConfig } from "app/utils/groupConfig";
+import { shapesConfig } from "app/rappid-configs/shapesConfig";
+import { groupConfig } from "app/rappid-configs/groupConfig";
 import { AutoScaling } from "app/shapes/autoScaling";
 import { ECSCluster } from "app/shapes/ecsCluster";
 import { ECSService } from "app/shapes/ecsService";
@@ -9,7 +9,7 @@ import { Node } from "app/shapes/node";
 import { SecurityGroup } from "app/shapes/securityGroup";
 import { VPC } from "app/shapes/vpc";
 import { LocalShapesTypes } from "../types/enums";
-import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions } from "../utils/rappid-utils";
+import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
 import { Subnet } from "../shapes/subnet";
 
 class StencilService {
@@ -27,11 +27,7 @@ class StencilService {
             paper: this.paper,
             groups: groupConfig,
             label: "Elements",
-            layout: {
-                marginX: DefaultStencilLayoutOptions.StencilMarginX,
-                columns: DefaultStencilLayoutOptions.StencilColumns,
-                rowHeight: DefaultStencilLayoutOptions.StencilRowHeight
-            },
+            layout: defaultStencilLayoutOptions,
             groupsToggleButtons: true,
             dragStartClone: this.cloneNode
         });
@@ -44,11 +40,11 @@ class StencilService {
     private setElements() {
         let groupList: { [index: string]: Node[] } = {};
 
-        Object.keys(groupConfig).map((key) => {
+        Object.keys(groupConfig).forEach((key) => {
             groupList[key] = [];
         })
 
-        Object.values(shapesConfig).map((value) => {
+        Object.values(shapesConfig).forEach((value) => {
             let newNode = new Node()
             newNode.attr({
                 root: {
@@ -73,12 +69,7 @@ class StencilService {
         switch (clone.attributes.localType) {
             case LocalShapesTypes.Node:
                 clone.attr({
-                    label: {
-                        fontSize: DefaultCanvasNodeAttrs.NodeFontSize,
-                        textAnchor: DefaultCanvasNodeAttrs.NodeTextAnchor,
-                        refX: DefaultCanvasNodeAttrs.NodeRefX,
-                        refY: DefaultCanvasNodeAttrs.NodeRefY
-                    }
+                    label: defaultShapeAttrs,
                 })
                 break;
             case LocalShapesTypes.AutoScaling:

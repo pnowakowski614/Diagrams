@@ -1,10 +1,11 @@
 import { shapes } from '@clientio/rappid';
+import { GlobalShapesTypes } from "../types/enums";
 
 export class VPC extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.VPC',
+            type: GlobalShapesTypes.VPC,
             size: {
                 width: 275,
                 height: 250,

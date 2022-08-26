@@ -1,10 +1,11 @@
 import { shapes } from '@clientio/rappid';
+import { GlobalShapesTypes } from "../types/enums";
 
 export class AutoScaling extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.autoScaling',
+            type: GlobalShapesTypes.AutoScaling,
             size: {
                 width: 70,
                 height: 50,

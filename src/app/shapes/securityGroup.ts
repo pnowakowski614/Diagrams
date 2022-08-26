@@ -1,10 +1,11 @@
 import { shapes } from '@clientio/rappid';
+import { GlobalShapesTypes } from "../types/enums";
 
 export class SecurityGroup extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.securityGroup',
+            type: GlobalShapesTypes.SecurityGroup,
             size: {
                 width: 275,
                 height: 250

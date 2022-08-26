@@ -23,11 +23,11 @@ export enum LocalShapesTypes {
 }
 
 export enum GlobalShapesTypes {
-    Node = "app.node",
-    AutoScaling = "app.autoScaling",
-    EcsCluster = "app.ecsCluster",
-    EcsService = "app.ecsService",
-    SecurityGroup = "app.securityGroup",
+    Node = "app.Node",
+    AutoScaling = "app.AutoScaling",
+    EcsCluster = "app.EcsCluster",
+    EcsService = "app.EcsService",
+    SecurityGroup = "app.SecurityGroup",
     VPC = "app.VPC",
-    Subnet = "app.subnet"
+    Subnet = "app.Subnet"
 }

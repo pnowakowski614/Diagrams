@@ -1,12 +1,12 @@
-export const DefaultCanvasNodeAttrs = {
-    NodeFontSize: 10,
-    NodeTextAnchor: "middle",
-    NodeRefX: "50%",
-    NodeRefY: "105%"
+export const defaultShapeAttrs = {
+    fontSize: 10,
+    textAnchor: "middle",
+    refX: "50%",
+    refY: "105%"
 }
 
-export const DefaultStencilLayoutOptions = {
-    StencilMarginX: -13,
-    StencilColumns: 1,
-    StencilRowHeight: 65
+export const defaultStencilLayoutOptions = {
+    marginX: -13,
+    columns: 1,
+    rowHeight: 65
 }
