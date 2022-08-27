@@ -29,7 +29,7 @@ class StencilService {
             label: "Elements",
             layout: defaultStencilLayoutOptions,
             groupsToggleButtons: true,
-            dragStartClone: this.cloneNode
+            dragStartClone: StencilService.cloneNode
         });
 
         this.stencilElement.appendChild(this.stencil.el);
@@ -37,7 +37,7 @@ class StencilService {
         this.stencil.load(this.setElements());
     }
 
-    private setElements() {
+    private setElements(): { [p: string]: Node[] } {
         let groupList: { [index: string]: Node[] } = {};
 
         Object.keys(groupConfig).forEach((key) => {
@@ -64,7 +64,7 @@ class StencilService {
         return groupList;
     }
 
-    private cloneNode(el: dia.Cell) {
+    private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
         let clone = el.clone();
         switch (clone.attributes.localType) {
             case LocalShapesTypes.Node:
