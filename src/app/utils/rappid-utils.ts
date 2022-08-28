@@ -30,7 +30,7 @@ export const getMinDimensions = (elementView: dia.ElementView) => {
     }
 }
 
-export const getResizeDirections = (elementView: dia.ElementView) => {
+export const getResizeDirections = (elementView: dia.ElementView): ui.FreeTransform.Directions[] | undefined => {
     let directions: ui.FreeTransform.Directions[];
     if (elementView.model.attributes.type === GlobalShapesTypes.AutoScaling) {
         directions = ['left', 'right'];
