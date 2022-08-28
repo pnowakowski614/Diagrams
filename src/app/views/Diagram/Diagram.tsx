@@ -21,9 +21,9 @@ const Diagram = () => {
 
     return (
         <div className={styles.diagramContainer}>
-            <DiagramToolbar/>
+            <div className={styles.stencilHolder} ref={stencil}/>
             <div className={styles.wrapper}>
-                <div className={styles.stencilHolder} ref={stencil}/>
+                <DiagramToolbar/>
                 <div className={styles.canvas} ref={canvas}/>
             </div>
             {inspectorOpened && <div className={styles.inspector}>inspector</div>}
