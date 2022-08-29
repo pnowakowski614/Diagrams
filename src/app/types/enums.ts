@@ -13,7 +13,7 @@ export enum StencilGroups {
 }
 
 export enum LocalShapesTypes {
-    Node = "Node",
+    NodeShape = "NodeShape",
     AutoScaling = "AutoScaling",
     EcsCluster = "EcsCluster",
     EcsService = "EcsService",
@@ -23,7 +23,7 @@ export enum LocalShapesTypes {
 }
 
 export enum GlobalShapesTypes {
-    Node = "app.Node",
+    NodeShape = "app.NodeShape",
     AutoScaling = "app.AutoScaling",
     EcsCluster = "app.EcsCluster",
     EcsService = "app.EcsService",

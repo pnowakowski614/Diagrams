@@ -16,7 +16,7 @@ export const defaultStencilLayoutOptions = {
 
 export const getMinDimensions = (elementView: dia.ElementView) => {
     switch (elementView.model.attributes.type) {
-        case GlobalShapesTypes.Node:
+        case GlobalShapesTypes.NodeShape:
             return 30;
         case GlobalShapesTypes.VPC:
         case GlobalShapesTypes.SecurityGroup:

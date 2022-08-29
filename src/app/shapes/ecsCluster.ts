@@ -39,10 +39,3 @@ export class ECSCluster extends shapes.standard.Rectangle {
             selector: 'label'
         }]
 }
-
-Object.assign(shapes, {
-    app: {
-        ...(shapes as any).app,
-        ECSCluster
-    }
-});

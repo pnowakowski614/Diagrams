@@ -66,10 +66,3 @@ export class VPC extends shapes.standard.Rectangle {
                 }]
     }]
 }
-
-Object.assign(shapes, {
-    app: {
-        ...(shapes as any).app,
-        VPC
-    }
-});

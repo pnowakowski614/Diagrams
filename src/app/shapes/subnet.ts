@@ -66,10 +66,3 @@ export class Subnet extends shapes.standard.Rectangle {
                 }]
     }]
 }
-
-Object.assign(shapes, {
-    app: {
-        ...(shapes as any).app,
-        Subnet
-    }
-});

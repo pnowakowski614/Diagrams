@@ -2,15 +2,9 @@ import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
 import { shapesConfig } from "app/rappid-configs/shapesConfig";
 import { groupConfig } from "app/rappid-configs/groupConfig";
-import { AutoScaling } from "app/shapes/autoScaling";
-import { ECSCluster } from "app/shapes/ecsCluster";
-import { ECSService } from "app/shapes/ecsService";
-import { Node } from "app/shapes/node";
-import { SecurityGroup } from "app/shapes/securityGroup";
-import { VPC } from "app/shapes/vpc";
+import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "app/shapes";
 import { LocalShapesTypes } from "../types/enums";
 import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
-import { Subnet } from "../shapes/subnet";
 
 class StencilService {
     paper: dia.Paper;
@@ -37,15 +31,15 @@ class StencilService {
         this.stencil.load(this.setElements());
     }
 
-    private setElements(): { [p: string]: Node[] } {
-        let groupList: { [index: string]: Node[] } = {};
+    private setElements(): { [p: string]: NodeShape[] } {
+        let groupList: { [index: string]: NodeShape[] } = {};
 
         Object.keys(groupConfig).forEach((key) => {
             groupList[key] = [];
         })
 
         Object.values(shapesConfig).forEach((value) => {
-            let newNode = new Node()
+            let newNode = new NodeShape()
             newNode.attr({
                 root: {
                     dataTooltip: value.label
@@ -67,33 +61,25 @@ class StencilService {
     private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
         let clone = el.clone();
         switch (clone.attributes.localType) {
-            case LocalShapesTypes.Node:
-                clone.attr({
+            case LocalShapesTypes.NodeShape:
+                return clone.attr({
                     label: defaultShapeAttrs,
                 })
-                break;
             case LocalShapesTypes.AutoScaling:
-                clone = new AutoScaling();
-                break;
+                return clone = new AutoScaling();
             case LocalShapesTypes.EcsCluster:
-                clone = new ECSCluster();
-                break;
+                return clone = new ECSCluster();
             case LocalShapesTypes.EcsService:
-                clone = new ECSService();
-                break;
+                return clone = new ECSService();
             case LocalShapesTypes.SecurityGroup:
-                clone = new SecurityGroup();
-                break;
+                return clone = new SecurityGroup();
             case LocalShapesTypes.VPC:
-                clone = new VPC();
-                break;
+                return clone = new VPC();
             case LocalShapesTypes.Subnet:
-                clone = new Subnet();
-                break;
+                return clone = new Subnet();
             default:
-                break;
+                return clone;
         }
-        return clone;
     }
 }
 

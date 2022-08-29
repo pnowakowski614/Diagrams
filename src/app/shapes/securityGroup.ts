@@ -66,10 +66,3 @@ export class SecurityGroup extends shapes.standard.Rectangle {
                 }]
     }]
 }
-
-Object.assign(shapes, {
-    app: {
-        ...(shapes as any).app,
-        SecurityGroup
-    }
-});
