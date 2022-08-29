@@ -56,6 +56,7 @@ class RappidService {
 
         RappidService.initTooltip();
         this.initFreeTransform(paper);
+        this.initHalo(paper);
     }
 
     private static initTooltip(): ui.Tooltip {
@@ -77,7 +78,6 @@ class RappidService {
 
     private initFreeTransform(paper: dia.Paper): void {
         paper.on('element:pointerclick', (elementView) => {
-            console.log(elementView);
             const freeTransform = new ui.FreeTransform({
                 cellView: elementView,
                 allowRotation: false,
@@ -90,6 +90,18 @@ class RappidService {
         });
     }
 
+    private initHalo(paper: dia.Paper): void {
+        paper.on('cell:pointerclick', (cellView: dia.CellView) => {
+                const halo = new ui.Halo({
+                    cellView,
+                    type: 'toolbar',
+                    useModelGeometry: true
+                })
+                halo.render();
+                halo.removeHandle('resize');
+            }
+        );
+    }
 }
 
 export default RappidService;
