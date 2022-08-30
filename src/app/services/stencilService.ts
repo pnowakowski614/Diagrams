@@ -60,11 +60,7 @@ class StencilService {
 
     private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
         let clone = el.clone();
-        switch (clone.attributes.localType) {
-            case LocalShapesTypes.NodeShape:
-                return clone.attr({
-                    label: defaultShapeAttrs,
-                })
+        switch (clone.prop("localType")) {
             case LocalShapesTypes.AutoScaling:
                 return clone = new AutoScaling();
             case LocalShapesTypes.EcsCluster:
@@ -78,7 +74,9 @@ class StencilService {
             case LocalShapesTypes.Subnet:
                 return clone = new Subnet();
             default:
-                return clone;
+                return clone.attr({
+                    label: defaultShapeAttrs,
+                });
         }
     }
 }

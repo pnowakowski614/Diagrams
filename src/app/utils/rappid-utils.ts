@@ -1,5 +1,5 @@
 import { dia, ui } from "@clientio/rappid";
-import { GlobalShapesTypes } from "../types/enums";
+import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
 export const defaultShapeAttrs = {
     fontSize: 10,
@@ -15,7 +15,7 @@ export const defaultStencilLayoutOptions = {
 }
 
 export const getMinDimensions = (elementView: dia.ElementView) => {
-    switch (elementView.model.attributes.type) {
+    switch (elementView.model.prop("type")) {
         case GlobalShapesTypes.NodeShape:
             return 30;
         case GlobalShapesTypes.VPC:
@@ -31,25 +31,26 @@ export const getMinDimensions = (elementView: dia.ElementView) => {
 }
 
 export const getResizeDirections = (elementView: dia.ElementView): ui.FreeTransform.Directions[] | undefined => {
+    console.log(elementView.model.prop("type"));
     let directions: ui.FreeTransform.Directions[];
-    if (elementView.model.attributes.type === GlobalShapesTypes.AutoScaling) {
+    if (elementView.model.prop("type") === GlobalShapesTypes.AutoScaling) {
         directions = ['left', 'right'];
         return directions;
     }
 }
 
 export const getPreserveAspectRatio = (elementView: dia.ElementView): boolean => {
-    return elementView.model.attributes.type !== GlobalShapesTypes.AutoScaling;
+    return elementView.model.prop("type") !== GlobalShapesTypes.AutoScaling;
 }
 
 export const validateEmbedding = (childView: dia.ElementView, parentView: dia.ElementView): boolean => {
-    let childsName = childView.model.attributes.attrs?.label?.text;
-    let parentsName = parentView.model.attributes.attrs?.label?.text;
+    let childsName = childView.model.prop("localType");
+    let parentsName = parentView.model.prop("localType");
 
     switch (true) {
-        case (childsName === "ECS Service" && parentsName === "ECS Cluster"):
-        case (childsName === "Amazon EC2" && parentsName === "Auto Scaling"):
-        case (childsName === "ECS Task" && parentsName === "ECS Service"):
+        case (childsName === LocalShapesTypes.EcsService && parentsName === LocalShapesTypes.EcsCluster):
+        case (childsName === LocalShapesTypes.EC2 && parentsName === LocalShapesTypes.AutoScaling):
+        case (childsName === LocalShapesTypes.ECSTask && parentsName === LocalShapesTypes.EcsService):
             return true;
         default:
             return false;

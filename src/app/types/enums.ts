@@ -19,7 +19,9 @@ export enum LocalShapesTypes {
     EcsService = "EcsService",
     SecurityGroup = "SecurityGroup",
     VPC = "VPC",
-    Subnet = "Subnet"
+    Subnet = "Subnet",
+    ECSTask = "ECSTask",
+    EC2 = "EC2",
 }
 
 export enum GlobalShapesTypes {

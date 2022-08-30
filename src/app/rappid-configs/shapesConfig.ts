@@ -47,7 +47,7 @@ export const shapesConfig = {
         group: StencilGroups.Compute,
         label: "Amazon EC2",
         link: "icons/Arch_Compute/Arch_Amazon-EC2_64.svg",
-        localType: LocalShapesTypes.NodeShape
+        localType: LocalShapesTypes.EC2
     },
     autoScaling: {
         group: StencilGroups.Compute,
@@ -71,7 +71,7 @@ export const shapesConfig = {
         group: StencilGroups.Containers,
         label: "ECS Task",
         link: "icons/Arch_Containers/Arch_ECS-Task_64.png",
-        localType: LocalShapesTypes.NodeShape
+        localType: LocalShapesTypes.ECSTask
     },
     aurora: {
         group: StencilGroups.Database,

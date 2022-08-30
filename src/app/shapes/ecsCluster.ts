@@ -1,11 +1,12 @@
 import { shapes } from '@clientio/rappid';
-import { GlobalShapesTypes } from "../types/enums";
+import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
 export class ECSCluster extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
             type: GlobalShapesTypes.EcsCluster,
+            localType: LocalShapesTypes.EcsCluster,
             size: {
                 width: 200,
                 height: 200
