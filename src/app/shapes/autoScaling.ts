@@ -1,5 +1,6 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
+import { portsConfig } from "../rappid-configs/portsConfig";
 
 export class AutoScaling extends shapes.standard.Rectangle {
     defaults() {
@@ -35,7 +36,8 @@ export class AutoScaling extends shapes.standard.Rectangle {
                     fill: "orange",
                     refX: "100%"
                 }
-            }
+            },
+            ports: portsConfig
         }
     }
 

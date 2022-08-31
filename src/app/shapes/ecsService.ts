@@ -1,5 +1,6 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
+import { portsConfig } from "../rappid-configs/portsConfig";
 
 export class ECSService extends shapes.standard.Rectangle {
     defaults() {
@@ -26,7 +27,8 @@ export class ECSService extends shapes.standard.Rectangle {
                     fontSize: 10,
                     fontWeight: "bold"
                 },
-            }
+            },
+            ports: portsConfig
         }
     }
 

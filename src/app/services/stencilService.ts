@@ -5,6 +5,7 @@ import { groupConfig } from "app/rappid-configs/groupConfig";
 import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "app/shapes";
 import { LocalShapesTypes } from "../types/enums";
 import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
+import { portsConfig } from "../rappid-configs/portsConfig";
 
 class StencilService {
     paper: dia.Paper;
@@ -74,6 +75,7 @@ class StencilService {
             case LocalShapesTypes.Subnet:
                 return clone = new Subnet();
             default:
+                clone.prop('ports', portsConfig);
                 return clone.attr({
                     label: defaultShapeAttrs,
                 });
