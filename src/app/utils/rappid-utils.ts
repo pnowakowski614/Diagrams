@@ -1,4 +1,5 @@
-import { dia, ui } from "@clientio/rappid";
+import * as joint from "@clientio/rappid";
+import { dia, shapes, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
 export const defaultShapeAttrs = {
@@ -67,3 +68,38 @@ export const getHaloMagnet = (elementView: dia.ElementView, end: 'source' | 'tar
     if (end === 'target') return elementView.el.querySelector('[magnet="passive"]') || elementView.el;
     return elementView.el.querySelector('[magnet="true"]') || elementView.el;
 }
+
+export const addLinkTools = (linkView: dia.LinkView) => {
+    const linkTools = joint.linkTools;
+    const toolsView = new dia.ToolsView({
+        name: 'link-pointerdown',
+        tools: [
+            new linkTools.Vertices(),
+            new linkTools.SourceAnchor(),
+            new linkTools.TargetAnchor(),
+            new linkTools.SourceArrowhead(),
+            new linkTools.TargetArrowhead(),
+            new linkTools.Segments(),
+            new linkTools.Boundary({padding: 15, useModelGeometry: true}),
+        ]
+    });
+
+    linkView.addTools(toolsView);
+}
+
+export const getCustomLink = new shapes.standard.Link({
+    attrs: {
+        line: {
+            stroke: 'brown',
+            targetMarker: {
+                d: 'm 0 -1 v 7 l -7 -7 l 7 -7 z'
+            },
+        }
+    },
+    router: {
+        name: 'manhattan'
+    },
+    connector: {
+        name: 'jumpover',
+    }
+})

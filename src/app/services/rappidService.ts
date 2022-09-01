@@ -2,6 +2,8 @@ import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React from "react";
 import {
+    addLinkTools,
+    getCustomLink,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -41,7 +43,8 @@ class RappidService {
             validateEmbedding: validateEmbedding,
             snapLinks: {radius: 40},
             validateConnection: validateConnection,
-            linkPinning: false
+            linkPinning: false,
+            defaultLink: getCustomLink
         });
 
         const scroller = new ui.PaperScroller({
@@ -79,6 +82,10 @@ class RappidService {
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
         });
+
+        paper.on('link:pointerclick', (linkView: dia.LinkView) => {
+            addLinkTools(linkView)
+        })
     }
 
     private initFreeTransform(paper: dia.Paper): void {
