@@ -4,7 +4,7 @@ export const portIn = {
     },
     attrs: {
         portBody: {
-            magnet: true,
+            magnet: "passive",
             r: 4,
             fill: 'darkBlue'
         }

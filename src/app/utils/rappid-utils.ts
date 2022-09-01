@@ -31,7 +31,6 @@ export const getMinDimensions = (elementView: dia.ElementView) => {
 }
 
 export const getResizeDirections = (elementView: dia.ElementView): ui.FreeTransform.Directions[] | undefined => {
-    console.log(elementView.model.prop("type"));
     let directions: ui.FreeTransform.Directions[];
     if (elementView.model.prop("type") === GlobalShapesTypes.AutoScaling) {
         directions = ['left', 'right'];
@@ -55,4 +54,16 @@ export const validateEmbedding = (childView: dia.ElementView, parentView: dia.El
         default:
             return false;
     }
+}
+
+export const validateConnection = (cellViewS: dia.CellView, magnetS: SVGElement, cellViewT: dia.CellView,
+                                   magnetT: SVGElement): boolean => {
+    if (cellViewT.model.isLink() || cellViewS.model.isLink()) return false;
+    if (cellViewS === cellViewT) return false;
+    return magnetT && magnetT.getAttribute('port-group') === 'in';
+}
+
+export const getHaloMagnet = (elementView: dia.ElementView, end: 'source' | 'target'): SVGElement => {
+    if (end === 'target') return elementView.el.querySelector('[magnet="passive"]') || elementView.el;
+    return elementView.el.querySelector('[magnet="true"]') || elementView.el;
 }

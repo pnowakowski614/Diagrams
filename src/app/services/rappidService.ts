@@ -2,9 +2,11 @@ import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React from "react";
 import {
+    getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
     getResizeDirections,
+    validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
 
@@ -36,7 +38,10 @@ class RappidService {
             drawGrid: true,
             gridSize: 10,
             embeddingMode: true,
-            validateEmbedding: validateEmbedding
+            validateEmbedding: validateEmbedding,
+            snapLinks: {radius: 40},
+            validateConnection: validateConnection,
+            linkPinning: false
         });
 
         const scroller = new ui.PaperScroller({
@@ -95,7 +100,8 @@ class RappidService {
                 const halo = new ui.Halo({
                     cellView,
                     type: 'toolbar',
-                    useModelGeometry: true
+                    useModelGeometry: true,
+                    magnet: getHaloMagnet
                 })
                 halo.render();
                 halo.removeHandle('resize');
