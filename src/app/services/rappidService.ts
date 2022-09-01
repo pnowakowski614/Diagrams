@@ -86,6 +86,10 @@ class RappidService {
         paper.on('link:pointerclick', (linkView: dia.LinkView) => {
             addLinkTools(linkView)
         })
+
+        paper.on('blank:pointerdown', () => {
+            paper.removeTools();
+        })
     }
 
     private initFreeTransform(paper: dia.Paper): void {
