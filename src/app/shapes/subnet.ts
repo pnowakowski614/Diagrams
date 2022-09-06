@@ -1,6 +1,6 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { portsConfig } from "../rappid-configs/portsConfig";
+import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
 
 export class Subnet extends shapes.standard.Rectangle {
     defaults() {
@@ -9,7 +9,7 @@ export class Subnet extends shapes.standard.Rectangle {
             type: GlobalShapesTypes.Subnet,
             localType: LocalShapesTypes.Subnet,
             size: {
-                width: 275,
+                width: 250,
                 height: 250
             },
             attrs: {
@@ -44,7 +44,18 @@ export class Subnet extends shapes.standard.Rectangle {
                     refY: 5,
                 }
             },
-            ports: portsConfig
+            ports: {
+                ...portsConfig,
+                groups: {
+                    'in': {
+                        ...portIn,
+                        position: {
+                            name: 'top'
+                        }
+                    },
+                    'out': portOut
+                }
+            }
         }
     }
 

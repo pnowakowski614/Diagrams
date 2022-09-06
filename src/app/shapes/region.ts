@@ -1,6 +1,6 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { portsConfig } from "../rappid-configs/portsConfig";
+import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
 
 export class Region extends shapes.standard.Rectangle {
     defaults() {
@@ -9,8 +9,8 @@ export class Region extends shapes.standard.Rectangle {
             type: GlobalShapesTypes.Region,
             localType: LocalShapesTypes.Region,
             size: {
-                width: 275,
-                height: 250
+                width: 375,
+                height: 375
             },
             attrs: {
                 body: {
@@ -44,7 +44,18 @@ export class Region extends shapes.standard.Rectangle {
                     refY: 5,
                 }
             },
-            ports: portsConfig
+            ports: {
+                ...portsConfig,
+                groups: {
+                    'in': {
+                        ...portIn,
+                        position: {
+                            name: 'top'
+                        }
+                    },
+                    'out': portOut
+                }
+            }
         }
     }
 

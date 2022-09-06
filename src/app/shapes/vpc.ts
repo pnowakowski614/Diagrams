@@ -1,6 +1,6 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { portsConfig } from "../rappid-configs/portsConfig";
+import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
 
 export class VPC extends shapes.standard.Rectangle {
     defaults() {
@@ -9,8 +9,8 @@ export class VPC extends shapes.standard.Rectangle {
             type: GlobalShapesTypes.VPC,
             localType: LocalShapesTypes.VPC,
             size: {
-                width: 275,
-                height: 250,
+                width: 325,
+                height: 325,
             },
             attrs: {
                 body: {
@@ -44,7 +44,18 @@ export class VPC extends shapes.standard.Rectangle {
                     refY: 5,
                 }
             },
-            ports: portsConfig
+            ports: {
+                ...portsConfig,
+                groups: {
+                    'in': {
+                        ...portIn,
+                        position: {
+                            name: 'top'
+                        }
+                    },
+                    'out': portOut
+                }
+            }
         }
     }
 

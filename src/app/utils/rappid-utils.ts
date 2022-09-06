@@ -19,10 +19,14 @@ export const getMinDimensions = (elementView: dia.ElementView) => {
     switch (elementView.model.prop("type")) {
         case GlobalShapesTypes.NodeShape:
             return 30;
+        case GlobalShapesTypes.Region:
+            return 375;
         case GlobalShapesTypes.VPC:
+            return 325;
         case GlobalShapesTypes.SecurityGroup:
+            return 200;
         case GlobalShapesTypes.Subnet:
-            return 150;
+            return 250;
         case GlobalShapesTypes.EcsService:
         case GlobalShapesTypes.EcsCluster:
             return 100;
@@ -44,17 +48,12 @@ export const getPreserveAspectRatio = (elementView: dia.ElementView): boolean =>
 }
 
 export const validateEmbedding = (childView: dia.ElementView, parentView: dia.ElementView): boolean => {
-    let childsName = childView.model.prop("localType");
-    let parentsName = parentView.model.prop("localType");
+    const childsName: LocalShapesTypes = childView.model.prop("localType");
+    const parentsName: LocalShapesTypes = parentView.model.prop("localType");
 
-    switch (true) {
-        case (childsName === LocalShapesTypes.EcsService && parentsName === LocalShapesTypes.EcsCluster):
-        case (childsName === LocalShapesTypes.EC2 && parentsName === LocalShapesTypes.AutoScaling):
-        case (childsName === LocalShapesTypes.ECSTask && parentsName === LocalShapesTypes.EcsService):
-            return true;
-        default:
-            return false;
-    }
+    return validEmbedCombinations.some((combination) =>
+        combination.parentsName === parentsName && combination.validChildren.includes(childsName)
+    )
 }
 
 export const validateConnection = (cellViewS: dia.CellView, magnetS: SVGElement, cellViewT: dia.CellView,
@@ -101,3 +100,65 @@ export const getCustomLink = new shapes.standard.Link({
         name: 'jumpover',
     }
 })
+
+const validEmbedCombinations = [
+    {
+        parentsName: LocalShapesTypes.AutoScaling,
+        validChildren: [LocalShapesTypes.EC2]
+    },
+    {
+        parentsName: LocalShapesTypes.EcsService,
+        validChildren: [LocalShapesTypes.ECSTask]
+    },
+    {
+        parentsName: LocalShapesTypes.EcsCluster,
+        validChildren: [LocalShapesTypes.EcsService]
+    },
+    {
+        parentsName: LocalShapesTypes.Region,
+        validChildren: [
+            LocalShapesTypes.NodeShape,
+            LocalShapesTypes.ECSTask,
+            LocalShapesTypes.EC2,
+            LocalShapesTypes.EcsService,
+            LocalShapesTypes.EcsCluster,
+            LocalShapesTypes.VPC,
+            LocalShapesTypes.Subnet,
+            LocalShapesTypes.SecurityGroup,
+        ]
+    },
+    {
+        parentsName: LocalShapesTypes.VPC,
+        validChildren: [
+            LocalShapesTypes.NodeShape,
+            LocalShapesTypes.ECSTask,
+            LocalShapesTypes.EC2,
+            LocalShapesTypes.EcsService,
+            LocalShapesTypes.EcsCluster,
+            LocalShapesTypes.Subnet,
+            LocalShapesTypes.SecurityGroup,
+        ]
+    },
+    {
+        parentsName: LocalShapesTypes.Subnet,
+        validChildren: [
+            LocalShapesTypes.NodeShape,
+            LocalShapesTypes.ECSTask,
+            LocalShapesTypes.EC2,
+            LocalShapesTypes.EcsService,
+            LocalShapesTypes.EcsCluster,
+            LocalShapesTypes.SecurityGroup,
+        ]
+    },
+    {
+        parentsName: LocalShapesTypes.SecurityGroup,
+        validChildren: [
+            LocalShapesTypes.NodeShape,
+            LocalShapesTypes.ECSTask,
+            LocalShapesTypes.EC2,
+            LocalShapesTypes.EcsService,
+            LocalShapesTypes.EcsCluster,
+        ]
+
+    }
+]
