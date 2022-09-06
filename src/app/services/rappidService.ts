@@ -15,6 +15,9 @@ import {
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
+    paper!: dia.Paper;
+    scroller!: ui.PaperScroller;
+    graph!: dia.Graph;
     setInspectorOpened!: React.Dispatch<React.SetStateAction<boolean>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
@@ -27,9 +30,18 @@ class RappidService {
     }
 
     public init(): void {
-        const graph = new dia.Graph({}, {cellNamespace: shapes});
+        this.initCanvas();
+        this.initStencil(this.paper);
+        this.initFreeTransform(this.paper);
+        this.initHalo(this.paper);
+        this.initPaperEvents(this.paper, this.scroller);
+        RappidService.initTooltip();
+    }
 
-        const paper = new dia.Paper({
+    private initCanvas() {
+        const graph = this.graph = new dia.Graph({}, {cellNamespace: shapes});
+
+        const paper = this.paper = new dia.Paper({
             model: graph,
             width: 3000,
             height: 3000,
@@ -47,7 +59,7 @@ class RappidService {
             defaultLink: getCustomLink
         });
 
-        const scroller = new ui.PaperScroller({
+        const scroller = this.scroller = new ui.PaperScroller({
             paper: paper,
             cursor: 'grab',
             scrollWhileDragging: true,
@@ -56,15 +68,11 @@ class RappidService {
 
         this.paperElement.appendChild(scroller.el);
         scroller.render().center();
+    }
 
-        this.initPaperEvents(paper, scroller);
-
+    private initStencil(paper: dia.Paper): void {
         const stencilInst = new StencilService(paper, this.stencilElement);
         stencilInst.initStencil();
-
-        RappidService.initTooltip();
-        this.initFreeTransform(paper);
-        this.initHalo(paper);
     }
 
     private static initTooltip(): ui.Tooltip {
@@ -77,19 +85,18 @@ class RappidService {
     }
 
     private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller): void {
-        paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
-
-        paper.on('cell:pointerclick', () => {
-            this.setInspectorOpened(true);
+        paper.on({
+            'blank:pointerdown': (evt: dia.Event) => {
+                scroller.startPanning(evt);
+                paper.removeTools();
+            },
+            'cell:pointerclick': () => {
+                this.setInspectorOpened(true);
+            },
+            'link:pointerclick': (linkView: dia.LinkView) => {
+                addLinkTools(linkView)
+            }
         });
-
-        paper.on('link:pointerclick', (linkView: dia.LinkView) => {
-            addLinkTools(linkView)
-        })
-
-        paper.on('blank:pointerdown', () => {
-            paper.removeTools();
-        })
     }
 
     private initFreeTransform(paper: dia.Paper): void {
