@@ -61,22 +61,22 @@ class StencilService {
     }
 
     private static cloneNode(el: dia.Cell): dia.Cell {
-        let clone = el.clone();
+        const clone = el.clone();
         switch (clone.prop("localType")) {
             case LocalShapesTypes.AutoScaling:
-                return clone = new AutoScaling();
+                return new AutoScaling();
             case LocalShapesTypes.EcsCluster:
-                return clone = new ECSCluster();
+                return new ECSCluster();
             case LocalShapesTypes.EcsService:
-                return clone = new ECSService();
+                return new ECSService();
             case LocalShapesTypes.SecurityGroup:
-                return clone = new SecurityGroup();
+                return new SecurityGroup();
             case LocalShapesTypes.VPC:
-                return clone = new VPC();
+                return new VPC();
             case LocalShapesTypes.Subnet:
-                return clone = new Subnet();
+                return new Subnet();
             case LocalShapesTypes.Region:
-                return clone = new Region();
+                return new Region();
             default:
                 clone.prop('ports', portsConfig);
                 return clone.attr({

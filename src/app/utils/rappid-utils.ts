@@ -35,12 +35,11 @@ export const getMinDimensions = (elementView: dia.ElementView) => {
     }
 }
 
-export const getResizeDirections = (elementView: dia.ElementView): ui.FreeTransform.Directions[] | undefined => {
-    let directions: ui.FreeTransform.Directions[];
+export const getResizeDirections = (elementView: dia.ElementView): ui.FreeTransform.Directions[] => {
     if (elementView.model.prop("type") === GlobalShapesTypes.AutoScaling) {
-        directions = ['left', 'right'];
-        return directions;
+        return ['left', 'right'];
     }
+    return ['top', 'bottom', 'left', 'right', 'top-left', 'top-right', 'bottom-left', 'bottom-right'];
 }
 
 export const getPreserveAspectRatio = (elementView: dia.ElementView): boolean => {
@@ -68,7 +67,7 @@ export const getHaloMagnet = (elementView: dia.ElementView, end: 'source' | 'tar
     return elementView.el.querySelector('[magnet="true"]') || elementView.el;
 }
 
-export const addLinkTools = (linkView: dia.LinkView) => {
+export const addLinkTools = (linkView: dia.LinkView): void => {
     const linkTools = joint.linkTools;
     const toolsView = new dia.ToolsView({
         name: 'link-pointerdown',
@@ -101,7 +100,7 @@ export const getCustomLink = new shapes.standard.Link({
     }
 })
 
-const validEmbedCombinations = [
+const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: LocalShapesTypes[] }[] = [
     {
         parentsName: LocalShapesTypes.AutoScaling,
         validChildren: [LocalShapesTypes.EC2]
