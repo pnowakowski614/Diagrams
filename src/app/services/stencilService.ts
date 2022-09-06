@@ -6,6 +6,7 @@ import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, 
 import { LocalShapesTypes } from "../types/enums";
 import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
 import { portsConfig } from "../rappid-configs/portsConfig";
+import { Region } from "../shapes/region";
 
 class StencilService {
     paper: dia.Paper;
@@ -33,14 +34,14 @@ class StencilService {
     }
 
     private setElements(): { [p: string]: NodeShape[] } {
-        let groupList: { [index: string]: NodeShape[] } = {};
+        const groupList: { [index: string]: NodeShape[] } = {};
 
         Object.keys(groupConfig).forEach((key) => {
             groupList[key] = [];
         })
 
         Object.values(shapesConfig).forEach((value) => {
-            let newNode = new NodeShape()
+            const newNode = new NodeShape()
             newNode.attr({
                 root: {
                     dataTooltip: value.label
@@ -59,7 +60,7 @@ class StencilService {
         return groupList;
     }
 
-    private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
+    private static cloneNode(el: dia.Cell): dia.Cell {
         let clone = el.clone();
         switch (clone.prop("localType")) {
             case LocalShapesTypes.AutoScaling:
@@ -74,6 +75,8 @@ class StencilService {
                 return clone = new VPC();
             case LocalShapesTypes.Subnet:
                 return clone = new Subnet();
+            case LocalShapesTypes.Region:
+                return clone = new Region();
             default:
                 clone.prop('ports', portsConfig);
                 return clone.attr({

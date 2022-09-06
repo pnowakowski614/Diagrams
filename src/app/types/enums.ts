@@ -22,6 +22,7 @@ export enum LocalShapesTypes {
     Subnet = "Subnet",
     ECSTask = "ECSTask",
     EC2 = "EC2",
+    Region = "Region"
 }
 
 export enum GlobalShapesTypes {
@@ -31,5 +32,6 @@ export enum GlobalShapesTypes {
     EcsService = "app.EcsService",
     SecurityGroup = "app.SecurityGroup",
     VPC = "app.VPC",
-    Subnet = "app.Subnet"
+    Subnet = "app.Subnet",
+    Region = "app.Region"
 }

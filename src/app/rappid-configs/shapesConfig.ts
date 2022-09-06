@@ -139,6 +139,12 @@ export const shapesConfig = {
         link: "icons/other/subnetIcon.png",
         localType: LocalShapesTypes.Subnet
     },
+    region: {
+        group: StencilGroups.Groups,
+        label: "Region",
+        link: "icons/other/regionIcon.png",
+        localType: LocalShapesTypes.Region
+    },
     waf: {
         group: StencilGroups.Security,
         label: "WAF",

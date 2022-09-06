@@ -75,8 +75,6 @@ export const addLinkTools = (linkView: dia.LinkView) => {
         name: 'link-pointerdown',
         tools: [
             new linkTools.Vertices(),
-            new linkTools.SourceAnchor(),
-            new linkTools.TargetAnchor(),
             new linkTools.SourceArrowhead(),
             new linkTools.TargetArrowhead(),
             new linkTools.Segments(),
