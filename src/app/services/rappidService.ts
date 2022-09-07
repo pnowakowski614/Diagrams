@@ -3,7 +3,6 @@ import StencilService from "./stencilService";
 import React from "react";
 import {
     addLinkTools,
-    getCustomLink,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -11,6 +10,7 @@ import {
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
+import { CustomLink } from "../shapes";
 
 class RappidService {
     paperElement: HTMLElement;
@@ -32,8 +32,6 @@ class RappidService {
     public init(): void {
         this.initCanvas();
         this.initStencil(this.paper);
-        this.initFreeTransform(this.paper);
-        this.initHalo(this.paper);
         this.initPaperEvents(this.paper, this.scroller);
         RappidService.initTooltip();
     }
@@ -56,7 +54,7 @@ class RappidService {
             snapLinks: {radius: 40},
             validateConnection: validateConnection,
             linkPinning: false,
-            defaultLink: getCustomLink
+            defaultLink: new CustomLink()
         });
 
         const scroller = this.scroller = new ui.PaperScroller({
@@ -89,9 +87,14 @@ class RappidService {
             'blank:pointerdown': (evt: dia.Event) => {
                 scroller.startPanning(evt);
                 paper.removeTools();
+                this.setInspectorOpened(false);
             },
-            'cell:pointerclick': () => {
+            'cell:pointerclick': (cellView: dia.CellView) => {
                 this.setInspectorOpened(true);
+                RappidService.initHalo(cellView);
+            },
+            'element:pointerclick': (elementView: dia.ElementView) => {
+                RappidService.initFreeTransform(elementView)
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 addLinkTools(linkView)
@@ -99,32 +102,28 @@ class RappidService {
         });
     }
 
-    private initFreeTransform(paper: dia.Paper): void {
-        paper.on('element:pointerclick', (elementView) => {
-            const freeTransform = new ui.FreeTransform({
-                cellView: elementView,
-                allowRotation: false,
-                preserveAspectRatio: getPreserveAspectRatio(elementView),
-                minWidth: getMinDimensions(elementView),
-                minHeight: getMinDimensions(elementView),
-                resizeDirections: getResizeDirections(elementView)
-            });
-            freeTransform.render();
+    private static initFreeTransform(elementView: dia.ElementView): void {
+        const freeTransform = new ui.FreeTransform({
+            cellView: elementView,
+            allowRotation: false,
+            preserveAspectRatio: getPreserveAspectRatio(elementView),
+            minWidth: getMinDimensions(elementView),
+            minHeight: getMinDimensions(elementView),
+            resizeDirections: getResizeDirections(elementView)
         });
+        freeTransform.render();
     }
 
-    private initHalo(paper: dia.Paper): void {
-        paper.on('cell:pointerclick', (cellView: dia.CellView) => {
-                const halo = new ui.Halo({
-                    cellView,
-                    type: 'toolbar',
-                    useModelGeometry: true,
-                    magnet: getHaloMagnet
-                })
-                halo.render();
-                halo.removeHandle('resize');
-            }
-        );
+
+    private static initHalo(cellView: dia.CellView): void {
+        const halo = new ui.Halo({
+            cellView,
+            type: 'toolbar',
+            useModelGeometry: true,
+            magnet: getHaloMagnet
+        })
+        halo.render();
+        halo.removeHandle('resize');
     }
 }
 

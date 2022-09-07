@@ -1,5 +1,5 @@
 import * as joint from "@clientio/rappid";
-import { dia, shapes, ui } from "@clientio/rappid";
+import { dia, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
 export const defaultShapeAttrs = {
@@ -82,23 +82,6 @@ export const addLinkTools = (linkView: dia.LinkView): void => {
 
     linkView.addTools(toolsView);
 }
-
-export const getCustomLink = new shapes.standard.Link({
-    attrs: {
-        line: {
-            stroke: 'brown',
-            targetMarker: {
-                d: 'm 0 -1 v 7 l -7 -7 l 7 -7 z'
-            },
-        }
-    },
-    router: {
-        name: 'manhattan'
-    },
-    connector: {
-        name: 'jumpover',
-    }
-})
 
 const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: LocalShapesTypes[] }[] = [
     {

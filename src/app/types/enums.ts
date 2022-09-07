@@ -33,5 +33,6 @@ export enum GlobalShapesTypes {
     SecurityGroup = "app.SecurityGroup",
     VPC = "app.VPC",
     Subnet = "app.Subnet",
-    Region = "app.Region"
+    Region = "app.Region",
+    CustomLink = "app.CustomLink"
 }
