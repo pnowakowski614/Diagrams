@@ -1,21 +1,25 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
 import "@clientio/rappid/rappid.css";
-import RappidService from 'app/services/rappidService';
+import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import DiagramToolbar from "./DiagramToolbar/DiagramToolbar";
+import Inspector from "./Inspector/Inspector";
 
 const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
 
-    const [inspectorOpened, setInspectorOpened] = useState<boolean>(false);
+    const [inspectorState, setInspectorState] = useState<InspectorState>({
+        isOpened: false,
+        elementView: null
+    });
 
     useEffectOnce(() => {
         if (canvas.current && stencil.current) {
             const rappidInst = new RappidService(canvas.current!, stencil.current!);
             rappidInst.init();
-            rappidInst.setInspectorFunction(setInspectorOpened);
+            rappidInst.setInspectorFunction(setInspectorState);
         }
     });
 
@@ -26,7 +30,8 @@ const Diagram = () => {
                 <DiagramToolbar/>
                 <div className={styles.canvas} ref={canvas}/>
             </div>
-            {inspectorOpened && <div className={styles.inspector}>inspector</div>}
+            {inspectorState.isOpened && inspectorState.elementView &&
+                <Inspector elementView={inspectorState.elementView}/>}
         </div>
     );
 }

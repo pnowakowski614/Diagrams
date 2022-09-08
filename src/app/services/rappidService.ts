@@ -12,20 +12,25 @@ import {
 } from "../utils/rappid-utils";
 import { CustomLink } from "../shapes";
 
+export interface InspectorState {
+    isOpened: boolean;
+    elementView: dia.ElementView | null;
+}
+
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
     paper!: dia.Paper;
     scroller!: ui.PaperScroller;
     graph!: dia.Graph;
-    setInspectorOpened!: React.Dispatch<React.SetStateAction<boolean>>;
+    setInspectorOpened!: React.Dispatch<React.SetStateAction<InspectorState>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
         this.paperElement = paperElement;
         this.stencilElement = stencilElement;
     }
 
-    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>): void {
+    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<InspectorState>>): void {
         this.setInspectorOpened = callback;
     }
 
@@ -87,14 +92,18 @@ class RappidService {
             'blank:pointerdown': (evt: dia.Event) => {
                 scroller.startPanning(evt);
                 paper.removeTools();
-                this.setInspectorOpened(false);
-            },
-            'cell:pointerclick': () => {
-                this.setInspectorOpened(true);
+                this.setInspectorOpened({
+                    isOpened: false,
+                    elementView: null
+                });
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
                 RappidService.initFreeTransform(elementView);
                 RappidService.initHalo(elementView);
+                this.setInspectorOpened({
+                    isOpened: true,
+                    elementView
+                });
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 addLinkTools(linkView)
@@ -112,7 +121,6 @@ class RappidService {
             resizeDirections: getResizeDirections(elementView)
         });
         freeTransform.render();
-        console.log(elementView);
     }
 
 
