@@ -89,12 +89,12 @@ class RappidService {
                 paper.removeTools();
                 this.setInspectorOpened(false);
             },
-            'cell:pointerclick': (cellView: dia.CellView) => {
+            'cell:pointerclick': () => {
                 this.setInspectorOpened(true);
-                RappidService.initHalo(cellView);
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
-                RappidService.initFreeTransform(elementView)
+                RappidService.initFreeTransform(elementView);
+                RappidService.initHalo(elementView);
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 addLinkTools(linkView)
@@ -112,6 +112,7 @@ class RappidService {
             resizeDirections: getResizeDirections(elementView)
         });
         freeTransform.render();
+        console.log(elementView);
     }
 
 
@@ -124,6 +125,7 @@ class RappidService {
         })
         halo.render();
         halo.removeHandle('resize');
+        halo.removeHandle('direction');
     }
 }
 

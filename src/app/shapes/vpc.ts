@@ -1,6 +1,7 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
+import { groupShapePortConfig } from "../rappid-configs/portsConfig";
+import { defaultGroupShapeAttrs, defaultGroupShapeMarkup } from "../utils/rappid-utils";
 
 export class VPC extends shapes.standard.Rectangle {
     defaults() {
@@ -13,70 +14,27 @@ export class VPC extends shapes.standard.Rectangle {
                 height: 325,
             },
             attrs: {
+                ...defaultGroupShapeAttrs,
                 body: {
-                    refWidth: "100%",
-                    refHeight: "100%",
-                    fill: "transparent",
+                    ...defaultGroupShapeAttrs.body,
                     stroke: "green",
-                    strokeWidth: "3px"
                 },
                 background: {
+                    ...defaultGroupShapeAttrs.background,
                     fill: "green",
-                    x: "-25px",
-                    width: 25,
-                    refHeight: "70%",
                 },
                 label: {
+                    ...defaultGroupShapeAttrs.label,
                     text: "VPC",
-                    fill: "white",
-                    transform: "translate(-20, 100) rotate(-90)",
-                    textAnchor: "right",
-                    refX: 3,
-                    refY: -30,
-                    fontSize: 10,
-                    fontWeight: "bold"
                 },
                 icon: {
+                    ...defaultGroupShapeAttrs.icon,
                     href: "icons/other/cloud.png",
-                    width: 20,
-                    height: 20,
-                    refX: -20,
-                    refY: 5,
                 }
             },
-            ports: {
-                ...portsConfig,
-                groups: {
-                    'in': {
-                        ...portIn,
-                        position: {
-                            name: 'top'
-                        }
-                    },
-                    'out': portOut
-                }
-            }
+            ports: groupShapePortConfig
         }
     }
 
-    markup = [{
-        tagName: 'g',
-        children:
-            [{
-                tagName: 'rect',
-                selector: 'body',
-            },
-                {
-                    tagName: 'rect',
-                    selector: 'background'
-                },
-                {
-                    tagName: 'text',
-                    selector: 'label'
-                },
-                {
-                    tagName: 'image',
-                    selector: 'icon'
-                }]
-    }]
+    markup = defaultGroupShapeMarkup
 }
