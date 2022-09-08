@@ -2,12 +2,12 @@ import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { portsConfig } from "../rappid-configs/portsConfig";
 
-export class SecurityGroup extends shapes.standard.Rectangle {
+export class Subnet extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: GlobalShapesTypes.SecurityGroup,
-            localType: LocalShapesTypes.SecurityGroup,
+            type: GlobalShapesTypes.Subnet,
+            localType: LocalShapesTypes.Subnet,
             size: {
                 width: 275,
                 height: 250
@@ -17,17 +17,17 @@ export class SecurityGroup extends shapes.standard.Rectangle {
                     refWidth: "100%",
                     refHeight: "100%",
                     fill: "transparent",
-                    stroke: "blue",
+                    stroke: "turquoise",
                     strokeWidth: "3px"
                 },
                 background: {
-                    fill: "blue",
+                    fill: "turquoise",
                     x: "-25px",
                     width: 25,
                     refHeight: "70%",
                 },
                 label: {
-                    text: "Security",
+                    text: "Subnet",
                     fill: "white",
                     transform: "translate(-20, 100) rotate(-90)",
                     textAnchor: "right",
@@ -37,7 +37,7 @@ export class SecurityGroup extends shapes.standard.Rectangle {
                     fontWeight: "bold"
                 },
                 icon: {
-                    href: "icons/other/shield.png",
+                    href: "icons/other/lock.png",
                     width: 15,
                     height: 15,
                     refX: -20,

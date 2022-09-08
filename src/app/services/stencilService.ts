@@ -1,14 +1,11 @@
 import '@clientio/rappid';
 import { dia, ui } from "@clientio/rappid";
-import { shapesConfig } from "app/utils/shapesConfig";
-import { groupConfig } from "app/utils/groupConfig";
-import { AutoScaling } from "app/shapes/autoScaling";
-import { ECSCluster } from "app/shapes/ecsCluster";
-import { ECSService } from "app/shapes/ecsService";
-import { Node } from "app/shapes/node";
-import { SecurityGroup } from "app/shapes/securityGroup";
-import { VPC } from "app/shapes/vpc";
-import { DefaultCanvasNodeAttrs, DefaultStencilLayoutOptions, LocalShapesTypes } from "../types/enums";
+import { shapesConfig } from "app/rappid-configs/shapesConfig";
+import { groupConfig } from "app/rappid-configs/groupConfig";
+import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "app/shapes";
+import { LocalShapesTypes } from "../types/enums";
+import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
+import { portsConfig } from "../rappid-configs/portsConfig";
 
 class StencilService {
     paper: dia.Paper;
@@ -20,18 +17,14 @@ class StencilService {
         this.stencilElement = stencilElement;
     }
 
-    initStencil(): void {
+    public initStencil(): void {
         this.stencil = new ui.Stencil({
             paper: this.paper,
-            groups: this.setGroups(),
+            groups: groupConfig,
             label: "Elements",
-            layout: {
-                marginX: DefaultStencilLayoutOptions.StencilMarginX,
-                columns: DefaultStencilLayoutOptions.StencilColumns,
-                rowHeight: DefaultStencilLayoutOptions.StencilRowHeight
-            },
+            layout: defaultStencilLayoutOptions,
             groupsToggleButtons: true,
-            dragStartClone: this.cloneNode
+            dragStartClone: StencilService.cloneNode
         });
 
         this.stencilElement.appendChild(this.stencil.el);
@@ -39,16 +32,19 @@ class StencilService {
         this.stencil.load(this.setElements());
     }
 
-    setElements() {
-        let groupList: { [index: string]: Node[] } = {};
+    private setElements(): { [p: string]: NodeShape[] } {
+        let groupList: { [index: string]: NodeShape[] } = {};
 
-        Object.keys(groupConfig).map((key) => {
+        Object.keys(groupConfig).forEach((key) => {
             groupList[key] = [];
         })
 
-        Object.values(shapesConfig).map((value) => {
-            let newNode = new Node()
+        Object.values(shapesConfig).forEach((value) => {
+            let newNode = new NodeShape()
             newNode.attr({
+                root: {
+                    dataTooltip: value.label
+                },
                 label: {
                     text: value.label,
                 },
@@ -63,42 +59,27 @@ class StencilService {
         return groupList;
     }
 
-    cloneNode(el: dia.Cell) {
+    private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
         let clone = el.clone();
-        switch (clone.attributes.localType) {
-            case LocalShapesTypes.Node:
-                clone.attr({
-                    label: {
-                        fontSize: DefaultCanvasNodeAttrs.NodeFontSize,
-                        textAnchor: DefaultCanvasNodeAttrs.NodeTextAnchor,
-                        refX: DefaultCanvasNodeAttrs.NodeRefX,
-                        refY: DefaultCanvasNodeAttrs.NodeRefY
-                    }
-                })
-                break;
+        switch (clone.prop("localType")) {
             case LocalShapesTypes.AutoScaling:
-                clone = new AutoScaling();
-                break;
+                return clone = new AutoScaling();
             case LocalShapesTypes.EcsCluster:
-                clone = new ECSCluster();
-                break;
+                return clone = new ECSCluster();
             case LocalShapesTypes.EcsService:
-                clone = new ECSService();
-                break;
+                return clone = new ECSService();
             case LocalShapesTypes.SecurityGroup:
-                clone = new SecurityGroup();
-                break;
+                return clone = new SecurityGroup();
             case LocalShapesTypes.VPC:
-                clone = new VPC();
-                break;
+                return clone = new VPC();
+            case LocalShapesTypes.Subnet:
+                return clone = new Subnet();
             default:
-                break;
+                clone.prop('ports', portsConfig);
+                return clone.attr({
+                    label: defaultShapeAttrs,
+                });
         }
-        return clone;
-    }
-
-    setGroups() {
-        return groupConfig;
     }
 }
 

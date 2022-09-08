@@ -1,6 +1,16 @@
 import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React from "react";
+import {
+    addLinkTools,
+    getCustomLink,
+    getHaloMagnet,
+    getMinDimensions,
+    getPreserveAspectRatio,
+    getResizeDirections,
+    validateConnection,
+    validateEmbedding
+} from "../utils/rappid-utils";
 
 class RappidService {
     paperElement: HTMLElement;
@@ -12,11 +22,11 @@ class RappidService {
         this.stencilElement = stencilElement;
     }
 
-    setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>) {
+    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>): void {
         this.setInspectorOpened = callback;
     }
 
-    init() {
+    public init(): void {
         const graph = new dia.Graph({}, {cellNamespace: shapes});
 
         const paper = new dia.Paper({
@@ -29,6 +39,12 @@ class RappidService {
             cellViewNamespace: shapes,
             drawGrid: true,
             gridSize: 10,
+            embeddingMode: true,
+            validateEmbedding: validateEmbedding,
+            snapLinks: {radius: 40},
+            validateConnection: validateConnection,
+            linkPinning: false,
+            defaultLink: getCustomLink
         });
 
         const scroller = new ui.PaperScroller({
@@ -45,25 +61,64 @@ class RappidService {
 
         const stencilInst = new StencilService(paper, this.stencilElement);
         stencilInst.initStencil();
+
+        RappidService.initTooltip();
+        this.initFreeTransform(paper);
+        this.initHalo(paper);
     }
 
-    initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller) {
+    private static initTooltip(): ui.Tooltip {
+        return new ui.Tooltip({
+            target: '[data-tooltip]',
+            direction: ui.Tooltip.TooltipArrowPosition.Auto,
+            position: ui.Tooltip.TooltipPosition.Left,
+            padding: 10
+        });
+    }
+
+    private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller): void {
         paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
 
         paper.on('cell:pointerclick', () => {
             this.setInspectorOpened(true);
         });
 
+        paper.on('link:pointerclick', (linkView: dia.LinkView) => {
+            addLinkTools(linkView)
+        })
+
+        paper.on('blank:pointerdown', () => {
+            paper.removeTools();
+        })
+    }
+
+    private initFreeTransform(paper: dia.Paper): void {
         paper.on('element:pointerclick', (elementView) => {
             const freeTransform = new ui.FreeTransform({
                 cellView: elementView,
                 allowRotation: false,
-                preserveAspectRatio: true,
+                preserveAspectRatio: getPreserveAspectRatio(elementView),
+                minWidth: getMinDimensions(elementView),
+                minHeight: getMinDimensions(elementView),
+                resizeDirections: getResizeDirections(elementView)
             });
             freeTransform.render();
         });
     }
 
+    private initHalo(paper: dia.Paper): void {
+        paper.on('cell:pointerclick', (cellView: dia.CellView) => {
+                const halo = new ui.Halo({
+                    cellView,
+                    type: 'toolbar',
+                    useModelGeometry: true,
+                    magnet: getHaloMagnet
+                })
+                halo.render();
+                halo.removeHandle('resize');
+            }
+        );
+    }
 }
 
 export default RappidService;

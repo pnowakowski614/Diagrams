@@ -1,18 +1,22 @@
 import { shapes } from '@clientio/rappid';
+import { GlobalShapesTypes } from "../types/enums";
 
-export class Node extends shapes.standard.Rectangle {
+export class NodeShape extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: 'app.Node',
+            type: GlobalShapesTypes.NodeShape,
             size: {
                 width: 45,
                 height: 45
             },
             attrs: {
+                root: {
+                    dataTooltip: "default"
+                },
                 body: {
                     refWidth: "100%",
-                    refHeight: "100%"
+                    refHeight: "100%",
                 },
                 label: {
                     text: "default",
@@ -44,10 +48,3 @@ export class Node extends shapes.standard.Rectangle {
             selector: "icon",
         }]
 }
-
-Object.assign(shapes, {
-    app: {
-        ...(shapes as any).app,
-        Node
-    }
-});

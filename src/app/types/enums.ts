@@ -13,24 +13,23 @@ export enum StencilGroups {
 }
 
 export enum LocalShapesTypes {
-    Node = "Node",
+    NodeShape = "NodeShape",
     AutoScaling = "AutoScaling",
     EcsCluster = "EcsCluster",
     EcsService = "EcsService",
     SecurityGroup = "SecurityGroup",
-    VPC = "VPC"
+    VPC = "VPC",
+    Subnet = "Subnet",
+    ECSTask = "ECSTask",
+    EC2 = "EC2",
 }
 
-export enum DefaultCanvasNodeAttrs {
-    NodeFontSize = 10,
-    NodeTextAnchor = "middle",
-    NodeRefX = "50%",
-    NodeRefY = "105%"
+export enum GlobalShapesTypes {
+    NodeShape = "app.NodeShape",
+    AutoScaling = "app.AutoScaling",
+    EcsCluster = "app.EcsCluster",
+    EcsService = "app.EcsService",
+    SecurityGroup = "app.SecurityGroup",
+    VPC = "app.VPC",
+    Subnet = "app.Subnet"
 }
-
-export enum DefaultStencilLayoutOptions {
-    StencilMarginX = -13,
-    StencilColumns = 1,
-    StencilRowHeight = 65
-}
-
