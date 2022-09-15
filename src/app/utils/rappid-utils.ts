@@ -15,6 +15,23 @@ export const defaultStencilLayoutOptions = {
     rowHeight: 65
 }
 
+export const getShapeLabelWidth = (elementView: dia.ElementView) => {
+    switch (elementView.model.prop("type")) {
+        case GlobalShapesTypes.NodeShape:
+            return '175%';
+        case GlobalShapesTypes.Region:
+        case GlobalShapesTypes.VPC:
+        case GlobalShapesTypes.SecurityGroup:
+        case GlobalShapesTypes.Subnet:
+            return '25%';
+        case GlobalShapesTypes.EcsService:
+        case GlobalShapesTypes.EcsCluster:
+            return '50%';
+        default:
+            return '100%';
+    }
+}
+
 export const getMinDimensions = (elementView: dia.ElementView) => {
     switch (elementView.model.prop("type")) {
         case GlobalShapesTypes.NodeShape:
@@ -183,11 +200,11 @@ export const defaultGroupShapeAttrs = {
         text: "Security",
         fill: "white",
         transform: "translate(-20, 100) rotate(-90)",
-        textAnchor: "right",
+        textAnchor: "left",
         refX: 3,
         refY: -30,
         fontSize: 10,
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     icon: {
         href: "icons/other/shield.png",
@@ -197,3 +214,4 @@ export const defaultGroupShapeAttrs = {
         refY: 5,
     }
 }
+
