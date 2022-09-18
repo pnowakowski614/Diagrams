@@ -11,6 +11,7 @@ import {
     validateEmbedding
 } from "../utils/rappid-utils";
 import { CustomLink } from "../shapes";
+import { haloConfig } from "../rappid-configs/haloConfig";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -80,9 +81,9 @@ class RappidService {
 
     private static initTooltip(): ui.Tooltip {
         return new ui.Tooltip({
+            rootTarget: document.body,
             target: '[data-tooltip]',
             direction: ui.Tooltip.TooltipArrowPosition.Auto,
-            position: ui.Tooltip.TooltipPosition.Left,
             padding: 10
         });
     }
@@ -128,12 +129,11 @@ class RappidService {
         const halo = new ui.Halo({
             cellView,
             type: 'toolbar',
+            handles: haloConfig,
             useModelGeometry: true,
             magnet: getHaloMagnet
         })
         halo.render();
-        halo.removeHandle('resize');
-        halo.removeHandle('direction');
     }
 }
 
