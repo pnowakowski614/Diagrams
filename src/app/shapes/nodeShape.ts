@@ -12,7 +12,8 @@ export class NodeShape extends shapes.standard.Rectangle {
             },
             attrs: {
                 root: {
-                    dataTooltip: "default"
+                    dataTooltip: "default",
+                    dataTooltipPosition: "left"
                 },
                 body: {
                     refWidth: "100%",
