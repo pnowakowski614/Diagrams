@@ -29,7 +29,7 @@ export class CustomLink extends shapes.standard.Link {
                 name: 'manhattan'
             },
             connector: {
-                name: 'jumpover',
+                name: 'rounded',
             }
         }
     }
