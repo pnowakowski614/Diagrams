@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from './inspector.module.scss';
-import { Input, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Input, Select, SelectChangeEvent } from "@mui/material";
 import { dia } from "@clientio/rappid";
-import { getShapeLabelWidth } from "../../../utils/rappid-utils";
+import { getShapeLabelWidth, portSelectRender } from "../../../utils/rappid-utils";
 
 
 interface InspectorProps {
@@ -58,26 +58,22 @@ const Inspector = ({elementView}: InspectorProps) => {
             <h5 className={styles.portsSubheader}>Ports In</h5>
             <Select
                 id="ports-in-select"
+                defaultValue=""
                 value={portsInValue}
                 label={portsInValue}
                 onChange={handleChangePortIn}
             >
-                <MenuItem value={"left"}>Left</MenuItem>
-                <MenuItem value={"top"}>Top</MenuItem>
-                <MenuItem value={"right"}>Right</MenuItem>
-                <MenuItem value={"bottom"}>Bottom</MenuItem>
+                {portSelectRender(elementView)};
             </Select>
             <h5 className={styles.portsSubheader}>Ports Out</h5>
             <Select
                 id="ports-out-select"
+                defaultValue=""
                 value={portsOutValue}
                 label={portsOutValue}
                 onChange={handleChangePortOut}
             >
-                <MenuItem value={"left"}>Left</MenuItem>
-                <MenuItem value={"top"}>Top</MenuItem>
-                <MenuItem value={"right"}>Right</MenuItem>
-                <MenuItem value={"bottom"}>Bottom</MenuItem>
+                {portSelectRender(elementView)}
             </Select>
         </div>
     )

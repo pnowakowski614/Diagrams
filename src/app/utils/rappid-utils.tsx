@@ -1,6 +1,8 @@
 import * as joint from "@clientio/rappid";
 import { dia, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
+import { capitalize, MenuItem } from "@mui/material";
+import React from "react";
 
 export const defaultShapeAttrs = {
     fontSize: 10,
@@ -211,7 +213,30 @@ export const defaultGroupShapeAttrs = {
         width: 15,
         height: 15,
         refX: -20,
-        refY: 5,
+        refY: 25,
     }
 }
 
+export const selectPortsPositions: { [index: string]: string[] } = {
+    [LocalShapesTypes.NodeShape]: ["left", "top", "right"],
+    [LocalShapesTypes.ECSTask]: ["left", "top", "right"],
+    [LocalShapesTypes.EC2]: ["left", "top", "right"],
+    [LocalShapesTypes.AutoScaling]: ["left", "bottom", "right"],
+    [LocalShapesTypes.Region]: ["left", "top", "right", "bottom"],
+    [LocalShapesTypes.VPC]: ["left", "top", "right", "bottom"],
+    [LocalShapesTypes.SecurityGroup]: ["left", "top", "right", "bottom"],
+    [LocalShapesTypes.Subnet]: ["left", "top", "right", "bottom"],
+    [LocalShapesTypes.EcsCluster]: ["left", "top", "right", "bottom"],
+    [LocalShapesTypes.EcsService]: ["left", "top", "right", "bottom"]
+}
+
+export const portSelectRender = (elementView: dia.ElementView) => {
+    const type = elementView.model.prop("localType")
+    const portPositions = selectPortsPositions[type];
+
+    return (
+        portPositions.map(position => {
+            return <MenuItem key={position} value={position}>{capitalize(position)}</MenuItem>
+        })
+    )
+}
