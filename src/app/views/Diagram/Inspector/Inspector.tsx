@@ -10,7 +10,6 @@ interface InspectorProps {
 }
 
 const Inspector = ({elementView}: InspectorProps) => {
-
     const inspectedElementText = elementView.model.attr("label/text");
     const inspectedElementPortsIn = elementView.model.prop("ports/groups/in/position/name");
     const inspectedElementPortsOut = elementView.model.prop("ports/groups/out/position/name");
@@ -42,9 +41,15 @@ const Inspector = ({elementView}: InspectorProps) => {
 
     useEffect(() => {
         setTextValue(inspectedElementText);
+    }, [inspectedElementText])
+
+    if (inspectedElementPortsIn !== portsInValue) {
         setPortsInValue(inspectedElementPortsIn);
+    }
+
+    if (inspectedElementPortsOut !== portsOutValue) {
         setPortsOutValue(inspectedElementPortsOut);
-    }, [inspectedElementText, inspectedElementPortsIn, inspectedElementPortsOut])
+    }
 
     return (
         <div className={styles.inspector}>
@@ -75,6 +80,9 @@ const Inspector = ({elementView}: InspectorProps) => {
             >
                 {portSelectRender(elementView)}
             </Select>
+            <div className={styles.inspectorCategoryContainer}>
+                <h4 className={styles.inspectorCategoryHeader}>Background Color</h4>
+            </div>
         </div>
     )
 }

@@ -8,7 +8,7 @@ export const defaultShapeAttrs = {
     fontSize: 10,
     textAnchor: "middle",
     refX: "50%",
-    refY: "105%"
+    refY: "115%"
 }
 
 export const defaultStencilLayoutOptions = {
@@ -201,10 +201,10 @@ export const defaultGroupShapeAttrs = {
     label: {
         text: "Security",
         fill: "white",
+        refX: 2,
+        refY: "-15%",
         transform: "translate(-20, 100) rotate(-90)",
         textAnchor: "left",
-        refX: 3,
-        refY: -30,
         fontSize: 10,
         fontWeight: "bold",
     },
@@ -213,25 +213,23 @@ export const defaultGroupShapeAttrs = {
         width: 15,
         height: 15,
         refX: -20,
-        refY: 25,
+        refY: 5,
     }
 }
 
 export const selectPortsPositions: { [index: string]: string[] } = {
-    [LocalShapesTypes.NodeShape]: ["left", "top", "right"],
-    [LocalShapesTypes.ECSTask]: ["left", "top", "right"],
-    [LocalShapesTypes.EC2]: ["left", "top", "right"],
-    [LocalShapesTypes.AutoScaling]: ["left", "bottom", "right"],
-    [LocalShapesTypes.Region]: ["left", "top", "right", "bottom"],
-    [LocalShapesTypes.VPC]: ["left", "top", "right", "bottom"],
-    [LocalShapesTypes.SecurityGroup]: ["left", "top", "right", "bottom"],
-    [LocalShapesTypes.Subnet]: ["left", "top", "right", "bottom"],
-    [LocalShapesTypes.EcsCluster]: ["left", "top", "right", "bottom"],
-    [LocalShapesTypes.EcsService]: ["left", "top", "right", "bottom"]
+    [GlobalShapesTypes.NodeShape]: ["left", "top", "right"],
+    [GlobalShapesTypes.AutoScaling]: ["left", "bottom", "right"],
+    [GlobalShapesTypes.Region]: ["top", "right", "bottom"],
+    [GlobalShapesTypes.VPC]: ["top", "right", "bottom"],
+    [GlobalShapesTypes.SecurityGroup]: ["top", "right", "bottom"],
+    [GlobalShapesTypes.Subnet]: ["top", "right", "bottom"],
+    [GlobalShapesTypes.EcsCluster]: ["left", "top", "right", "bottom"],
+    [GlobalShapesTypes.EcsService]: ["left", "top", "right", "bottom"]
 }
 
-export const portSelectRender = (elementView: dia.ElementView) => {
-    const type = elementView.model.prop("localType")
+export const portSelectRender = (elementView: dia.ElementView): JSX.Element[] => {
+    const type = elementView.model.prop("type")
     const portPositions = selectPortsPositions[type];
 
     return (
