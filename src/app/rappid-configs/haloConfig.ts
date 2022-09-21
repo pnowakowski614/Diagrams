@@ -47,19 +47,5 @@ export const haloConfig =
                     'data-tooltip-position': 'bottom',
                 }
             }
-        },
-        {
-            name: 'rotate',
-            events: {
-                pointerdown: 'startRotating',
-                pointermove: 'doRotate',
-                pointerup: 'stopBatch'
-            },
-            attrs: {
-                '.handle': {
-                    'data-tooltip': 'Rotate the object',
-                    'data-tooltip-position': 'right',
-                }
-            }
         }
     ];
