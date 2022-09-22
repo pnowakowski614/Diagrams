@@ -1,88 +1,87 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import styles from './inspector.module.scss';
-import { Input, Select, SelectChangeEvent } from "@mui/material";
+import { Input } from "@mui/material";
 import { dia } from "@clientio/rappid";
-import { getShapeLabelWidth, portSelectRender } from "../../../utils/rappid-utils";
+import { colorChangeShapes, getShapeLabelWidth } from "../../../utils/rappid-utils";
+import { MuiColorInput } from "mui-color-input";
+import { GlobalShapesTypes } from "../../../types/enums";
 
 
 interface InspectorProps {
-    elementView: dia.ElementView
+    cellView: dia.CellView
 }
 
-const Inspector = ({elementView}: InspectorProps) => {
-    const inspectedElementText = elementView.model.attr("label/text");
-    const inspectedElementPortsIn = elementView.model.prop("ports/groups/in/position/name");
-    const inspectedElementPortsOut = elementView.model.prop("ports/groups/out/position/name");
+const Inspector = ({cellView}: InspectorProps) => {
+    const inspectedElementText = cellView.model.attr("label/text") || "";
+    const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
 
     const [textValue, setTextValue] = useState(inspectedElementText);
-    const [portsInValue, setPortsInValue] = useState(inspectedElementPortsIn);
-    const [portsOutValue, setPortsOutValue] = useState(inspectedElementPortsOut);
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        elementView.model.attr("label/textWrap", {
-            width: getShapeLabelWidth(elementView),
+    const findInspectedColor = (inspectedGlobalType: GlobalShapesTypes) => {
+        if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
+            return cellView.model.attr("line/stroke");
+        } else {
+            return cellView.model.attr("background/fill");
+        }
+    };
+
+    const [color, setColor] = useState(findInspectedColor(inspectedGlobalType));
+
+    const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
+        cellView.model.attr("label/textWrap", {
+            width: getShapeLabelWidth(cellView),
             height: 20,
             ellipsis: true
         })
 
         setTextValue(event.target.value);
-        elementView.model.attr("label/text", event.target.value);
+        cellView.model.attr("label/text", event.target.value);
     }
 
-    const handleChangePortIn = (event: SelectChangeEvent) => {
-        setPortsInValue(event.target.value);
-        elementView.model.prop("ports/groups/in/position/name", event.target.value);
-    }
+    const handleColorChange = (color: any) => {
+        setColor(color);
 
-    const handleChangePortOut = (event: SelectChangeEvent) => {
-        setPortsOutValue(event.target.value);
-        elementView.model.prop("ports/groups/out/position/name", event.target.value);
+        if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
+            cellView.model.attr("line/stroke", color);
+        } else {
+            cellView.model.attr("background/fill", color);
+            cellView.model.attr("body/stroke", color);
+        }
     }
 
     useEffect(() => {
         setTextValue(inspectedElementText);
     }, [inspectedElementText])
 
-    if (inspectedElementPortsIn !== portsInValue) {
-        setPortsInValue(inspectedElementPortsIn);
-    }
-
-    if (inspectedElementPortsOut !== portsOutValue) {
-        setPortsOutValue(inspectedElementPortsOut);
-    }
+    useEffect(() => {
+        setColor(findInspectedColor(inspectedGlobalType));
+    }, [findInspectedColor])
 
     return (
         <div className={styles.inspector}>
-            <div className={styles.inspectorCategoryContainer}>
-                <h4 className={styles.inspectorCategoryHeader}>Label</h4>
-            </div>
-            <Input className={styles.input} value={textValue} onChange={handleInputChange}/>
-            <div className={styles.inspectorCategoryContainer}>
-                <h4 className={styles.inspectorCategoryHeader}>Port placement</h4>
-            </div>
-            <h5 className={styles.portsSubheader}>Ports In</h5>
-            <Select
-                id="ports-in-select"
-                defaultValue=""
-                value={portsInValue}
-                label={portsInValue}
-                onChange={handleChangePortIn}
-            >
-                {portSelectRender(elementView)};
-            </Select>
-            <h5 className={styles.portsSubheader}>Ports Out</h5>
-            <Select
-                id="ports-out-select"
-                defaultValue=""
-                value={portsOutValue}
-                label={portsOutValue}
-                onChange={handleChangePortOut}
-            >
-                {portSelectRender(elementView)}
-            </Select>
-            <div className={styles.inspectorCategoryContainer}>
-                <h4 className={styles.inspectorCategoryHeader}>Background Color</h4>
-            </div>
+            {inspectedGlobalType !== GlobalShapesTypes.CustomLink &&
+                <>
+                    <div className={styles.inspectorElement}>
+                        <div className={styles.inspectorCategoryContainer}>
+                            <h4 className={styles.inspectorCategoryHeader}>Label</h4>
+                        </div>
+                        <Input className={styles.input} value={textValue}
+                               onChange={handleLabelChange}/>
+                    </div>
+                    <div className={styles.inspectorElement}>
+                        <div className={styles.inspectorCategoryContainer}>
+                            <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
+                        </div>
+                        <Input className={styles.input} value={textValue}/>
+                    </div>
+                </>
+            }
+            {colorChangeShapes.includes(inspectedGlobalType) && <div className={styles.inspectorElement}>
+                <div className={styles.inspectorCategoryContainer}>
+                    <h4 className={styles.inspectorCategoryHeader}>Color</h4>
+                </div>
+                <MuiColorInput value={color} onChange={handleColorChange}/>
+            </div>}
         </div>
     )
 }

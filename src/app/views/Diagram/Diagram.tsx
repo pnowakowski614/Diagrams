@@ -12,7 +12,7 @@ const Diagram = () => {
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
-        elementView: null
+        cellView: null
     });
 
     useEffectOnce(() => {
@@ -30,8 +30,8 @@ const Diagram = () => {
                 <DiagramToolbar/>
                 <div className={styles.canvas} ref={canvas}/>
             </div>
-            {inspectorState.isOpened && inspectorState.elementView &&
-                <Inspector elementView={inspectorState.elementView}/>}
+            {inspectorState.isOpened && inspectorState.cellView &&
+                <Inspector cellView={inspectorState.cellView}/>}
         </div>
     );
 }

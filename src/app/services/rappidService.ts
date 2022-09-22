@@ -1,6 +1,6 @@
 import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
-import React from "react";
+import React, { Dispatch } from "react";
 import {
     addLinkTools,
     getHaloMagnet,
@@ -15,7 +15,7 @@ import { haloConfig } from "../rappid-configs/haloConfig";
 
 export interface InspectorState {
     isOpened: boolean;
-    elementView: dia.ElementView | null;
+    cellView: dia.CellView | null;
 }
 
 class RappidService {
@@ -24,14 +24,14 @@ class RappidService {
     paper!: dia.Paper;
     scroller!: ui.PaperScroller;
     graph!: dia.Graph;
-    setInspectorOpened!: React.Dispatch<React.SetStateAction<InspectorState>>;
+    setInspectorOpened!: Dispatch<React.SetStateAction<InspectorState>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
         this.paperElement = paperElement;
         this.stencilElement = stencilElement;
     }
 
-    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<InspectorState>>): void {
+    public setInspectorFunction(callback: Dispatch<React.SetStateAction<InspectorState>>): void {
         this.setInspectorOpened = callback;
     }
 
@@ -95,19 +95,23 @@ class RappidService {
                 paper.removeTools();
                 this.setInspectorOpened({
                     isOpened: false,
-                    elementView: null
+                    cellView: null
                 });
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
+                paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 RappidService.initHalo(elementView);
-                this.setInspectorOpened({
-                    isOpened: true,
-                    elementView
-                });
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
+                paper.removeTools();
                 addLinkTools(linkView)
+            },
+            'cell:pointerclick': (cellView: dia.CellView) => {
+                this.setInspectorOpened({
+                    isOpened: true,
+                    cellView
+                });
             }
         });
     }
