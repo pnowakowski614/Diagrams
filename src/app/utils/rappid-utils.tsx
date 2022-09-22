@@ -1,14 +1,12 @@
 import * as joint from "@clientio/rappid";
 import { dia, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { capitalize, MenuItem } from "@mui/material";
-import React from "react";
 
 export const defaultShapeAttrs = {
     fontSize: 10,
     textAnchor: "middle",
     refX: "50%",
-    refY: "115%"
+    refY: "110%"
 }
 
 export const defaultStencilLayoutOptions = {
@@ -17,15 +15,15 @@ export const defaultStencilLayoutOptions = {
     rowHeight: 65
 }
 
-export const getShapeLabelWidth = (elementView: dia.ElementView) => {
-    switch (elementView.model.prop("type")) {
+export const getShapeLabelWidth = (cellView: dia.CellView) => {
+    switch (cellView.model.prop("type")) {
         case GlobalShapesTypes.NodeShape:
             return '175%';
         case GlobalShapesTypes.Region:
         case GlobalShapesTypes.VPC:
         case GlobalShapesTypes.SecurityGroup:
         case GlobalShapesTypes.Subnet:
-            return '25%';
+            return "30%";
         case GlobalShapesTypes.EcsService:
         case GlobalShapesTypes.EcsCluster:
             return '50%';
@@ -165,6 +163,14 @@ const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: Lo
     }
 ]
 
+export const colorChangeShapes = [
+    GlobalShapesTypes.Region,
+    GlobalShapesTypes.VPC,
+    GlobalShapesTypes.SecurityGroup,
+    GlobalShapesTypes.Subnet,
+    GlobalShapesTypes.CustomLink
+]
+
 export const defaultGroupShapeMarkup = [
     {
         tagName: 'rect',
@@ -190,7 +196,7 @@ export const defaultGroupShapeAttrs = {
         refHeight: "100%",
         fill: "transparent",
         stroke: "blue",
-        strokeWidth: "3px"
+        strokeWidth: "3px",
     },
     background: {
         fill: "blue",
@@ -201,10 +207,8 @@ export const defaultGroupShapeAttrs = {
     label: {
         text: "Security",
         fill: "white",
-        refX: 2,
-        refY: "-15%",
-        transform: "translate(-20, 100) rotate(-90)",
-        textAnchor: "left",
+        transform: "translate(-17, 40), rotate(-90)",
+        textAnchor: "end",
         fontSize: 10,
         fontWeight: "bold",
     },
@@ -217,24 +221,3 @@ export const defaultGroupShapeAttrs = {
     }
 }
 
-export const selectPortsPositions: { [index: string]: string[] } = {
-    [GlobalShapesTypes.NodeShape]: ["left", "top", "right"],
-    [GlobalShapesTypes.AutoScaling]: ["left", "bottom", "right"],
-    [GlobalShapesTypes.Region]: ["top", "right", "bottom"],
-    [GlobalShapesTypes.VPC]: ["top", "right", "bottom"],
-    [GlobalShapesTypes.SecurityGroup]: ["top", "right", "bottom"],
-    [GlobalShapesTypes.Subnet]: ["top", "right", "bottom"],
-    [GlobalShapesTypes.EcsCluster]: ["left", "top", "right", "bottom"],
-    [GlobalShapesTypes.EcsService]: ["left", "top", "right", "bottom"]
-}
-
-export const portSelectRender = (elementView: dia.ElementView): JSX.Element[] => {
-    const type = elementView.model.prop("type")
-    const portPositions = selectPortsPositions[type];
-
-    return (
-        portPositions.map(position => {
-            return <MenuItem key={position} value={position}>{capitalize(position)}</MenuItem>
-        })
-    )
-}
