@@ -43,9 +43,6 @@ class StencilService {
         Object.values(shapesConfig).forEach((value) => {
             const newNode = new NodeShape()
             newNode.attr({
-                root: {
-                    dataTooltip: value.label
-                },
                 label: {
                     text: value.label,
                 },
