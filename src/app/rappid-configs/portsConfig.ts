@@ -39,7 +39,6 @@ export const portsConfig = {
     },
     items: [
         {group: 'in'},
-        {group: 'in'},
         {group: 'out'}
     ]
 }
