@@ -25,9 +25,9 @@ const Diagram = () => {
 
     return (
         <div className={styles.diagramContainer}>
-            <div className={styles.stencilHolder} ref={stencil}/>
+            <DiagramToolbar/>
             <div className={styles.wrapper}>
-                <DiagramToolbar/>
+                <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} ref={canvas}/>
             </div>
             {inspectorState.isOpened && inspectorState.cellView &&
