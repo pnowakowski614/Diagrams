@@ -28,7 +28,11 @@ export const haloConfig =
         },
         {
             name: 'clone',
-            events: {pointerdown: 'startCloning', pointermove: 'doClone', pointerup: 'stopCloning'},
+            events: {
+                pointerdown: 'startCloning',
+                pointermove: 'doClone',
+                pointerup: 'stopCloning'
+            },
             attrs: {
                 '.handle': {
                     'data-tooltip': 'Clone the object',
@@ -45,7 +49,7 @@ export const haloConfig =
                 '.handle': {
                     'data-tooltip': 'Remove links to other objects',
                     'data-tooltip-position': 'bottom',
-                }
+                },
             }
         }
     ];

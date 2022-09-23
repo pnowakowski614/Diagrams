@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import styles from './diagram.module.scss';
+import 'styles/rappid-overrides.scss';
 import "@clientio/rappid/rappid.css";
 import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
