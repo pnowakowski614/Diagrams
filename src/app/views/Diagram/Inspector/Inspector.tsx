@@ -15,7 +15,6 @@ interface InspectorProps {
 const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedElementText = cellView.model.attr("label/text") || "";
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
-    const linksNumber = graph.getConnectedLinks(cellView.model, {outbound: true}).length;
 
     const [textValue, setTextValue] = useState(inspectedElementText);
 
@@ -74,7 +73,7 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                         <div className={styles.inspectorCategoryContainer}>
                             <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
                         </div>
-                        <MaxLinksInput cellView={cellView} linksNumber={linksNumber}/>
+                        <MaxLinksInput cellView={cellView} graph={graph}/>
                     </div>
                 </>
             }
