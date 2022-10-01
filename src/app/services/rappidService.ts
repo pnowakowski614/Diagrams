@@ -107,10 +107,12 @@ class RappidService {
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 paper.removeTools();
-                addLinkTools(linkView)
+                addLinkTools(linkView);
+            },
+            'link:connect': (linkView: dia.LinkView) => {
+                this.linkValidation(linkView);
             },
             'cell:pointerclick': (cellView: dia.CellView) => {
-
                 this.setInspectorOpened({
                     isOpened: true,
                     cellView,
@@ -118,6 +120,15 @@ class RappidService {
                 });
             }
         });
+    }
+
+    private linkValidation(linkView: dia.LinkView): void {
+        const sourceId = linkView.model.source().id as dia.Cell.ID;
+        const maxElementLinks = this.graph.getCell(sourceId).prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(sourceId)).length;
+        if (maxElementLinks < currentElementLinks || maxElementLinks === undefined) {
+            linkView.model.remove();
+        }
     }
 
     private static initFreeTransform(elementView: dia.ElementView): void {
