@@ -13,7 +13,8 @@ const Diagram = () => {
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
-        cellView: null
+        cellView: null,
+        graph: null,
     });
 
     useEffectOnce(() => {
@@ -31,8 +32,8 @@ const Diagram = () => {
                 <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} ref={canvas}/>
             </div>
-            {inspectorState.isOpened && inspectorState.cellView &&
-                <Inspector cellView={inspectorState.cellView}/>}
+            {inspectorState.isOpened && inspectorState.cellView && inspectorState.graph &&
+                <Inspector cellView={inspectorState.cellView} graph={inspectorState.graph}/>}
         </div>
     );
 }

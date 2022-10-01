@@ -3,17 +3,19 @@ import styles from './inspector.module.scss';
 import { Input } from "@mui/material";
 import { dia } from "@clientio/rappid";
 import { colorChangeShapes, getShapeLabelWidth } from "../../../utils/rappid-utils";
-import { MuiColorInput } from "mui-color-input";
+import { MuiColorInput, MuiColorInputValue } from "mui-color-input";
 import { GlobalShapesTypes } from "../../../types/enums";
-
+import { MaxLinksInput } from "./MaxLinksInput";
 
 interface InspectorProps {
     cellView: dia.CellView
+    graph: dia.Graph
 }
 
-const Inspector = ({cellView}: InspectorProps) => {
+const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedElementText = cellView.model.attr("label/text") || "";
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
+    const linksNumber = graph.getConnectedLinks(cellView.model, {outbound: true}).length;
 
     const [textValue, setTextValue] = useState(inspectedElementText);
 
@@ -38,7 +40,7 @@ const Inspector = ({cellView}: InspectorProps) => {
         cellView.model.attr("label/text", event.target.value);
     }
 
-    const handleColorChange = (color: any) => {
+    const handleColorChange = (color: MuiColorInputValue) => {
         setColor(color);
 
         if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
@@ -72,7 +74,7 @@ const Inspector = ({cellView}: InspectorProps) => {
                         <div className={styles.inspectorCategoryContainer}>
                             <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
                         </div>
-                        <Input className={styles.input} value={textValue}/>
+                        <MaxLinksInput cellView={cellView} linksNumber={linksNumber}/>
                     </div>
                 </>
             }

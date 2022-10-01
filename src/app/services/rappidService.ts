@@ -16,6 +16,7 @@ import { haloConfig } from "../rappid-configs/haloConfig";
 export interface InspectorState {
     isOpened: boolean;
     cellView: dia.CellView | null;
+    graph: dia.Graph | null;
 }
 
 class RappidService {
@@ -95,7 +96,8 @@ class RappidService {
                 paper.removeTools();
                 this.setInspectorOpened({
                     isOpened: false,
-                    cellView: null
+                    cellView: null,
+                    graph: null
                 });
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
@@ -108,9 +110,11 @@ class RappidService {
                 addLinkTools(linkView)
             },
             'cell:pointerclick': (cellView: dia.CellView) => {
+
                 this.setInspectorOpened({
                     isOpened: true,
-                    cellView
+                    cellView,
+                    graph: this.graph
                 });
             }
         });
