@@ -27,9 +27,6 @@ export class CustomLink extends shapes.standard.Link {
             },
             router: {
                 name: "manhattan",
-                args: {
-                    padding: 25
-                }
             },
             connector: {
                 name: 'rounded',
