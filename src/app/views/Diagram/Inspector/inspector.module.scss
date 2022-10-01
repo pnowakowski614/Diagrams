@@ -29,7 +29,17 @@
   padding-left: 25px;
 }
 
-.input {
-  margin: 15px;
+.colorInputWrapper, .maxLinkInputWrapper {
+  margin: 15px 20px;
+  width: 80%;
+}
+
+.maxLinkInputWrapper {
+  width: 35%;
+}
+
+.labelInputWrapper {
+  margin: 15px 15px 15px;
   padding: 5px 15px;
 }
+

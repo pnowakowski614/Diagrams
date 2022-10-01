@@ -23,13 +23,17 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                         <div className={styles.inspectorCategoryContainer}>
                             <h4 className={styles.inspectorCategoryHeader}>Label</h4>
                         </div>
-                        <LabelInput cellView={cellView}/>
+                        <div className={styles.labelInputWrapper}>
+                            <LabelInput cellView={cellView}/>
+                        </div>
                     </div>
                     <div className={styles.inspectorElement}>
                         <div className={styles.inspectorCategoryContainer}>
                             <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
                         </div>
-                        <MaxLinksInput cellView={cellView} graph={graph}/>
+                        <div className={styles.maxLinkInputWrapper}>
+                            <MaxLinksInput cellView={cellView} graph={graph}/>
+                        </div>
                     </div>
                 </>
             }
@@ -37,7 +41,9 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                 <div className={styles.inspectorCategoryContainer}>
                     <h4 className={styles.inspectorCategoryHeader}>Color</h4>
                 </div>
-                <ColorInput cellView={cellView}/>
+                <div className={styles.colorInputWrapper}>
+                    <ColorInput cellView={cellView}/>
+                </div>
             </div>}
         </div>
     )

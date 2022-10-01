@@ -2,6 +2,7 @@ import { GlobalShapesTypes } from "../../../types/enums";
 import React, { useEffect, useState } from "react";
 import { MuiColorInput, MuiColorInputValue } from "mui-color-input";
 import { dia } from "@clientio/rappid";
+import styles from "./inspector.module.scss";
 
 interface ColorInputProps {
     cellView: dia.CellView
@@ -35,6 +36,6 @@ export const ColorInput = ({cellView}: ColorInputProps) => {
         setColor(findInspectedColor(inspectedGlobalType));
     }, [findInspectedColor])
 
-    return (<MuiColorInput value={color} onChange={handleColorChange}/>)
+    return (<MuiColorInput className={styles.colorInput} value={color} onChange={handleColorChange}/>)
 }
 

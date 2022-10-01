@@ -2,7 +2,6 @@ import { dia } from "@clientio/rappid";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getShapeLabelWidth } from "../../../utils/rappid-utils";
 import { Input } from "@mui/material";
-import styles from "./inspector.module.scss";
 
 interface LabelInputProps {
     cellView: dia.CellView
@@ -29,6 +28,6 @@ export const LabelInput = ({cellView}: LabelInputProps) => {
     }, [inspectedElementText])
 
     return (
-        <Input className={styles.input} value={textValue} onChange={handleLabelChange}/>
+        <Input value={textValue} onChange={handleLabelChange}/>
     )
 }
