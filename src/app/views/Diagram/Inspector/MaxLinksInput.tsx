@@ -32,7 +32,7 @@ export const MaxLinksInput = ({cellView, graph}: MaxLinksInputProps) => {
         <TextField
             type={"number"}
             value={maxNumberLinks}
-            InputProps={{inputProps: {inputClassName: styles.input, min: linksNumber}}}
+            InputProps={{inputProps: {inputclassname: styles.input, min: linksNumber}}}
             onChange={handleMaxLinkChange}/>
     )
 }
