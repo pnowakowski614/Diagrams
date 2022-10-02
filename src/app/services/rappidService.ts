@@ -12,6 +12,7 @@ import {
 } from "../utils/rappid-utils";
 import { CustomLink } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
+import ToolbarService from "./toolbarService";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -22,14 +23,16 @@ export interface InspectorState {
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
+    toolbarElement: HTMLElement;
     paper!: dia.Paper;
     scroller!: ui.PaperScroller;
     graph!: dia.Graph;
     setInspectorOpened!: Dispatch<React.SetStateAction<InspectorState>>;
 
-    constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
+    constructor(paperElement: HTMLElement, stencilElement: HTMLElement, toolbarElement: HTMLElement) {
         this.paperElement = paperElement;
         this.stencilElement = stencilElement;
+        this.toolbarElement = toolbarElement;
     }
 
     public setInspectorFunction(callback: Dispatch<React.SetStateAction<InspectorState>>): void {
@@ -39,6 +42,7 @@ class RappidService {
     public init(): void {
         this.initCanvas();
         this.initStencil(this.paper);
+        this.initToolbar();
         this.initPaperEvents(this.paper, this.scroller);
         RappidService.initTooltip();
     }
@@ -73,6 +77,11 @@ class RappidService {
 
         this.paperElement.appendChild(scroller.el);
         scroller.render().center();
+    }
+
+    private initToolbar(): void {
+        const toolbarInst = new ToolbarService(this.toolbarElement);
+        toolbarInst.initToolbar();
     }
 
     private initStencil(paper: dia.Paper): void {
