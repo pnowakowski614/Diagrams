@@ -80,7 +80,7 @@ class RappidService {
     }
 
     private initToolbar(): void {
-        const toolbarInst = new ToolbarService(this.toolbarElement);
+        const toolbarInst = new ToolbarService(this.toolbarElement, this.graph, this.scroller);
         toolbarInst.initToolbar();
     }
 
