@@ -1,4 +1,4 @@
-import { dia, ui } from "@clientio/rappid";
+import { dia, layout, ui } from "@clientio/rappid";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -35,6 +35,29 @@ class ToolbarService {
                 commandManager: commandManager
             }
         });
+
+        const treeLayout = new layout.TreeLayout({
+            graph: this.graph,
+            parentGap: 100,
+            siblingGap: 100,
+            filter: (children) => {
+                for (const child of children) {
+                    if (child.getParentCell() !== null) {
+                        children = children.filter((item) => {
+                            return item !== child;
+                        });
+                    }
+                }
+                return children;
+            },
+            updateVertices: (link) => {
+                link.vertices();
+            }
+        });
+
+        this.toolbar.on('treeLayout:pointerclick', () => {
+            treeLayout.layout({deep: true, parentRelative: true});
+        })
 
         this.toolbarElement.appendChild(this.toolbar.el);
         this.toolbar.render();
