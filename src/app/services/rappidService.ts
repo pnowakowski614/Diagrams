@@ -1,4 +1,4 @@
-import { dia, shapes, ui } from '@clientio/rappid';
+import { dia, layout, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React, { Dispatch } from "react";
 import {
@@ -41,9 +41,10 @@ class RappidService {
 
     public init(): void {
         this.initCanvas();
-        this.initStencil(this.paper);
+        this.initStencil();
         this.initToolbar();
-        this.initPaperEvents(this.paper, this.scroller);
+        this.initPaperEvents();
+        this.initGridLayout();
         RappidService.initTooltip();
     }
 
@@ -84,8 +85,8 @@ class RappidService {
         toolbarInst.initToolbar();
     }
 
-    private initStencil(paper: dia.Paper): void {
-        const stencilInst = new StencilService(paper, this.stencilElement);
+    private initStencil(): void {
+        const stencilInst = new StencilService(this.paper, this.stencilElement);
         stencilInst.initStencil();
     }
 
@@ -98,11 +99,29 @@ class RappidService {
         });
     }
 
-    private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller): void {
-        paper.on({
+    private initGridLayout(): void {
+        this.graph.on('change:embeds', (element) => {
+            const padding = 25;
+
+            const box = layout.GridLayout.layout(element.getEmbeddedCells(), {
+                columns: 3,
+                parentRelative: true,
+                rowGap: padding,
+                columnGap: 30,
+                marginX: padding,
+                marginY: padding
+            });
+
+            console.log(box);
+            element.fitEmbeds({padding: padding, deep: true});
+        })
+    }
+
+    private initPaperEvents(): void {
+        this.paper.on({
             'blank:pointerdown': (evt: dia.Event) => {
-                scroller.startPanning(evt);
-                paper.removeTools();
+                this.scroller.startPanning(evt);
+                this.paper.removeTools();
                 this.setInspectorOpened({
                     isOpened: false,
                     cellView: null,
@@ -110,12 +129,12 @@ class RappidService {
                 });
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
-                paper.removeTools();
+                this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 RappidService.initHalo(elementView);
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
-                paper.removeTools();
+                this.paper.removeTools();
                 addLinkTools(linkView);
             },
             'link:connect': (linkView: dia.LinkView) => {
