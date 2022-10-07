@@ -5,14 +5,25 @@ import { MaxLinksInputProps } from "../../../utils/types";
 
 export const MaxLinksInput = ({cell, graph}: MaxLinksInputProps) => {
     const currentLinksNumber = graph.getConnectedLinks(cell, {outbound: true}).length;
-    const currentMaxLinks = cell.prop("maxLinks") || currentLinksNumber;
+
+    const currentMaxLinks = () => {
+        if (cell.prop("maxLinks") >= currentLinksNumber) {
+            return cell.prop("maxLinks");
+        } else {
+            return 3;
+        }
+    }
+
     const [linksNumber, setLinksNumber] = useState(currentLinksNumber);
     const [maxNumberLinks, setMaxNumberLinks] = useState(currentMaxLinks);
 
     const handleMaxLinkChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setLinksNumber(graph.getConnectedLinks(cell, {outbound: true}).length);
-        setMaxNumberLinks(parseInt(event.target.value));
-        cell.prop("maxLinks", parseInt(event.target.value));
+        const intInputValue = parseInt(event.target.value);
+
+        setLinksNumber(currentLinksNumber);
+        setMaxNumberLinks(intInputValue);
+
+        cell.prop("maxLinks", intInputValue);
     }
 
     useEffect(() => {

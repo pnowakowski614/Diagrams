@@ -123,10 +123,10 @@ class RappidService {
     }
 
     private linkValidation(linkView: dia.LinkView): void {
-        const sourceId = linkView.model.source().id as dia.Cell.ID;
-        const maxElementLinks = this.graph.getCell(sourceId).prop("maxLinks");
-        const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(sourceId)).length;
-        if (maxElementLinks < currentElementLinks || maxElementLinks === undefined) {
+        const source = linkView.model.getSourceElement();
+        const maxElementLinks = this.graph.getCell(source!.id).prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(source!.id)).length;
+        if (maxElementLinks < currentElementLinks) {
             linkView.model.remove();
         }
     }
