@@ -38,8 +38,8 @@ class RappidService {
 
     public init(): void {
         this.initCanvas();
-        this.initStencil(this.paper);
-        this.initPaperEvents(this.paper, this.scroller);
+        this.initStencil();
+        this.initPaperEvents();
         RappidService.initTooltip();
     }
 
@@ -72,11 +72,11 @@ class RappidService {
         });
 
         this.paperElement.appendChild(scroller.el);
-        scroller.render().center();
+        this.scroller.render().center();
     }
 
-    private initStencil(paper: dia.Paper): void {
-        const stencilInst = new StencilService(paper, this.stencilElement);
+    private initStencil(): void {
+        const stencilInst = new StencilService(this.paper, this.stencilElement);
         stencilInst.initStencil();
     }
 
@@ -89,11 +89,11 @@ class RappidService {
         });
     }
 
-    private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller): void {
-        paper.on({
+    private initPaperEvents(): void {
+        this.paper.on({
             'blank:pointerdown': (evt: dia.Event) => {
-                scroller.startPanning(evt);
-                paper.removeTools();
+                this.scroller.startPanning(evt);
+                this.paper.removeTools();
                 this.setInspectorOpened({
                     isOpened: false,
                     cellView: null,
@@ -101,12 +101,12 @@ class RappidService {
                 });
             },
             'element:pointerclick': (elementView: dia.ElementView) => {
-                paper.removeTools();
+                this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 RappidService.initHalo(elementView);
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
-                paper.removeTools();
+                this.paper.removeTools();
                 addLinkTools(linkView);
             },
             'link:connect': (linkView: dia.LinkView) => {
