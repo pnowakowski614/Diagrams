@@ -27,7 +27,7 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                             <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
                         </div>
                         <div className={styles.maxLinkInputWrapper}>
-                            <MaxLinksInput cellView={cellView} graph={graph}/>
+                            <MaxLinksInput cell={cellView.model} graph={graph}/>
                         </div>
                     </div>
                 </>
@@ -37,7 +37,7 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                     <h4 className={styles.inspectorCategoryHeader}>Color</h4>
                 </div>
                 <div className={styles.colorInputWrapper}>
-                    <ColorInput cellView={cellView}/>
+                    <ColorInput cell={cellView.model}/>
                 </div>
             </div>}
         </div>

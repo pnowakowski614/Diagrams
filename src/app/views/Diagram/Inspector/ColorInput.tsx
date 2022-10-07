@@ -4,14 +4,14 @@ import { MuiColorInput, MuiColorInputValue } from "mui-color-input";
 import styles from "./inspector.module.scss";
 import { ColorInputProps } from "../../../utils/types";
 
-export const ColorInput = ({cellView}: ColorInputProps) => {
-    const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
+export const ColorInput = ({cell}: ColorInputProps) => {
+    const inspectedGlobalType: GlobalShapesTypes = cell.prop("type");
 
     const findInspectedColor = (inspectedGlobalType: GlobalShapesTypes) => {
         if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
-            return cellView.model.attr("line/stroke");
+            return cell.attr("line/stroke");
         } else {
-            return cellView.model.attr("background/fill");
+            return cell.attr("background/fill");
         }
     };
 
@@ -21,11 +21,16 @@ export const ColorInput = ({cellView}: ColorInputProps) => {
         setColor(color);
 
         if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
-            cellView.model.attr("line/stroke", color);
+            cell.attr("line/stroke", color);
         } else {
-
-            cellView.model.attr("background/fill", color);
-            cellView.model.attr("body/stroke", color);
+            cell.attr({
+                background: {
+                    fill: color.toString(),
+                },
+                body: {
+                    stroke: color.toString()
+                }
+            });
         }
     }
 
