@@ -101,6 +101,14 @@ export const addLinkTools = (linkView: dia.LinkView): void => {
     linkView.addTools(toolsView);
 }
 
+const validEmebedCombinationConsts = [
+    LocalShapesTypes.NodeShape,
+    LocalShapesTypes.ECSTask,
+    LocalShapesTypes.EC2,
+    LocalShapesTypes.EcsService,
+    LocalShapesTypes.EcsCluster,
+]
+
 const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: LocalShapesTypes[] }[] = [
     {
         parentsName: LocalShapesTypes.AutoScaling,
@@ -117,11 +125,7 @@ const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: Lo
     {
         parentsName: LocalShapesTypes.Region,
         validChildren: [
-            LocalShapesTypes.NodeShape,
-            LocalShapesTypes.ECSTask,
-            LocalShapesTypes.EC2,
-            LocalShapesTypes.EcsService,
-            LocalShapesTypes.EcsCluster,
+            ...validEmebedCombinationConsts,
             LocalShapesTypes.VPC,
             LocalShapesTypes.Subnet,
             LocalShapesTypes.SecurityGroup,
@@ -130,11 +134,7 @@ const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: Lo
     {
         parentsName: LocalShapesTypes.VPC,
         validChildren: [
-            LocalShapesTypes.NodeShape,
-            LocalShapesTypes.ECSTask,
-            LocalShapesTypes.EC2,
-            LocalShapesTypes.EcsService,
-            LocalShapesTypes.EcsCluster,
+            ...validEmebedCombinationConsts,
             LocalShapesTypes.Subnet,
             LocalShapesTypes.SecurityGroup,
         ]
@@ -142,24 +142,13 @@ const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: Lo
     {
         parentsName: LocalShapesTypes.Subnet,
         validChildren: [
-            LocalShapesTypes.NodeShape,
-            LocalShapesTypes.ECSTask,
-            LocalShapesTypes.EC2,
-            LocalShapesTypes.EcsService,
-            LocalShapesTypes.EcsCluster,
+            ...validEmebedCombinationConsts,
             LocalShapesTypes.SecurityGroup,
         ]
     },
     {
         parentsName: LocalShapesTypes.SecurityGroup,
-        validChildren: [
-            LocalShapesTypes.NodeShape,
-            LocalShapesTypes.ECSTask,
-            LocalShapesTypes.EC2,
-            LocalShapesTypes.EcsService,
-            LocalShapesTypes.EcsCluster,
-        ]
-
+        validChildren: validEmebedCombinationConsts
     }
 ]
 
