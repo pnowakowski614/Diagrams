@@ -1,12 +1,7 @@
 import { TextField } from "@mui/material";
 import styles from "./inspector.module.scss";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { dia } from "@clientio/rappid";
-
-interface MaxLinksInputProps {
-    cellView: dia.CellView,
-    graph: dia.Graph
-}
+import { MaxLinksInputProps } from "../../../utils/types";
 
 export const MaxLinksInput = ({cellView, graph}: MaxLinksInputProps) => {
     const currentLinksNumber = graph.getConnectedLinks(cellView.model, {outbound: true}).length;

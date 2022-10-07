@@ -1,12 +1,8 @@
 import { GlobalShapesTypes } from "../../../types/enums";
 import React, { useEffect, useState } from "react";
 import { MuiColorInput, MuiColorInputValue } from "mui-color-input";
-import { dia } from "@clientio/rappid";
 import styles from "./inspector.module.scss";
-
-interface ColorInputProps {
-    cellView: dia.CellView
-}
+import { ColorInputProps } from "../../../utils/types";
 
 export const ColorInput = ({cellView}: ColorInputProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
@@ -27,6 +23,7 @@ export const ColorInput = ({cellView}: ColorInputProps) => {
         if (inspectedGlobalType === GlobalShapesTypes.CustomLink) {
             cellView.model.attr("line/stroke", color);
         } else {
+
             cellView.model.attr("background/fill", color);
             cellView.model.attr("body/stroke", color);
         }

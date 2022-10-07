@@ -1,16 +1,11 @@
 import React from "react";
 import styles from './inspector.module.scss';
-import { dia } from "@clientio/rappid";
 import { colorChangeShapes } from "../../../utils/rappid-utils";
 import { GlobalShapesTypes } from "../../../types/enums";
 import { MaxLinksInput } from "./MaxLinksInput";
 import { LabelInput } from "./LabelInput";
 import { ColorInput } from "./ColorInput";
-
-interface InspectorProps {
-    cellView: dia.CellView
-    graph: dia.Graph
-}
+import { InspectorProps } from "../../../utils/types";
 
 const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");

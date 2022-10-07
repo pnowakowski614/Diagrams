@@ -1,11 +1,7 @@
-import { dia } from "@clientio/rappid";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { getShapeLabelWidth } from "../../../utils/rappid-utils";
 import { Input } from "@mui/material";
-
-interface LabelInputProps {
-    cellView: dia.CellView
-}
+import { LabelInputProps } from "../../../utils/types";
 
 export const LabelInput = ({cellView}: LabelInputProps) => {
     const inspectedElementText = cellView.model.attr("label/text") || "";
