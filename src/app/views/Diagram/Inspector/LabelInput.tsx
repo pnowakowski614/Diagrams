@@ -9,14 +9,18 @@ export const LabelInput = ({cellView}: LabelInputProps) => {
     const [textValue, setTextValue] = useState(inspectedElementText);
 
     const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
-        cellView.model.attr("label/textWrap", {
-            width: getShapeLabelWidth(cellView),
-            height: 20,
-            ellipsis: true
-        })
+        cellView.model.attr({
+            label: {
+                textWrap: {
+                    width: getShapeLabelWidth(cellView),
+                    height: 20,
+                    ellipsis: true
+                },
+                text: event.target.value
+            }
+        });
 
         setTextValue(event.target.value);
-        cellView.model.attr("label/text", event.target.value);
     }
 
     useEffect(() => {
