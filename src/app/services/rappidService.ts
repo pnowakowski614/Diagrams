@@ -103,7 +103,7 @@ class RappidService {
         this.graph.on('change:embeds', (element) => {
             const padding = 25;
 
-            const box = layout.GridLayout.layout(element.getEmbeddedCells(), {
+            layout.GridLayout.layout(element.getEmbeddedCells(), {
                 columns: 3,
                 parentRelative: true,
                 rowGap: padding,
@@ -111,9 +111,6 @@ class RappidService {
                 marginX: padding,
                 marginY: padding
             });
-
-            console.log(box);
-            element.fitEmbeds({padding: padding, deep: true});
         })
     }
 
