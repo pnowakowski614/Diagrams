@@ -27,6 +27,7 @@ class RappidService {
     paper!: dia.Paper;
     scroller!: ui.PaperScroller;
     graph!: dia.Graph;
+    halo!: ui.Halo;
     setInspectorOpened!: Dispatch<React.SetStateAction<InspectorState>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement, toolbarElement: HTMLElement) {
@@ -128,7 +129,8 @@ class RappidService {
             'element:pointerclick': (elementView: dia.ElementView) => {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
-                RappidService.initHalo(elementView);
+                this.initHalo(elementView);
+                this.validateForking(elementView.model);
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
@@ -168,9 +170,8 @@ class RappidService {
         freeTransform.render();
     }
 
-
-    private static initHalo(cellView: dia.CellView): void {
-        const halo = new ui.Halo({
+    private initHalo(cellView: dia.CellView): void {
+        const halo = this.halo = new ui.Halo({
             cellView,
             type: 'toolbar',
             handles: haloConfig,
@@ -178,6 +179,19 @@ class RappidService {
             magnet: getHaloMagnet
         })
         halo.render();
+
+        this.halo.on('action:fork:pointerdown', () => this.validateForking(cellView.model));
+    }
+
+    private validateForking(cell: dia.Cell): void {
+        const maxElementLinks = cell.prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(cell).length;
+        if (maxElementLinks - 1 < currentElementLinks) {
+            alert("Warning! Increase max outgoing number of links in Inspector to continue forking.")
+            this.halo.removeHandle('fork');
+        } else if (maxElementLinks === undefined) {
+            this.halo.removeHandle('fork');
+        }
     }
 }
 
