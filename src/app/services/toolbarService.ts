@@ -40,20 +40,23 @@ class ToolbarService {
             graph: this.graph,
             parentGap: 100,
             siblingGap: 100,
-            filter: (children) => {
-                for (const child of children) {
-                    if (child.getParentCell() !== null) {
-                        children = children.filter((item) => {
-                            return item !== child;
-                        });
-                    }
-                }
-                return children;
-            },
             updateVertices: (link) => {
                 link.vertices();
             }
         });
+
+        this.toolbar.on('save:pointerclick', () => {
+            const graphJSON = this.graph.toJSON();
+            const jsonString = JSON.stringify(graphJSON);
+
+            fetch('http://localhost:7000/graphs', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: jsonString
+            }).then(() =>
+                console.log("diagram saved")
+            )
+        })
 
         this.toolbar.on('treeLayout:pointerclick', () => {
             treeLayout.layout({deep: true, parentRelative: true});
