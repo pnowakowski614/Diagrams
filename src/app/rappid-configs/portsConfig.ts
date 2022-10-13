@@ -39,7 +39,19 @@ export const portsConfig = {
     },
     items: [
         {group: 'in'},
-        {group: 'in'},
         {group: 'out'}
     ]
+}
+
+export const groupShapePortConfig = {
+    ...portsConfig,
+    groups: {
+        'in': {
+            ...portIn,
+            position: {
+                name: 'top'
+            }
+        },
+        'out': portOut
+    }
 }

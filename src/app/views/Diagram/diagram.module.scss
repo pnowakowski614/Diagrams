@@ -6,27 +6,16 @@
 
 .diagramContainer {
   height: 100%;
-  display: flex;
-}
-
-.inspector {
-  position: absolute;
-  top: 100px;
-  bottom: 0;
-  right: 0;
-  width: 100px;
-  background-color: #c9ba91;
 }
 
 .wrapper {
   display: flex;
-  flex-direction: column;
   height: 100%;
   width: 100%;
 }
 
 .stencilHolder {
   position: relative;
-  height: 93%;
+  height: 88%;
   min-width: 220px;
 }

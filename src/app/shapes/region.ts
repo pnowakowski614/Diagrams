@@ -1,38 +1,49 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
-import { groupShapePortConfig } from "../rappid-configs/portsConfig";
+import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
 import { defaultGroupShapeAttrs, defaultGroupShapeMarkup } from "../utils/rappid-utils";
 
-export class Subnet extends shapes.standard.Rectangle {
+export class Region extends shapes.standard.Rectangle {
     defaults() {
         return {
             ...super.defaults,
-            type: GlobalShapesTypes.Subnet,
-            localType: LocalShapesTypes.Subnet,
+            type: GlobalShapesTypes.Region,
+            localType: LocalShapesTypes.Region,
             size: {
-                width: 250,
-                height: 250
+                width: 375,
+                height: 375
             },
             attrs: {
                 ...defaultGroupShapeAttrs,
                 body: {
                     ...defaultGroupShapeAttrs.body,
-                    stroke: "turquoise",
+                    stroke: "gray",
                 },
                 background: {
                     ...defaultGroupShapeAttrs.background,
-                    fill: "turquoise",
+                    fill: "gray",
                 },
                 label: {
                     ...defaultGroupShapeAttrs.label,
-                    text: "Subnet",
+                    text: "Region",
                 },
                 icon: {
                     ...defaultGroupShapeAttrs.icon,
-                    href: "icons/other/lock.png",
+                    href: "icons/other/location.png",
                 }
             },
-            ports: groupShapePortConfig
+            ports: {
+                ...portsConfig,
+                groups: {
+                    'in': {
+                        ...portIn,
+                        position: {
+                            name: 'top'
+                        }
+                    },
+                    'out': portOut
+                }
+            }
         }
     }
 

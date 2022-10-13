@@ -1,9 +1,8 @@
 import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
-import React from "react";
+import React, { Dispatch } from "react";
 import {
     addLinkTools,
-    getCustomLink,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -11,25 +10,43 @@ import {
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
+import { CustomLink } from "../shapes";
+import { haloConfig } from "../rappid-configs/haloConfig";
+
+export interface InspectorState {
+    isOpened: boolean;
+    cellView: dia.CellView | null;
+    graph: dia.Graph | null;
+}
 
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
-    setInspectorOpened!: React.Dispatch<React.SetStateAction<boolean>>;
+    paper!: dia.Paper;
+    scroller!: ui.PaperScroller;
+    graph!: dia.Graph;
+    setInspectorOpened!: Dispatch<React.SetStateAction<InspectorState>>;
 
     constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
         this.paperElement = paperElement;
         this.stencilElement = stencilElement;
     }
 
-    public setInspectorFunction(callback: React.Dispatch<React.SetStateAction<boolean>>): void {
+    public setInspectorFunction(callback: Dispatch<React.SetStateAction<InspectorState>>): void {
         this.setInspectorOpened = callback;
     }
 
     public init(): void {
-        const graph = new dia.Graph({}, {cellNamespace: shapes});
+        this.initCanvas();
+        this.initStencil();
+        this.initPaperEvents();
+        RappidService.initTooltip();
+    }
 
-        const paper = new dia.Paper({
+    private initCanvas() {
+        const graph = this.graph = new dia.Graph({}, {cellNamespace: shapes});
+
+        const paper = this.paper = new dia.Paper({
             model: graph,
             width: 3000,
             height: 3000,
@@ -44,10 +61,10 @@ class RappidService {
             snapLinks: {radius: 40},
             validateConnection: validateConnection,
             linkPinning: false,
-            defaultLink: getCustomLink
+            defaultLink: new CustomLink()
         });
 
-        const scroller = new ui.PaperScroller({
+        const scroller = this.scroller = new ui.PaperScroller({
             paper: paper,
             cursor: 'grab',
             scrollWhileDragging: true,
@@ -55,69 +72,87 @@ class RappidService {
         });
 
         this.paperElement.appendChild(scroller.el);
-        scroller.render().center();
+        this.scroller.render().center();
+    }
 
-        this.initPaperEvents(paper, scroller);
-
-        const stencilInst = new StencilService(paper, this.stencilElement);
+    private initStencil(): void {
+        const stencilInst = new StencilService(this.paper, this.stencilElement);
         stencilInst.initStencil();
-
-        RappidService.initTooltip();
-        this.initFreeTransform(paper);
-        this.initHalo(paper);
     }
 
     private static initTooltip(): ui.Tooltip {
         return new ui.Tooltip({
+            rootTarget: document.body,
             target: '[data-tooltip]',
             direction: ui.Tooltip.TooltipArrowPosition.Auto,
-            position: ui.Tooltip.TooltipPosition.Left,
             padding: 10
         });
     }
 
-    private initPaperEvents(paper: dia.Paper, scroller: ui.PaperScroller): void {
-        paper.on('blank:pointerdown', (evt) => scroller.startPanning(evt));
-
-        paper.on('cell:pointerclick', () => {
-            this.setInspectorOpened(true);
-        });
-
-        paper.on('link:pointerclick', (linkView: dia.LinkView) => {
-            addLinkTools(linkView)
-        })
-
-        paper.on('blank:pointerdown', () => {
-            paper.removeTools();
-        })
-    }
-
-    private initFreeTransform(paper: dia.Paper): void {
-        paper.on('element:pointerclick', (elementView) => {
-            const freeTransform = new ui.FreeTransform({
-                cellView: elementView,
-                allowRotation: false,
-                preserveAspectRatio: getPreserveAspectRatio(elementView),
-                minWidth: getMinDimensions(elementView),
-                minHeight: getMinDimensions(elementView),
-                resizeDirections: getResizeDirections(elementView)
-            });
-            freeTransform.render();
-        });
-    }
-
-    private initHalo(paper: dia.Paper): void {
-        paper.on('cell:pointerclick', (cellView: dia.CellView) => {
-                const halo = new ui.Halo({
+    private initPaperEvents(): void {
+        this.paper.on({
+            'blank:pointerdown': (evt: dia.Event) => {
+                this.scroller.startPanning(evt);
+                this.paper.removeTools();
+                this.setInspectorOpened({
+                    isOpened: false,
+                    cellView: null,
+                    graph: null
+                });
+            },
+            'element:pointerclick': (elementView: dia.ElementView) => {
+                this.paper.removeTools();
+                RappidService.initFreeTransform(elementView);
+                RappidService.initHalo(elementView);
+            },
+            'link:pointerclick': (linkView: dia.LinkView) => {
+                this.paper.removeTools();
+                addLinkTools(linkView);
+            },
+            'link:connect': (linkView: dia.LinkView) => {
+                this.linkValidation(linkView);
+            },
+            'cell:pointerclick': (cellView: dia.CellView) => {
+                this.setInspectorOpened({
+                    isOpened: true,
                     cellView,
-                    type: 'toolbar',
-                    useModelGeometry: true,
-                    magnet: getHaloMagnet
-                })
-                halo.render();
-                halo.removeHandle('resize');
+                    graph: this.graph
+                });
             }
-        );
+        });
+    }
+
+    private linkValidation(linkView: dia.LinkView): void {
+        const source = linkView.model.getSourceElement();
+        const maxElementLinks = this.graph.getCell(source!.id).prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(source!.id)).length;
+        if (maxElementLinks < currentElementLinks) {
+            linkView.model.remove();
+        }
+    }
+
+    private static initFreeTransform(elementView: dia.ElementView): void {
+        const freeTransform = new ui.FreeTransform({
+            cellView: elementView,
+            allowRotation: false,
+            preserveAspectRatio: getPreserveAspectRatio(elementView),
+            minWidth: getMinDimensions(elementView),
+            minHeight: getMinDimensions(elementView),
+            resizeDirections: getResizeDirections(elementView)
+        });
+        freeTransform.render();
+    }
+
+
+    private static initHalo(cellView: dia.CellView): void {
+        const halo = new ui.Halo({
+            cellView,
+            type: 'toolbar',
+            handles: haloConfig,
+            useModelGeometry: true,
+            magnet: getHaloMagnet
+        })
+        halo.render();
     }
 }
 

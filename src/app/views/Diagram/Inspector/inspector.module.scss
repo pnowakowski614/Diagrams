@@ -1,0 +1,45 @@
+.inspector {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 100px;
+  bottom: 0;
+  right: 0;
+  width: 200px;
+  background-color: #c9ba91;
+}
+
+.inspectorCategoryContainer {
+  display: flex;
+  height: 50px;
+  background-color: #B68839;
+}
+
+.inspectorCategoryHeader {
+  padding-left: 25px;
+  align-self: center;
+}
+
+.inspectorCategoryHeader {
+  padding-left: 25px;
+  align-self: center;
+}
+
+.portsSubheader {
+  padding-left: 25px;
+}
+
+.colorInputWrapper, .maxLinkInputWrapper {
+  margin: 15px 20px;
+  width: 80%;
+}
+
+.maxLinkInputWrapper {
+  width: 35%;
+}
+
+.labelInputWrapper {
+  margin: 15px 15px 15px;
+  padding: 5px 15px;
+}
+

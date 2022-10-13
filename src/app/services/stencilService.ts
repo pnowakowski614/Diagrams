@@ -6,6 +6,7 @@ import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, 
 import { LocalShapesTypes } from "../types/enums";
 import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
 import { portsConfig } from "../rappid-configs/portsConfig";
+import { Region } from "../shapes/region";
 
 class StencilService {
     paper: dia.Paper;
@@ -33,18 +34,15 @@ class StencilService {
     }
 
     private setElements(): { [p: string]: NodeShape[] } {
-        let groupList: { [index: string]: NodeShape[] } = {};
+        const groupList: { [index: string]: NodeShape[] } = {};
 
         Object.keys(groupConfig).forEach((key) => {
             groupList[key] = [];
         })
 
         Object.values(shapesConfig).forEach((value) => {
-            let newNode = new NodeShape()
+            const newNode = new NodeShape()
             newNode.attr({
-                root: {
-                    dataTooltip: value.label
-                },
                 label: {
                     text: value.label,
                 },
@@ -59,21 +57,23 @@ class StencilService {
         return groupList;
     }
 
-    private static cloneNode(el: dia.Cell): dia.Cell<dia.Cell.Attributes, dia.ModelSetOptions> {
-        let clone = el.clone();
+    private static cloneNode(el: dia.Cell): dia.Cell {
+        const clone = el.clone();
         switch (clone.prop("localType")) {
             case LocalShapesTypes.AutoScaling:
-                return clone = new AutoScaling();
+                return new AutoScaling();
             case LocalShapesTypes.EcsCluster:
-                return clone = new ECSCluster();
+                return new ECSCluster();
             case LocalShapesTypes.EcsService:
-                return clone = new ECSService();
+                return new ECSService();
             case LocalShapesTypes.SecurityGroup:
-                return clone = new SecurityGroup();
+                return new SecurityGroup();
             case LocalShapesTypes.VPC:
-                return clone = new VPC();
+                return new VPC();
             case LocalShapesTypes.Subnet:
-                return clone = new Subnet();
+                return new Subnet();
+            case LocalShapesTypes.Region:
+                return new Region();
             default:
                 clone.prop('ports', portsConfig);
                 return clone.attr({
