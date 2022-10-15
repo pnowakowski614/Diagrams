@@ -1,4 +1,5 @@
 import { dia, layout, ui } from "@clientio/rappid";
+import { postInJSON } from "../API/fetchMethods";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -19,14 +20,17 @@ class ToolbarService {
 
         this.toolbar = new ui.Toolbar({
             tools: [
-                {type: 'button', name: 'treeLayout', text: 'Tree Layout'},
-                'separator',
+                {type: 'inputText', name: "diagramName", label: "Name diagram: ", value: "Diagram Name"},
+                {type: 'separator', width: "10px"},
                 'undo',
                 'redo',
                 'separator',
                 'zoomIn',
                 'zoomOut',
+                'zoomToFit',
                 'zoomSlider',
+                'separator',
+                {type: 'button', name: 'treeLayout', text: 'Tree Layout'},
                 'separator',
                 {type: 'button', name: 'save', text: 'Save Diagram'},
             ],
@@ -40,22 +44,20 @@ class ToolbarService {
             graph: this.graph,
             parentGap: 100,
             siblingGap: 100,
+            updatePosition: (element, position, opt) => {
+                if (element.prop("embeds")) {
+                    element.position(position.x, position.y, {deep: true})
+                } else element.set("position", position, opt)
+            },
             updateVertices: (link) => {
                 link.vertices();
             }
         });
 
         this.toolbar.on('save:pointerclick', () => {
-            const graphJSON = this.graph.toJSON();
-            const jsonString = JSON.stringify(graphJSON);
-
-            fetch('http://localhost:7000/graphs', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: jsonString
-            }).then(() =>
-                console.log("diagram saved")
-            )
+            const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
+            this.graph.set('diagramName', diagramName);
+            postInJSON(this.graph);
         })
 
         this.toolbar.on('treeLayout:pointerclick', () => {

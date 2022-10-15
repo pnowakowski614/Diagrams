@@ -5,11 +5,20 @@ import "@clientio/rappid/rappid.css";
 import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
+import { useSelector } from "react-redux";
+
+interface JSONGraphRootState {
+    diagramList: [{ cells: [], id: number, diagramName: string }] | null
+    id: number | null
+}
 
 const Diagram = () => {
     const canvas = useRef(null);
     const stencil = useRef(null);
     const toolbar = useRef(null);
+
+    const diagramList = useSelector((state: JSONGraphRootState) => state.diagramList)
+    const diagramId = useSelector((state: JSONGraphRootState) => state.id)
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
@@ -22,6 +31,9 @@ const Diagram = () => {
             const rappidInst = new RappidService(canvas.current!, stencil.current!, toolbar.current!);
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorState);
+            if (diagramList !== null) {
+                rappidInst.getGraphFromJSON(diagramList, diagramId);
+            }
         }
     });
 

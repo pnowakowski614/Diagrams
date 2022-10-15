@@ -1,17 +1,29 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-import RappidService from "app/services/rappidService";
 
-const initialState: RappidService | null = null;
+export const initialJsonGraph = {
+    diagramList: null,
+    id: null
+};
 
-const rappidSlice = createSlice({
-    name: 'rappidInstance',
-    initialState,
-    reducers: {}
+const jsonGraphSlice = createSlice({
+    name: 'jsonObject',
+    initialState: initialJsonGraph,
+    reducers: {
+        clearCurrentDiagram(state) {
+            state.diagramList = null;
+            state.id = null;
+        },
+        addObject(state, action) {
+            const {object, id} = action.payload;
+            state.diagramList = object;
+            state.id = id;
+        }
+    }
 });
 
 const store = configureStore({
-    reducer: {rappidReducer: rappidSlice.reducer}
+    reducer: jsonGraphSlice.reducer
 });
 
-export const rappidActions = rappidSlice.actions;
+export const jsonGraphSliceActions = jsonGraphSlice.actions;
 export default store;

@@ -1,4 +1,4 @@
-import { dia, layout, shapes, ui } from '@clientio/rappid';
+import { dia, shapes, ui } from '@clientio/rappid';
 import StencilService from "./stencilService";
 import React, { Dispatch } from "react";
 import {
@@ -7,6 +7,8 @@ import {
     getMinDimensions,
     getPreserveAspectRatio,
     getResizeDirections,
+    updateGridLayout,
+    updateGroupSize,
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
@@ -102,16 +104,8 @@ class RappidService {
 
     private initGridLayout(): void {
         this.graph.on('change:embeds', (element) => {
-            const padding = 25;
-
-            layout.GridLayout.layout(element.getEmbeddedCells(), {
-                columns: 3,
-                parentRelative: true,
-                rowGap: padding,
-                columnGap: 30,
-                marginX: padding,
-                marginY: padding
-            });
+            updateGridLayout(element);
+            updateGroupSize(element);
         })
     }
 
@@ -163,8 +157,8 @@ class RappidService {
             cellView: elementView,
             allowRotation: false,
             preserveAspectRatio: getPreserveAspectRatio(elementView),
-            minWidth: getMinDimensions(elementView),
-            minHeight: getMinDimensions(elementView),
+            minWidth: getMinDimensions(elementView.model),
+            minHeight: getMinDimensions(elementView.model),
             resizeDirections: getResizeDirections(elementView)
         });
         freeTransform.render();
@@ -192,6 +186,11 @@ class RappidService {
         } else if (maxElementLinks === undefined) {
             this.halo.removeHandle('fork');
         }
+    }
+
+    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
+        this.graph.fromJSON(obj[id! - 1]);
+        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
     }
 }
 
