@@ -189,7 +189,10 @@ class RappidService {
     }
 
     public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
-        this.graph.fromJSON(obj[id! - 1]);
+        const jsonGraph = obj.find(graph => graph.id === id);
+        const lastFreeID = obj[obj.length - 1].id + 1;
+        this.graph.fromJSON(jsonGraph);
+        this.graph.set("id", lastFreeID);
         this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
     }
 }
