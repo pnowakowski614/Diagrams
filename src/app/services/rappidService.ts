@@ -124,7 +124,6 @@ class RappidService {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 this.initHalo(elementView);
-                this.validateForking(elementView.model);
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
@@ -173,19 +172,6 @@ class RappidService {
             magnet: getHaloMagnet
         })
         halo.render();
-
-        this.halo.on('action:fork:pointerdown', () => this.validateForking(cellView.model));
-    }
-
-    private validateForking(cell: dia.Cell): void {
-        const maxElementLinks = cell.prop("maxLinks");
-        const currentElementLinks = this.graph.getConnectedLinks(cell).length;
-        if (maxElementLinks - 1 < currentElementLinks) {
-            alert("Warning! Increase max outgoing number of links in Inspector to continue forking.")
-            this.halo.removeHandle('fork');
-        } else if (maxElementLinks === undefined) {
-            this.halo.removeHandle('fork');
-        }
     }
 
     public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
