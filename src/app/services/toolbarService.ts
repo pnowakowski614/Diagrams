@@ -60,6 +60,11 @@ class ToolbarService {
             postInJSON(this.graph);
         })
 
+        this.toolbar.on('clear:pointerclick', () => {
+            const cells = this.graph.getCells();
+            this.graph.removeCells(cells);
+        })
+
         this.toolbar.on('treeLayout:pointerclick', () => {
             treeLayout.layout({deep: true, parentRelative: true});
         })
