@@ -33,6 +33,8 @@ class ToolbarService {
                 {type: 'button', name: 'treeLayout', text: 'Tree Layout'},
                 'separator',
                 {type: 'button', name: 'save', text: 'Save Diagram'},
+                'separator',
+                {type: 'button', name: 'clear', text: 'Clear Diagram'},
             ],
             references: {
                 paperScroller: this.paperScroller,
