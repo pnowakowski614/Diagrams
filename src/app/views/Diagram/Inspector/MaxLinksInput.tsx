@@ -1,23 +1,29 @@
 import { TextField } from "@mui/material";
 import styles from "./inspector.module.scss";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { dia } from "@clientio/rappid";
+import { MaxLinksInputProps } from "../../../utils/types";
 
-interface MaxLinksInputProps {
-    cellView: dia.CellView,
-    graph: dia.Graph
-}
+export const MaxLinksInput = ({cell, graph}: MaxLinksInputProps) => {
+    const currentLinksNumber = graph.getConnectedLinks(cell, {outbound: true}).length;
 
-export const MaxLinksInput = ({cellView, graph}: MaxLinksInputProps) => {
-    const currentLinksNumber = graph.getConnectedLinks(cellView.model, {outbound: true}).length;
-    const currentMaxLinks = cellView.model.prop("maxLinks") || currentLinksNumber;
+    const currentMaxLinks = () => {
+        if (cell.prop("maxLinks") >= currentLinksNumber) {
+            return cell.prop("maxLinks");
+        } else {
+            return 3;
+        }
+    }
+
     const [linksNumber, setLinksNumber] = useState(currentLinksNumber);
     const [maxNumberLinks, setMaxNumberLinks] = useState(currentMaxLinks);
 
     const handleMaxLinkChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setLinksNumber(graph.getConnectedLinks(cellView.model, {outbound: true}).length);
-        setMaxNumberLinks(parseInt(event.target.value));
-        cellView.model.prop("maxLinks", parseInt(event.target.value));
+        const intInputValue = parseInt(event.target.value);
+
+        setLinksNumber(currentLinksNumber);
+        setMaxNumberLinks(intInputValue);
+
+        cell.prop("maxLinks", intInputValue);
     }
 
     useEffect(() => {

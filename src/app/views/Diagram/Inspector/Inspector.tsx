@@ -1,16 +1,11 @@
 import React from "react";
 import styles from './inspector.module.scss';
-import { dia } from "@clientio/rappid";
 import { colorChangeShapes } from "../../../utils/rappid-utils";
 import { GlobalShapesTypes } from "../../../types/enums";
 import { MaxLinksInput } from "./MaxLinksInput";
 import { LabelInput } from "./LabelInput";
 import { ColorInput } from "./ColorInput";
-
-interface InspectorProps {
-    cellView: dia.CellView
-    graph: dia.Graph
-}
+import { InspectorProps } from "../../../utils/types";
 
 const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
@@ -32,7 +27,7 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                             <h4 className={styles.inspectorCategoryHeader}>Maximum outgoing links</h4>
                         </div>
                         <div className={styles.maxLinkInputWrapper}>
-                            <MaxLinksInput cellView={cellView} graph={graph}/>
+                            <MaxLinksInput cell={cellView.model} graph={graph}/>
                         </div>
                     </div>
                 </>
@@ -42,7 +37,7 @@ const Inspector = ({cellView, graph}: InspectorProps) => {
                     <h4 className={styles.inspectorCategoryHeader}>Color</h4>
                 </div>
                 <div className={styles.colorInputWrapper}>
-                    <ColorInput cellView={cellView}/>
+                    <ColorInput cell={cellView.model}/>
                 </div>
             </div>}
         </div>
