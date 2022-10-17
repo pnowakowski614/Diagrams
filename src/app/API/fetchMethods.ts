@@ -25,3 +25,18 @@ export const fetchFromJSON = async () => {
     const response = await fetch('http://localhost:7000/graphs')
     return response.json();
 }
+
+export const deleteFromJSON = (id: number) => {
+    fetch('http://localhost:7000/graphs/' + id, {
+        method: 'DELETE'
+    }).then(async response => {
+            if (!response.ok) {
+                const error = response.status;
+                return Promise.reject(error);
+            }
+            alert("deleted")
+        }
+    ).catch((error) => {
+        alert("Error!: " + error.toString());
+    })
+}
