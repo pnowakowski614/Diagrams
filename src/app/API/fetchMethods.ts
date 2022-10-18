@@ -34,7 +34,6 @@ export const deleteFromJSON = (id: number) => {
                 const error = response.status;
                 return Promise.reject(error);
             }
-            alert("deleted")
         }
     ).catch((error) => {
         alert("Error!: " + error.toString());
