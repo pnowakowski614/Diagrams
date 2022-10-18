@@ -124,6 +124,7 @@ class RappidService {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 this.initHalo(elementView);
+                this.halo.on('action:fork:pointerup', () => this.validateForking(elementView.model));
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
@@ -146,6 +147,8 @@ class RappidService {
         const source = linkView.model.getSourceElement();
         const maxElementLinks = this.graph.getCell(source!.id).prop("maxLinks");
         const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(source!.id)).length;
+        console.log(maxElementLinks);
+        console.log(currentElementLinks);
         if (maxElementLinks < currentElementLinks) {
             linkView.model.remove();
         }
@@ -172,6 +175,15 @@ class RappidService {
             magnet: getHaloMagnet
         })
         halo.render();
+    }
+
+    private validateForking(cell: dia.Element): void {
+        const maxElementLinks = cell.prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(cell).length;
+        if (maxElementLinks <= currentElementLinks) {
+            const neighborArray = this.graph.getNeighbors(cell)
+            neighborArray[neighborArray.length - 1].remove();
+        }
     }
 
     public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
