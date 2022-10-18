@@ -147,8 +147,6 @@ class RappidService {
         const source = linkView.model.getSourceElement();
         const maxElementLinks = this.graph.getCell(source!.id).prop("maxLinks");
         const currentElementLinks = this.graph.getConnectedLinks(this.graph.getCell(source!.id)).length;
-        console.log(maxElementLinks);
-        console.log(currentElementLinks);
         if (maxElementLinks < currentElementLinks) {
             linkView.model.remove();
         }
