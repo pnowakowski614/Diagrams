@@ -6,11 +6,7 @@ import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useSelector } from "react-redux";
-
-interface JSONGraphRootState {
-    diagramList: [{ cells: [], id: number, diagramName: string }] | null
-    id: number | null
-}
+import { JSONGraphRootState } from "../../types/interfaces";
 
 const Diagram = () => {
     const canvas = useRef(null);

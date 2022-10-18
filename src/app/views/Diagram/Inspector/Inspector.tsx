@@ -5,7 +5,7 @@ import { GlobalShapesTypes } from "../../../types/enums";
 import { MaxLinksInput } from "./MaxLinksInput";
 import { LabelInput } from "./LabelInput";
 import { ColorInput } from "./ColorInput";
-import { InspectorProps } from "../../../utils/types";
+import { InspectorProps } from "../../../types/interfaces";
 
 const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");

@@ -1,11 +1,11 @@
 import { TextField } from "@mui/material";
 import styles from "./inspector.module.scss";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { MaxLinksInputProps } from "../../../utils/types";
+import { MaxLinksInputProps } from "../../../types/interfaces";
 
 export const MaxLinksInput = ({cell, graph}: MaxLinksInputProps) => {
     const currentLinksNumber = graph.getConnectedLinks(cell, {outbound: true}).length;
-    
+
     const currentMaxLinks = () => {
         if (cell.prop("maxLinks") < currentLinksNumber) {
             cell.prop("maxLinks", currentLinksNumber)

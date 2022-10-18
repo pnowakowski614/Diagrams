@@ -36,3 +36,9 @@ export enum GlobalShapesTypes {
     Region = "app.Region",
     CustomLink = "app.CustomLink"
 }
+
+export enum Routes {
+    diagram = "/diagram",
+    diagramList = "/list",
+    login = "/login",
+}

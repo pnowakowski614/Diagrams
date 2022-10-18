@@ -1,12 +1,7 @@
 import React from 'react';
 import styles from './header.module.scss';
 import NavLink from "../NavLink/NavLink";
-
-enum Routes {
-    diagram = "/diagram",
-    diagramList = "/list",
-    login = "/login",
-}
+import { Routes } from "../../types/enums";
 
 const Header = () => {
     return <header>
