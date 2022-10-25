@@ -2,7 +2,7 @@ import { configureStore, createSlice } from "@reduxjs/toolkit";
 
 export const initialJsonGraph = {
     diagramList: null,
-    id: null
+    currentDiagramId: null
 };
 
 const jsonGraphSlice = createSlice({
@@ -11,12 +11,12 @@ const jsonGraphSlice = createSlice({
     reducers: {
         clearCurrentDiagram(state) {
             state.diagramList = null;
-            state.id = null;
+            state.currentDiagramId = null;
         },
         addObject(state, action) {
             const {object, id} = action.payload;
             state.diagramList = object;
-            state.id = id;
+            state.currentDiagramId = id;
         }
     }
 });
