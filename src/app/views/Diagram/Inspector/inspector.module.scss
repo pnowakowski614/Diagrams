@@ -1,32 +1,25 @@
+@import "src/styles/colors";
+
 .inspector {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 90px;
+  top: 95px;
   bottom: 0;
   right: 0;
   width: 200px;
-  background-color: #c9ba91;
+  background-color: #bebeb8;
 }
 
 .inspectorCategoryContainer {
   display: flex;
+  justify-content: center;
   height: 50px;
-  background-color: #B68839;
+  background-color: $main;
 }
 
 .inspectorCategoryHeader {
-  padding-left: 25px;
-  align-self: center;
-}
-
-.inspectorCategoryHeader {
-  padding-left: 25px;
-  align-self: center;
-}
-
-.portsSubheader {
-  padding-left: 25px;
+  display: flex;
 }
 
 .colorInputWrapper, .maxLinkInputWrapper {

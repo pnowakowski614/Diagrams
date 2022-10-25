@@ -27,7 +27,11 @@ const DiagramList = () => {
     const renderComponents = () => {
         return jsonObject.map(object => {
             return (
-                <Toolbar key={object.id} className={styles.toolbar}>
+                <Toolbar key={object.id} className={styles.toolbar} sx={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 3fr 100px 100px",
+
+                }}>
                     <h4>{object.id}</h4>
                     <h4>{object.diagramName}</h4>
                     <Button variant="contained" className={styles.button}
