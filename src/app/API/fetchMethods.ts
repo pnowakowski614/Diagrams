@@ -4,21 +4,8 @@ export const postInJSON = (graph: dia.Graph) => {
     const graphJSON = graph.toJSON();
     const jsonString = JSON.stringify(graphJSON);
 
-    fetch('http://localhost:7000/graphs', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: jsonString
-    }).then(async response => {
-            if (!response.ok) {
-                const error = response.status;
-                return Promise.reject(error);
-            }
-
-            alert("Diagram saved!")
-        }
-    ).catch((error) => {
-        alert("Error!: " + error.toString());
-    })
+    callApiMethod('http://localhost:7000/graphs', 'POST',
+        jsonString, {'Content-Type': 'application/json'}, "Diagram saved!")
 }
 
 export const fetchFromJSON = async () => {
@@ -27,13 +14,17 @@ export const fetchFromJSON = async () => {
 }
 
 export const deleteFromJSON = (id: number) => {
-    fetch('http://localhost:7000/graphs/' + id, {
-        method: 'DELETE'
+    callApiMethod(`http://localhost:7000/graphs/${id}`, 'DELETE')
+}
+
+const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers?: HeadersInit, message?: string) => {
+    fetch(url, {
+        method: methodName,
+        headers: headers,
+        body: body
     }).then(async response => {
-            if (!response.ok) {
-                const error = response.status;
-                return Promise.reject(error);
-            }
+            alert(message);
+            return response.json()
         }
     ).catch((error) => {
         alert("Error!: " + error.toString());

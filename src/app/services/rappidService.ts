@@ -8,7 +8,6 @@ import {
     getPreserveAspectRatio,
     getResizeDirections,
     updateGridLayout,
-    updateGroupSize,
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
@@ -105,7 +104,6 @@ class RappidService {
     private initGridLayout(): void {
         this.graph.on('change:embeds', (element) => {
             updateGridLayout(element);
-            updateGroupSize(element);
         })
     }
 

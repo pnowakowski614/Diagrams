@@ -1,5 +1,6 @@
 import { dia, layout, ui } from "@clientio/rappid";
 import { postInJSON } from "../API/fetchMethods";
+import store, { jsonGraphSliceActions } from "../store/store";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -65,6 +66,7 @@ class ToolbarService {
         this.toolbar.on('clear:pointerclick', () => {
             const cells = this.graph.getCells();
             this.graph.removeCells(cells);
+            store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
         })
 
         this.toolbar.on('treeLayout:pointerclick', () => {

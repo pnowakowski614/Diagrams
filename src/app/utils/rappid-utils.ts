@@ -133,6 +133,8 @@ export const updateGridLayout = (element: dia.Element): void => {
         marginX: padding,
         marginY: padding
     });
+
+    updateGroupSize(element);
 }
 
 export const updateGroupSize = (element: dia.Element): void => {
