@@ -8,6 +8,7 @@ import {
     getPreserveAspectRatio,
     getResizeDirections,
     updateGridLayout,
+    updateGroupSize,
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
@@ -41,12 +42,19 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
+    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
+        const jsonGraph = obj.find(graph => graph.id === id);
+        const lastFreeID = obj[obj.length - 1].id + 1;
+        this.graph.fromJSON(jsonGraph);
+        this.graph.set("id", lastFreeID);
+        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
+    }
+
     public init(): void {
         this.initCanvas();
         this.initStencil();
         this.initToolbar();
         this.initPaperEvents();
-        this.initGridLayout();
         RappidService.initTooltip();
     }
 
@@ -101,10 +109,9 @@ class RappidService {
         });
     }
 
-    private initGridLayout(): void {
-        this.graph.on('change:embeds', (element) => {
-            updateGridLayout(element);
-        })
+    private OnChangeElementsEmbeds(element: dia.Element): void {
+        updateGridLayout(element);
+        updateGroupSize(element);
     }
 
     private initPaperEvents(): void {
@@ -139,6 +146,9 @@ class RappidService {
                 });
             }
         });
+        this.graph.on('change:embeds', (element) => {
+            this.OnChangeElementsEmbeds(element);
+        })
     }
 
     private linkValidation(linkView: dia.LinkView): void {
@@ -180,14 +190,6 @@ class RappidService {
             const neighborArray = this.graph.getNeighbors(cell)
             neighborArray[neighborArray.length - 1].remove();
         }
-    }
-
-    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
-        const jsonGraph = obj.find(graph => graph.id === id);
-        const lastFreeID = obj[obj.length - 1].id + 1;
-        this.graph.fromJSON(jsonGraph);
-        this.graph.set("id", lastFreeID);
-        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
     }
 }
 

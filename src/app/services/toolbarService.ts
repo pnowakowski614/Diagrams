@@ -7,6 +7,7 @@ class ToolbarService {
     toolbar!: ui.Toolbar;
     graph!: dia.Graph;
     paperScroller!: ui.PaperScroller;
+    treeLayout!: layout.TreeLayout;
 
     constructor(toolbarElement: HTMLElement, graph: dia.Graph, paperScroller: ui.PaperScroller) {
         this.toolbarElement = toolbarElement;
@@ -43,7 +44,14 @@ class ToolbarService {
             }
         });
 
-        const treeLayout = new layout.TreeLayout({
+        this.initTreeLayout();
+        this.initToolbarEvents();
+        this.toolbarElement.appendChild(this.toolbar.el);
+        this.toolbar.render();
+    }
+
+    private initTreeLayout(): void {
+        this.treeLayout = new layout.TreeLayout({
             graph: this.graph,
             parentGap: 100,
             siblingGap: 100,
@@ -56,25 +64,25 @@ class ToolbarService {
                 link.vertices();
             }
         });
+    }
 
-        this.toolbar.on('save:pointerclick', () => {
-            const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
-            this.graph.set('diagramName', diagramName);
-            postInJSON(this.graph);
-        })
-
-        this.toolbar.on('clear:pointerclick', () => {
-            const cells = this.graph.getCells();
-            this.graph.removeCells(cells);
-            store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
-        })
-
-        this.toolbar.on('treeLayout:pointerclick', () => {
-            treeLayout.layout({deep: true, parentRelative: true});
-        })
-
-        this.toolbarElement.appendChild(this.toolbar.el);
-        this.toolbar.render();
+    private initToolbarEvents(): void {
+        this.toolbar.on({
+                'save:pointerclick': () => {
+                    const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
+                    this.graph.set('diagramName', diagramName);
+                    postInJSON(this.graph);
+                },
+                'clear:pointerclick': () => {
+                    const cells = this.graph.getCells();
+                    this.graph.removeCells(cells);
+                    store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
+                },
+                'treeLayout:pointerclick': () => {
+                    this.treeLayout.layout({deep: true, parentRelative: true});
+                }
+            }
+        )
     }
 }
 
