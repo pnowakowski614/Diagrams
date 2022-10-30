@@ -138,14 +138,15 @@ export const updateGridLayout = (element: dia.Element): void => {
 }
 
 export const updateGroupSize = (element: dia.Element): void => {
+    element.fitEmbeds(({padding: 25}));
+    const sizeAfterFitEmbeds = element.prop("size");
     const minGroupSize = getMinDimensions(element);
-    const sizeAfterFitEmbeds = element.fitEmbeds(({padding: 25})).prop("size");
 
     if (sizeAfterFitEmbeds.width < minGroupSize) {
-        element.prop("size/width", minGroupSize)
+        element.resize(minGroupSize, element.prop("size/height"))
     }
     if (sizeAfterFitEmbeds.height < minGroupSize) {
-        element.prop("size/height", minGroupSize)
+        element.resize(element.prop("size/width"), minGroupSize)
     }
 }
 
