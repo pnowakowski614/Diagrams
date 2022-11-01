@@ -14,7 +14,7 @@ const Diagram = () => {
     const toolbar = useRef(null);
 
     const diagramList = useSelector((state: JSONGraphRootState) => state.diagramList)
-    const diagramId = useSelector((state: JSONGraphRootState) => state.id)
+    const diagramId = useSelector((state: JSONGraphRootState) => state.currentDiagramId)
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,

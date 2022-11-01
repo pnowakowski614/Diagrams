@@ -4,8 +4,8 @@ export const postInJSON = (graph: dia.Graph) => {
     const graphJSON = graph.toJSON();
     const jsonString = JSON.stringify(graphJSON);
 
-    callApiMethod('http://localhost:7000/graphs', 'POST',
-        jsonString, {'Content-Type': 'application/json'}, "Diagram saved!")
+    callApiMethod('http://localhost:7000/graphs', 'POST', "Diagram saved!",
+        jsonString, {'Content-Type': 'application/json'})
 }
 
 export const fetchFromJSON = async () => {
@@ -14,10 +14,10 @@ export const fetchFromJSON = async () => {
 }
 
 export const deleteFromJSON = (id: number) => {
-    callApiMethod(`http://localhost:7000/graphs/${id}`, 'DELETE')
+    callApiMethod(`http://localhost:7000/graphs/${id}`, 'DELETE', "Diagram deleted!")
 }
 
-const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers?: HeadersInit, message?: string) => {
+const callApiMethod = (url: string, methodName: string, message?: string, body?: BodyInit, headers?: HeadersInit) => {
     fetch(url, {
         method: methodName,
         headers: headers,

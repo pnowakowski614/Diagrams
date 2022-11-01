@@ -26,7 +26,7 @@ const DiagramList = () => {
     const renderComponents = () => {
         return jsonObject.map(object => {
             return (
-                <DiagramBar jsonObject={jsonObject} object={object} handleOpen={handleOpen}
+                <DiagramBar key={object.id} jsonObject={jsonObject} object={object} handleOpen={handleOpen}
                             handleDelete={handleDelete}/>
             );
         })
@@ -43,8 +43,7 @@ const DiagramList = () => {
 
     const handleDelete = (object: [{ cells: [], diagramName: string, id: number }], id: number) => {
         deleteFromJSON(id);
-        dispatch(jsonGraphSliceActions.addObject({object, id}));
-        getJSONObject();
+        dispatch(jsonGraphSliceActions.clearCurrentDiagram());
     }
 
     return (
