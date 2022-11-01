@@ -1,17 +1,12 @@
-h4 {
-  padding-right: 100px;
-}
+@import "src/styles/colors.scss";
 
 .toolbar {
-  background-color: #c9ba91;
-  height: 50px;
-  display: grid;
-  grid-template-columns: 1fr 100px;
+  background-color: #c5c5be;
 }
 
 .button {
   display: flex;
   justify-content: end;
   width: 30px;
-  background-color: #973830;
+  background-color: $accent;
 }
