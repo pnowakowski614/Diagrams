@@ -5,7 +5,12 @@ import { GlobalShapesTypes } from "../../../types/enums";
 import { MaxLinksInput } from "./MaxLinksInput";
 import { LabelInput } from "./LabelInput";
 import { ColorInput } from "./ColorInput";
-import { InspectorProps } from "../../../utils/types";
+import { dia } from "@clientio/rappid";
+
+export interface InspectorProps {
+    cellView: dia.CellView
+    graph: dia.Graph
+}
 
 const Inspector = ({cellView, graph}: InspectorProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");

@@ -28,11 +28,17 @@ export enum LocalShapesTypes {
 export enum GlobalShapesTypes {
     NodeShape = "app.NodeShape",
     AutoScaling = "app.AutoScaling",
-    EcsCluster = "app.EcsCluster",
-    EcsService = "app.EcsService",
+    EcsCluster = "app.ECSCluster",
+    EcsService = "app.ECSService",
     SecurityGroup = "app.SecurityGroup",
     VPC = "app.VPC",
     Subnet = "app.Subnet",
     Region = "app.Region",
     CustomLink = "app.CustomLink"
+}
+
+export enum Routes {
+    diagram = "/diagram",
+    diagramList = "/list",
+    login = "/login",
 }

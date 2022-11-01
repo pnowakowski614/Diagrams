@@ -2,7 +2,11 @@ import { GlobalShapesTypes } from "../../../types/enums";
 import React, { useEffect, useState } from "react";
 import { MuiColorInput, MuiColorInputValue } from "mui-color-input";
 import styles from "./inspector.module.scss";
-import { ColorInputProps } from "../../../utils/types";
+import { dia } from "@clientio/rappid";
+
+export interface ColorInputProps {
+    cell: dia.Cell
+}
 
 export const ColorInput = ({cell}: ColorInputProps) => {
     const inspectedGlobalType: GlobalShapesTypes = cell.prop("type");

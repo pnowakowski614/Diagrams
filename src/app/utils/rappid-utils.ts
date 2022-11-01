@@ -1,5 +1,5 @@
 import * as joint from "@clientio/rappid";
-import { dia, ui } from "@clientio/rappid";
+import { dia, layout, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
 export const defaultShapeAttrs = {
@@ -32,8 +32,8 @@ export const getShapeLabelWidth = (cellView: dia.CellView) => {
     }
 }
 
-export const getMinDimensions = (elementView: dia.ElementView) => {
-    switch (elementView.model.prop("type")) {
+export const getMinDimensions = (element: dia.Element) => {
+    switch (element.prop("type")) {
         case GlobalShapesTypes.NodeShape:
             return 30;
         case GlobalShapesTypes.Region:
@@ -108,6 +108,47 @@ const validEmebedCombinationConsts = [
     LocalShapesTypes.EcsService,
     LocalShapesTypes.EcsCluster,
 ]
+
+const groupList = [
+    GlobalShapesTypes.VPC,
+    GlobalShapesTypes.SecurityGroup,
+    GlobalShapesTypes.Region,
+    GlobalShapesTypes.Subnet,
+    GlobalShapesTypes.EcsCluster,
+    GlobalShapesTypes.EcsService,
+]
+
+export const updateGridLayout = (element: dia.Element): void => {
+    if (!groupList.includes(element.prop("type")))
+        return
+
+    const padding = 25;
+
+    layout.GridLayout.layout(element.getEmbeddedCells(), {
+        columns: 3,
+        parentRelative: true,
+        deep: true,
+        rowGap: padding,
+        columnGap: 30,
+        marginX: padding,
+        marginY: padding
+    });
+
+    updateGroupSize(element);
+}
+
+export const updateGroupSize = (element: dia.Element): void => {
+    element.fitEmbeds(({padding: 25}));
+    const sizeAfterFitEmbeds = element.prop("size");
+    const minGroupSize = getMinDimensions(element);
+
+    if (sizeAfterFitEmbeds.width < minGroupSize) {
+        element.resize(minGroupSize, element.prop("size/height"))
+    }
+    if (sizeAfterFitEmbeds.height < minGroupSize) {
+        element.resize(element.prop("size/width"), minGroupSize)
+    }
+}
 
 const validEmbedCombinations: { parentsName: LocalShapesTypes, validChildren: LocalShapesTypes[] }[] = [
     {

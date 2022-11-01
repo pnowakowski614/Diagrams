@@ -7,11 +7,14 @@ import {
     getMinDimensions,
     getPreserveAspectRatio,
     getResizeDirections,
+    updateGridLayout,
+    updateGroupSize,
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
 import { CustomLink } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
+import ToolbarService from "./toolbarService";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -22,23 +25,35 @@ export interface InspectorState {
 class RappidService {
     paperElement: HTMLElement;
     stencilElement: HTMLElement;
+    toolbarElement: HTMLElement;
     paper!: dia.Paper;
     scroller!: ui.PaperScroller;
     graph!: dia.Graph;
+    halo!: ui.Halo;
     setInspectorOpened!: Dispatch<React.SetStateAction<InspectorState>>;
 
-    constructor(paperElement: HTMLElement, stencilElement: HTMLElement) {
+    constructor(paperElement: HTMLElement, stencilElement: HTMLElement, toolbarElement: HTMLElement) {
         this.paperElement = paperElement;
         this.stencilElement = stencilElement;
+        this.toolbarElement = toolbarElement;
     }
 
     public setInspectorFunction(callback: Dispatch<React.SetStateAction<InspectorState>>): void {
         this.setInspectorOpened = callback;
     }
 
+    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
+        const jsonGraph = obj.find(graph => graph.id === id);
+        const lastFreeID = obj[obj.length - 1].id + 1;
+        this.graph.fromJSON(jsonGraph);
+        this.graph.set("id", lastFreeID);
+        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
+    }
+
     public init(): void {
         this.initCanvas();
         this.initStencil();
+        this.initToolbar();
         this.initPaperEvents();
         RappidService.initTooltip();
     }
@@ -75,6 +90,11 @@ class RappidService {
         this.scroller.render().center();
     }
 
+    private initToolbar(): void {
+        const toolbarInst = new ToolbarService(this.toolbarElement, this.graph, this.scroller);
+        toolbarInst.initToolbar();
+    }
+
     private initStencil(): void {
         const stencilInst = new StencilService(this.paper, this.stencilElement);
         stencilInst.initStencil();
@@ -87,6 +107,11 @@ class RappidService {
             direction: ui.Tooltip.TooltipArrowPosition.Auto,
             padding: 10
         });
+    }
+
+    private OnChangeElementsEmbeds(element: dia.Element): void {
+        updateGridLayout(element);
+        updateGroupSize(element);
     }
 
     private initPaperEvents(): void {
@@ -103,7 +128,8 @@ class RappidService {
             'element:pointerclick': (elementView: dia.ElementView) => {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
-                RappidService.initHalo(elementView);
+                this.initHalo(elementView);
+                this.halo.on('action:fork:pointerup', () => this.validateForking(elementView.model));
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
@@ -120,6 +146,9 @@ class RappidService {
                 });
             }
         });
+        this.graph.on('change:embeds', (element) => {
+            this.OnChangeElementsEmbeds(element);
+        })
     }
 
     private linkValidation(linkView: dia.LinkView): void {
@@ -136,16 +165,15 @@ class RappidService {
             cellView: elementView,
             allowRotation: false,
             preserveAspectRatio: getPreserveAspectRatio(elementView),
-            minWidth: getMinDimensions(elementView),
-            minHeight: getMinDimensions(elementView),
+            minWidth: getMinDimensions(elementView.model),
+            minHeight: getMinDimensions(elementView.model),
             resizeDirections: getResizeDirections(elementView)
         });
         freeTransform.render();
     }
 
-
-    private static initHalo(cellView: dia.CellView): void {
-        const halo = new ui.Halo({
+    private initHalo(cellView: dia.CellView): void {
+        const halo = this.halo = new ui.Halo({
             cellView,
             type: 'toolbar',
             handles: haloConfig,
@@ -153,6 +181,15 @@ class RappidService {
             magnet: getHaloMagnet
         })
         halo.render();
+    }
+
+    private validateForking(cell: dia.Element): void {
+        const maxElementLinks = cell.prop("maxLinks");
+        const currentElementLinks = this.graph.getConnectedLinks(cell).length;
+        if (maxElementLinks <= currentElementLinks) {
+            const neighborArray = this.graph.getNeighbors(cell)
+            neighborArray[neighborArray.length - 1].remove();
+        }
     }
 }
 
