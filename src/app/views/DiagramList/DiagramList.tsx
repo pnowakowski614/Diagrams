@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Button, Toolbar } from "@mui/material";
-import styles from "./diagramList.module.scss";
 import { jsonGraphSliceActions } from "app/store/store";
 import { useDispatch } from "react-redux";
 import { deleteFromJSON, fetchFromJSON } from "../../API/fetchMethods";
+import { DiagramBar } from "./DiagramBar";
 
 const DiagramList = () => {
     const dispatch = useDispatch();
@@ -27,32 +26,22 @@ const DiagramList = () => {
     const renderComponents = () => {
         return jsonObject.map(object => {
             return (
-                <Toolbar key={object.id} className={styles.toolbar}>
-                    <h4>{object.id}</h4>
-                    <h4>{object.diagramName}</h4>
-                    <Button variant="contained" className={styles.button}
-                            onClick={() => handleOpen(jsonObject, object.id)}>
-                        Open
-                    </Button>
-                    <Button variant="outlined"
-                            onClick={() => handleDelete(jsonObject, object.id)}>
-                        Delete
-                    </Button>
-                </Toolbar>
+                <DiagramBar jsonObject={jsonObject} object={object} handleOpen={handleOpen}
+                            handleDelete={handleDelete}/>
             );
         })
     }
 
     useEffect(() => {
-        renderComponents()
+        renderComponents();
     })
 
-    const handleOpen = (object: {}, id: number) => {
+    const handleOpen = (object: [{ cells: [], diagramName: string, id: number }], id: number) => {
         dispatch(jsonGraphSliceActions.addObject({object, id}));
         history.push("/diagram");
     }
 
-    const handleDelete = (object: {}, id: number) => {
+    const handleDelete = (object: [{ cells: [], diagramName: string, id: number }], id: number) => {
         deleteFromJSON(id);
         dispatch(jsonGraphSliceActions.addObject({object, id}));
         getJSONObject();
