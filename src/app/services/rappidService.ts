@@ -42,11 +42,9 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
-        const jsonGraph = obj.find(graph => graph.id === id);
-        const lastFreeID = obj[obj.length - 1].id + 1;
+    public getGraphFromJSON(obj: [{ cells: [], _id: string, diagramName: string }], _id: string | null): void {
+        const jsonGraph = obj.find(graph => graph._id === _id);
         this.graph.fromJSON(jsonGraph);
-        this.graph.set("id", lastFreeID);
         this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
     }
 

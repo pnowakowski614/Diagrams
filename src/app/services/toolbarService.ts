@@ -66,12 +66,18 @@ class ToolbarService {
         });
     }
 
+    private setDiagramName(): void {
+        const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
+        this.graph.set('diagramName', diagramName);
+    }
+
     private initToolbarEvents(): void {
         this.toolbar.on({
-                'save:pointerclick': () => {
-                    const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
-                    this.graph.set('diagramName', diagramName);
-                    postInJSON(this.graph);
+                'save:pointerclick': async () => {
+                    this.setDiagramName();
+                    const graphJSON = this.graph.toJSON();
+                    const jsonString = JSON.stringify(graphJSON);
+                    postInJSON(jsonString);
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();

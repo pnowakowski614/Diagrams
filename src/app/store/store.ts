@@ -14,9 +14,9 @@ const jsonGraphSlice = createSlice({
             state.currentDiagramId = null;
         },
         addObject(state, action) {
-            const {object, id} = action.payload;
+            const {object, _id} = action.payload;
             state.diagramList = object;
-            state.currentDiagramId = id;
+            state.currentDiagramId = _id;
         }
     }
 });

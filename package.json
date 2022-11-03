@@ -2,7 +2,7 @@
   "name": "react-rappid",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:7000",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@clientio/rappid": "file:rappid.tgz",
     "@emotion/react": "^11.10.4",

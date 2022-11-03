@@ -3,23 +3,24 @@ import { Button, Toolbar } from "@mui/material";
 import styles from "./diagramList.module.scss";
 
 export interface DiagramBarProps {
-    jsonObject: [{ cells: [], diagramName: string, id: number }]
-    object: { cells: [], diagramName: string, id: number }
-    handleOpen: (jsonObject: [{ cells: [], diagramName: string, id: number }], id: number) => void;
-    handleDelete: (jsonObject: [{ cells: [], diagramName: string, id: number }], id: number) => void;
+    diagramList: [{ cells: [], diagramName: string, _id: string }]
+    object: { cells: [], diagramName: string, _id: string }
+    handleOpen: (diagramList: [{ cells: [], diagramName: string, _id: string }], _id: string) => void;
+    handleDelete: (diagramList: [{ cells: [], diagramName: string, _id: string }], _id: string) => void;
+    index: number;
 }
 
-export const DiagramBar = ({jsonObject, object, handleOpen, handleDelete}: DiagramBarProps) => {
+export const DiagramBar = ({index, diagramList, object, handleOpen, handleDelete}: DiagramBarProps) => {
     return (
-        <Toolbar key={object.id} className={styles.toolbar}>
-            <h4>{object.id}</h4>
+        <Toolbar key={object._id} className={styles.toolbar}>
+            <h4>{index + 1}</h4>
             <h4>{object.diagramName}</h4>
             <Button variant="contained" className={styles.button}
-                    onClick={() => handleOpen(jsonObject, object.id)}>
+                    onClick={() => handleOpen(diagramList, object._id)}>
                 Open
             </Button>
             <Button variant="outlined"
-                    onClick={() => handleDelete(jsonObject, object.id)}>
+                    onClick={() => handleDelete(diagramList, object._id)}>
                 Delete
             </Button>
         </Toolbar>
