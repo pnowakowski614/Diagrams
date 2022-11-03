@@ -12,7 +12,10 @@ export interface DiagramBarProps {
 
 export const DiagramBar = ({index, diagramList, object, handleOpen, handleDelete}: DiagramBarProps) => {
     return (
-        <Toolbar key={object._id} className={styles.toolbar}>
+        <Toolbar key={object._id} className={styles.toolbar} sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1000px 100px 100px",
+        }}>
             <h4>{index + 1}</h4>
             <h4>{object.diagramName}</h4>
             <Button variant="contained" className={styles.button}

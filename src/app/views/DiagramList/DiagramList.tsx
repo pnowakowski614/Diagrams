@@ -40,7 +40,6 @@ const DiagramList = () => {
 
     const handleDelete = (object: [{ cells: [], diagramName: string, _id: string }], _id: string) => {
         deleteFromJSON(_id);
-        dispatch(jsonGraphSliceActions.clearCurrentDiagram());
     }
 
     return (

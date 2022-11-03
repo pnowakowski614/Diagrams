@@ -1,5 +1,9 @@
 @import "src/styles/colors.scss";
 
+body {
+  background-color: #c5c5be;
+}
+
 .toolbar {
   background-color: #c5c5be;
 }
@@ -10,3 +14,5 @@
   width: 30px;
   background-color: $accent;
 }
+
+
