@@ -23,7 +23,10 @@ const SignUpForm = () => {
             </div>
             <div className="continue-button-container">
                 <button className="continue-button" type="button"
-                        onClick={() => registerUser(username, password, email)}>Sign
+                        onClick={(e) => {
+                            e.preventDefault();
+                            registerUser(username, password, email);
+                        }}>Sign
                     Up
                 </button>
             </div>

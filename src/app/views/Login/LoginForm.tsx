@@ -18,7 +18,10 @@ const LoginForm = () => {
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
             </div>
             <div className="continue-button-container">
-                <button className="continue-button" type="button" onClick={() => loginUser(username, password)}>Log In
+                <button className="continue-button" type="button" onClick={(e) => {
+                    e.preventDefault();
+                    loginUser(username, password)
+                }}>Log In
                 </button>
             </div>
             <p className="change-mode-message">Don't have an account?

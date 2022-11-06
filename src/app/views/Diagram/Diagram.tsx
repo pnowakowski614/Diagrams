@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './diagram.module.scss';
 import 'styles/rappid-overrides.scss';
 import "@clientio/rappid/rappid.css";
@@ -7,8 +7,23 @@ import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useSelector } from "react-redux";
 import { JSONGraphRootState } from "../../types/types";
+import { useHistory } from "react-router-dom";
+import jwt from "jsonwebtoken";
 
 const Diagram = () => {
+    const history = useHistory();
+
+    useEffect(() => {
+        const token = localStorage.getItem('token')
+        if (token) {
+            const user = jwt.decode(token)
+            if (!user) {
+                localStorage.removeItem('token')
+                history.replace('/login')
+            }
+        }
+    }, [])
+
     const canvas = useRef(null);
     const stencil = useRef(null);
     const toolbar = useRef(null);
