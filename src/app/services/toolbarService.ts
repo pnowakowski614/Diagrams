@@ -83,6 +83,7 @@ class ToolbarService {
                     const cells = this.graph.getCells();
                     this.graph.removeCells(cells);
                     store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
+                    this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value = "Diagram Name";
                 },
                 'treeLayout:pointerclick': () => {
                     this.treeLayout.layout({deep: true, parentRelative: true});
