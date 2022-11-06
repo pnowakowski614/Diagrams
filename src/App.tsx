@@ -5,6 +5,7 @@ import Login from "./app/views/Login/Login";
 import DiagramList from "./app/views/DiagramList/DiagramList";
 import Header from "./app/components/Header/Header"
 import styles from "./App.module.scss";
+import SignUp from "./app/views/SignUp/SignUp";
 
 const App = () => {
     return (
@@ -13,6 +14,7 @@ const App = () => {
             <main className={styles.content}>
                 <Route path="/" exact component={Login}/>
                 <Route path="/login" component={Login}/>
+                <Route path="/signup" component={SignUp}/>
                 <Route path="/diagram" component={Diagram}/>
                 <Route path="/list" component={DiagramList}/>
             </main>

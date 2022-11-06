@@ -1,29 +1,28 @@
-import React, { useState } from 'react';
-import FormInput from "./Input";
+import React, { ChangeEvent, useState } from 'react';
+import FormInput from "./FormInput";
 import './login.scss';
+import { Routes } from "../../types/enums";
+import { loginUser } from "../../API/fetchMethods";
 
 const LoginForm = () => {
-    const [isLoginActive, changeMode] = useState(true);
-
-    const switchMode = () => {
-        changeMode(!isLoginActive);
-    }
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
 
     return (
         <form className="form-container">
-            <h1 className="login-header">{isLoginActive ? "Log In To Continue" : "Create Your Account"}</h1>
+            <h1 className="login-header">Log In To Continue</h1>
             <div className="inputs">
-                <FormInput placeholder="Username"/>
-                {!isLoginActive && <FormInput placeholder="E-mail"/>}
-                <FormInput placeholder="Password"/>
-                {!isLoginActive && <FormInput placeholder="Confirm Password"/>}
+                <FormInput placeholder="Username"
+                           onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}/>
+                <FormInput placeholder="Password"
+                           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
             </div>
             <div className="continue-button-container">
-                <button className="continue-button">{isLoginActive ? "Log In" : "Sign Up"}</button>
+                <button className="continue-button" type="button" onClick={() => loginUser(username, password)}>Log In
+                </button>
             </div>
-            <p className="change-mode-message">{isLoginActive ? "Don't" : "Already"} have an account?
-                <a id="change-mode-link" href="app/views/Login/LoginForm#" onClick={switchMode}>
-                    {isLoginActive ? " Sign Up" : " Sign In"}</a>
+            <p className="change-mode-message">Don't have an account?
+                <a id="change-mode-link" href={Routes.signup}>Sign Up</a>
             </p>
         </form>
     )
