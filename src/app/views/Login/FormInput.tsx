@@ -2,14 +2,15 @@ import React, { ChangeEvent } from "react";
 import './login.scss';
 
 interface FormProps {
+    type: string,
     placeholder: string,
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
 }
 
-const FormInput = ({placeholder, onChange}: FormProps) => {
+const FormInput = ({type, placeholder, onChange}: FormProps) => {
     return (
         <div>
-            <input type="text" placeholder={placeholder} onChange={onChange}
+            <input type={type} placeholder={placeholder} onChange={onChange}
             />
         </div>
     )

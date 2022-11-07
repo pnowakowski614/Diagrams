@@ -13,13 +13,12 @@ const SignUpForm = () => {
         <form className="form-container">
             <h1 className="login-header">Create Your Account</h1>
             <div className="inputs">
-                <FormInput placeholder="Username"
+                <FormInput type="text" placeholder="Username"
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}/>
-                <FormInput placeholder="E-mail"
+                <FormInput type="email" placeholder="E-mail"
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}/>
-                <FormInput placeholder="Password"
+                <FormInput type="password" placeholder="Password"
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
-                {/*<FormInput placeholder="Confirm Password"/>*/}
             </div>
             <div className="continue-button-container">
                 <button className="continue-button" type="button"

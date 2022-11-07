@@ -12,9 +12,9 @@ const LoginForm = () => {
         <form className="form-container">
             <h1 className="login-header">Log In To Continue</h1>
             <div className="inputs">
-                <FormInput placeholder="Username"
+                <FormInput type="text" placeholder="Username"
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}/>
-                <FormInput placeholder="Password"
+                <FormInput type="password" placeholder="Password"
                            onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}/>
             </div>
             <div className="continue-button-container">
