@@ -43,7 +43,7 @@ const Diagram = () => {
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorState);
             if (diagramList !== null) {
-                rappidInst.getGraphFromJSON(diagramList, diagramId);
+                rappidInst.getGraphFromDB(diagramList, diagramId);
             }
         }
     });

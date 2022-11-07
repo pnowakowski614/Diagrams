@@ -109,7 +109,7 @@ const validEmebedCombinationConsts = [
     LocalShapesTypes.EcsCluster,
 ]
 
-const groupList = [
+export const groupList = [
     GlobalShapesTypes.VPC,
     GlobalShapesTypes.SecurityGroup,
     GlobalShapesTypes.Region,

@@ -1,6 +1,7 @@
 import { dia, layout, ui } from "@clientio/rappid";
-import { postInJSON } from "../API/fetchMethods";
+import { postToDb } from "../API/fetchMethods";
 import store, { jsonGraphSliceActions } from "../store/store";
+import { GlobalShapesTypes } from "../types/enums";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -71,13 +72,50 @@ class ToolbarService {
         this.graph.set('diagramName', diagramName);
     }
 
+    private filterDiagramInfo(): JSON {
+        const graphJSON = this.graph.toJSON();
+        graphJSON.cells.map((object: any) => {
+            if (object.type !== GlobalShapesTypes.CustomLink) {
+                return {
+                    type: object.type,
+                    position: object.position,
+                    size: object.size,
+                    id: object.id,
+                    localType: object.localType,
+                    z: object.z,
+                    ...(object.maxLinks !== undefined && {maxLinks: object.maxLinks}),
+                    attrs: {
+                        label: {
+                            text: object.attrs.label?.text,
+                            textWrap: object.attrs.label?.textWrap!
+                        },
+                        icon: {
+                            href: object.attrs.icon?.href
+                        },
+                    }
+                }
+            } else {
+                return {
+                    type: object.type,
+                    source: object.source,
+                    target: object.target,
+                    id: object.id,
+                    z: object.z,
+                    ...(object.attrs !== undefined && {attrs: object.attrs})
+                }
+            }
+        })
+
+        return graphJSON;
+    }
+
     private initToolbarEvents(): void {
         this.toolbar.on({
                 'save:pointerclick': async () => {
                     this.setDiagramName();
-                    const graphJSON = this.graph.toJSON();
+                    const graphJSON = this.filterDiagramInfo();
                     const jsonString = JSON.stringify(graphJSON);
-                    postInJSON(jsonString);
+                    postToDb(jsonString);
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();

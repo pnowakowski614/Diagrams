@@ -3,10 +3,12 @@ import StencilService from "./stencilService";
 import React, { Dispatch } from "react";
 import {
     addLinkTools,
+    defaultShapeAttrs,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
     getResizeDirections,
+    groupList,
     updateGridLayout,
     updateGroupSize,
     validateConnection,
@@ -15,6 +17,8 @@ import {
 import { CustomLink } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
+import { groupShapePortConfig, portsConfig } from "../rappid-configs/portsConfig";
+import { GlobalShapesTypes } from "../types/enums";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -42,10 +46,39 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromJSON(obj: [{ cells: [], _id: string, diagramName: string }], _id: string | null): void {
+    public getGraphFromDB(obj: [{ cells: [], _id: string, diagramName: string }], _id: string | null): void {
         const jsonGraph = obj.find(graph => graph._id === _id);
-        this.graph.fromJSON(jsonGraph);
-        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
+        this.graph.removeCells(this.graph.getCells());
+        this.graph.addCells(jsonGraph!.cells);
+        this.graph.getElements().forEach((element: dia.Element) => {
+                if (groupList.includes(element.prop("type"))) {
+                    element.prop("ports", groupShapePortConfig)
+                } else {
+                    element.prop("ports", portsConfig)
+                }
+
+                if (element.prop("type") === GlobalShapesTypes.NodeShape) {
+                    element.attr({
+                        label: {
+                            ...defaultShapeAttrs,
+                            text: element.attr("label/text")
+                        }
+                    })
+                }
+
+                if (element.prop("type") === GlobalShapesTypes.CustomLink) {
+                    element.prop({
+                        router: {
+                            name: "manhattan",
+                        },
+                        connector: {
+                            name: 'rounded',
+                        }
+                    })
+                }
+            }
+        )
+        this.toolbarElement.querySelector("input")!.value = jsonGraph!.diagramName;
     }
 
     public init(): void {

@@ -1,4 +1,4 @@
-export const postInJSON = async (jsonString: string) => {
+export const postToDb = async (jsonString: string) => {
     const response = await callApiMethod('http://localhost:5000/diagrams', 'POST',
         jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
 
@@ -7,7 +7,7 @@ export const postInJSON = async (jsonString: string) => {
     }
 }
 
-export const getFromJSON = async () => {
+export const getFromDb = async () => {
     const headers: HeadersInit = {
         "x-access-token": localStorage.getItem('token')!
     }
@@ -17,7 +17,7 @@ export const getFromJSON = async () => {
     return response.json();
 }
 
-export const deleteFromJSON = (id: string) => {
+export const deleteFromDb = (id: string) => {
     callApiMethod(`http://localhost:5000/diagrams/${id}`, 'DELETE')
 }
 

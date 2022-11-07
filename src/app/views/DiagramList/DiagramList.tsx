@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { jsonGraphSliceActions } from "app/store/store";
 import { useDispatch } from "react-redux";
-import { deleteFromJSON, getFromJSON } from "../../API/fetchMethods";
+import { deleteFromDb, getFromDb } from "../../API/fetchMethods";
 import { DiagramBar } from "./DiagramBar";
 
 const DiagramList = () => {
@@ -16,7 +16,7 @@ const DiagramList = () => {
     }]);
 
     const getJSONObject = async () => {
-        const JSONObject = await getFromJSON();
+        const JSONObject = await getFromDb();
         setJsonObject(JSONObject);
     }
 
@@ -39,7 +39,7 @@ const DiagramList = () => {
     }
 
     const handleDelete = (object: [{ cells: [], diagramName: string, _id: string }], _id: string) => {
-        deleteFromJSON(_id);
+        deleteFromDb(_id);
     }
 
     return (
