@@ -118,6 +118,7 @@ export const groupList = [
     GlobalShapesTypes.EcsService,
 ]
 
+
 export const updateGridLayout = (element: dia.Element): void => {
     if (!groupList.includes(element.prop("type")))
         return
@@ -138,6 +139,9 @@ export const updateGridLayout = (element: dia.Element): void => {
 }
 
 export const updateGroupSize = (element: dia.Element): void => {
+    if (!groupList.includes(element.prop("type")))
+        return
+
     element.fitEmbeds(({padding: 25}));
     const sizeAfterFitEmbeds = element.prop("size");
     const minGroupSize = getMinDimensions(element);
