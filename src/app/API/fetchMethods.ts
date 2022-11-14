@@ -1,5 +1,5 @@
 export const postToDb = async (jsonString: string) => {
-    const response = await callApiMethod('http://localhost:5000/diagrams', 'POST',
+    const response = await callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
         jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
 
     if (!response.error) {
@@ -11,14 +11,12 @@ export const getFromDb = async () => {
     const headers: HeadersInit = {
         "x-access-token": localStorage.getItem('token')!
     }
-    const response = await fetch('http://localhost:5000/diagrams', {
-        headers: headers,
-    });
-    return response.json();
+
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'GET', undefined, headers);
 }
 
 export const deleteFromDb = (id: string) => {
-    callApiMethod(`http://localhost:5000/diagrams/${id}`, 'DELETE')
+    callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'DELETE')
 }
 
 const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers?: HeadersInit): Promise<any> | void => {
@@ -26,7 +24,7 @@ const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers
         method: methodName,
         headers: headers,
         body: body
-    }).then(async response => {
+    }).then(response => {
             return response.json()
         }
     ).catch((error) => {
@@ -40,7 +38,7 @@ export const loginUser = async (username: string, password: string) => {
         password
     })
 
-    const data = await callApiMethod('http://localhost:5000/users/login', 'POST',
+    const data = await callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/users/login`, 'POST',
         body, {'Content-Type': 'application/json'})
 
     if (data.user) {
@@ -59,7 +57,7 @@ export const registerUser = async (username: string, password: string, email: st
         password
     })
 
-    const data = await callApiMethod('http://localhost:5000/users/register', 'POST',
+    const data = await callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/users/register`, 'POST',
         body, {'Content-Type': 'application/json'})
 
     if (data.status === 'ok') {
