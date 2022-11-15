@@ -20,7 +20,7 @@ const DiagramList = () => {
     if (loading) return <h2>Loading...</h2>
 
     const renderComponents = () => {
-        return diagrams.map((object: { cells: [], diagramName: string, _id: string }, index: number) => {
+        return diagrams.map((object: { cells: [], _id: string }, index: number) => {
             return (
                 <DiagramBar key={index} index={index} object={object} handleOpen={handleOpen}
                             handleDelete={handleDelete}/>

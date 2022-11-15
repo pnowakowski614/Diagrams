@@ -23,8 +23,6 @@ class ToolbarService {
 
         this.toolbar = new ui.Toolbar({
             tools: [
-                {type: 'inputText', name: "diagramName", label: "Name diagram: ", value: "Diagram Name"},
-                {type: 'separator', width: "10px"},
                 'undo',
                 'redo',
                 'separator',
@@ -67,15 +65,9 @@ class ToolbarService {
         });
     }
 
-    private setDiagramName(): void {
-        const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
-        this.graph.set('diagramName', diagramName);
-    }
-
     private initToolbarEvents(): void {
         this.toolbar.on({
                 'save:pointerclick': async () => {
-                    this.setDiagramName();
                     const graphJSON = filterDiagramInfo(this.graph);
                     const jsonString = JSON.stringify(graphJSON);
                     const id = store.getState().singleDiagram.id;
@@ -84,7 +76,6 @@ class ToolbarService {
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();
                     this.graph.removeCells(cells);
-                    this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value = "Diagram Name";
                 },
                 'treeLayout:pointerclick': () => {
                     this.treeLayout.layout({deep: true, parentRelative: true});

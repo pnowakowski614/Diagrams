@@ -11,6 +11,7 @@ import jwt from "jsonwebtoken";
 import { addDiagram } from "../../store/addDiagramSlice";
 import { AppDispatch } from "../../store/store";
 import { filterDiagramInfo } from "../../utils/rappid-utils";
+import { TextField } from "@mui/material";
 
 const Diagram = () => {
     const history = useHistory();
@@ -56,7 +57,10 @@ const Diagram = () => {
 
     return (
         <div className={styles.diagramContainer}>
-            <div className={styles.diagramToolbar} ref={toolbar}/>
+            <div className={styles.toolbarWrapper}>
+                <div className={styles.diagramToolbar} ref={toolbar}/>
+                <TextField/>
+            </div>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>
                 <div className={styles.canvas} ref={canvas}/>

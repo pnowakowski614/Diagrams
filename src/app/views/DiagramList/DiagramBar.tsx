@@ -3,7 +3,7 @@ import { Button, Toolbar } from "@mui/material";
 import styles from "./diagramList.module.scss";
 
 export interface DiagramBarProps {
-    object: { cells: [], diagramName: string, _id: string }
+    object: { cells: [], _id: string }
     handleOpen: (_id: string) => void;
     handleDelete: (_id: string) => void;
     index: number;
@@ -16,7 +16,7 @@ export const DiagramBar = ({index, object, handleOpen, handleDelete}: DiagramBar
             gridTemplateColumns: "1fr 1000px 100px 100px",
         }}>
             <h4>{index + 1}</h4>
-            <h4>{object.diagramName}</h4>
+            <h4>nazwa</h4>
             <Button variant="contained" className={styles.button}
                     onClick={() => handleOpen(object._id)}>
                 Open

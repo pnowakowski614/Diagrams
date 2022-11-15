@@ -46,7 +46,7 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromDB(obj: { cells: [], _id: string, diagramName: string }): void {
+    public getGraphFromDB(obj: { cells: [], _id: string }): void {
         this.graph.removeCells(this.graph.getCells());
         this.graph.addCells(obj!.cells);
         this.graph.getElements().forEach((element: dia.Element) => {
@@ -78,7 +78,6 @@ class RappidService {
                 }
             }
         )
-        this.toolbarElement.querySelector("input")!.value = obj!.diagramName;
     }
 
     public init(): void {
