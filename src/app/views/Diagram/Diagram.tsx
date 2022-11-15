@@ -5,13 +5,16 @@ import "@clientio/rappid/rappid.css";
 import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
-import { useSelector } from "react-redux";
-import { JSONGraphRootState } from "../../types/types";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import jwt from "jsonwebtoken";
+import { addDiagram } from "../../store/addDiagramSlice";
+import { AppDispatch } from "../../store/store";
+import { filterDiagramInfo } from "../../utils/rappid-utils";
 
 const Diagram = () => {
     const history = useHistory();
+    const dispatch = useDispatch<AppDispatch>();
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -28,8 +31,7 @@ const Diagram = () => {
     const stencil = useRef(null);
     const toolbar = useRef(null);
 
-    const diagramList = useSelector((state: JSONGraphRootState) => state.diagramList)
-    const diagramId = useSelector((state: JSONGraphRootState) => state.currentDiagramId)
+    const {currentDiagram} = useSelector((state: any) => state.singleDiagram)
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
@@ -42,8 +44,12 @@ const Diagram = () => {
             const rappidInst = new RappidService(canvas.current!, stencil.current!, toolbar.current!);
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorState);
-            if (diagramList !== null) {
-                rappidInst.getGraphFromDB(diagramList, diagramId);
+            if (currentDiagram !== null) {
+                rappidInst.getGraphFromDB(currentDiagram);
+            } else {
+                const graphJSON = filterDiagramInfo(rappidInst.graph);
+                const diagram = JSON.stringify(graphJSON);
+                dispatch(addDiagram(diagram));
             }
         }
     });
