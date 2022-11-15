@@ -1,13 +1,9 @@
 export const postToDb = async (jsonString: string) => {
-    const response = await callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
         jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
-
-    if (!response.error) {
-        alert("Diagram saved!");
-    }
 }
 
-export const getFromDb = async () => {
+export const getDiagramListFromDb = async () => {
     const headers: HeadersInit = {
         "x-access-token": localStorage.getItem('token')!
     }
@@ -15,8 +11,12 @@ export const getFromDb = async () => {
     return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'GET', undefined, headers);
 }
 
-export const deleteFromDb = (id: string) => {
-    callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'DELETE')
+export const getSingleDiagramFromDb = async (id: string) => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'GET', undefined, {'Content-Type': 'application/json'});
+}
+
+export const deleteFromDb = async (id: string) => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'DELETE')
 }
 
 const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers?: HeadersInit): Promise<any> | void => {
