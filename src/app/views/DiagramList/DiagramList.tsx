@@ -1,45 +1,44 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { jsonGraphSliceActions } from "app/store/store";
-import { useDispatch } from "react-redux";
-import { deleteFromDb, getFromDb } from "../../API/fetchMethods";
+import { AppDispatch } from "app/store/store";
+import { useDispatch, useSelector } from "react-redux";
 import { DiagramBar } from "./DiagramBar";
+import { getDiagrams } from "../../store/getDiagramsSlice";
+import { clearCurrentDiagram, getSingleDiagram } from "../../store/singleDiagramSlice";
+import { deleteDiagram } from "../../store/deleteDiagramSlice";
 
 const DiagramList = () => {
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
-    const [jsonObject, setJsonObject] = useState<[{ cells: [], diagramName: string, id: number, _id: string }]>([{
-        cells: [],
-        diagramName: "",
-        id: 0,
-        _id: ""
-    }]);
-
-    const getJSONObject = async () => {
-        const JSONObject = await getFromDb();
-        setJsonObject(JSONObject);
-    }
+    const {diagrams, loading} = useSelector((state: any) => state.diagrams)
+    const {currentDiagram, loadingDiagram, id} = useSelector((state: any) => state.singleDiagram)
 
     useEffect(() => {
-        getJSONObject();
-    })
+        dispatch(getDiagrams())
+    }, [])
+
+    if (loading) return <h2>Loading...</h2>
 
     const renderComponents = () => {
-        return jsonObject.map((object, index) => {
+        return diagrams.map((object: { cells: [], diagramName: string, _id: string }, index: number) => {
             return (
-                <DiagramBar key={index} index={index} diagramList={jsonObject} object={object} handleOpen={handleOpen}
+                <DiagramBar key={index} index={index} object={object} handleOpen={handleOpen}
                             handleDelete={handleDelete}/>
             );
         })
     }
 
-    const handleOpen = (object: [{ cells: [], diagramName: string, _id: string }], _id: string) => {
-        dispatch(jsonGraphSliceActions.addObject({object, _id}));
+    const handleOpen = async (_id: string) => {
+        await dispatch(getSingleDiagram(_id));
         history.push("/diagram");
     }
 
-    const handleDelete = (object: [{ cells: [], diagramName: string, _id: string }], _id: string) => {
-        deleteFromDb(_id);
+    const handleDelete = async (_id: string) => {
+        if (_id === id) {
+            dispatch(clearCurrentDiagram());
+        }
+        await dispatch(deleteDiagram(_id));
+        dispatch(getDiagrams());
     }
 
     return (

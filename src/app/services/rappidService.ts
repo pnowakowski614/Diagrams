@@ -3,7 +3,7 @@ import StencilService from "./stencilService";
 import React, { Dispatch } from "react";
 import {
     addLinkTools,
-    defaultShapeAttrs,
+    defaultShapeLabelAttrs,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -46,27 +46,27 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromDB(obj: [{ cells: [], _id: string, diagramName: string }], _id: string | null): void {
-        const jsonGraph = obj.find(graph => graph._id === _id);
+    public getGraphFromDB(obj: { cells: [], _id: string, diagramName: string }): void {
         this.graph.removeCells(this.graph.getCells());
-        this.graph.addCells(jsonGraph!.cells);
+        this.graph.addCells(obj!.cells);
         this.graph.getElements().forEach((element: dia.Element) => {
-                if (groupList.includes(element.prop("type"))) {
+                const elementType = element.prop("type")
+                if (groupList.includes(elementType)) {
                     element.prop("ports", groupShapePortConfig)
                 } else {
                     element.prop("ports", portsConfig)
                 }
 
-                if (element.prop("type") === GlobalShapesTypes.NodeShape) {
+                if (elementType === GlobalShapesTypes.NodeShape) {
                     element.attr({
                         label: {
-                            ...defaultShapeAttrs,
+                            ...defaultShapeLabelAttrs,
                             text: element.attr("label/text")
                         }
                     })
                 }
 
-                if (element.prop("type") === GlobalShapesTypes.CustomLink) {
+                if (elementType === GlobalShapesTypes.CustomLink) {
                     element.prop({
                         router: {
                             name: "manhattan",
@@ -78,7 +78,7 @@ class RappidService {
                 }
             }
         )
-        this.toolbarElement.querySelector("input")!.value = jsonGraph!.diagramName;
+        this.toolbarElement.querySelector("input")!.value = obj!.diagramName;
     }
 
     public init(): void {

@@ -4,7 +4,7 @@ import { shapesConfig } from "app/rappid-configs/shapesConfig";
 import { groupConfig } from "app/rappid-configs/groupConfig";
 import { AutoScaling, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "app/shapes";
 import { LocalShapesTypes } from "../types/enums";
-import { defaultShapeAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
+import { defaultShapeLabelAttrs, defaultStencilLayoutOptions } from "../utils/rappid-utils";
 import { portsConfig } from "../rappid-configs/portsConfig";
 import { Region } from "../shapes/region";
 
@@ -77,7 +77,7 @@ class StencilService {
             default:
                 clone.prop('ports', portsConfig);
                 return clone.attr({
-                    label: defaultShapeAttrs,
+                    label: defaultShapeLabelAttrs,
                 });
         }
     }

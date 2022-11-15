@@ -1,24 +1,3 @@
-export const postToDb = async (jsonString: string) => {
-    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
-        jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
-}
-
-export const getDiagramListFromDb = async () => {
-    const headers: HeadersInit = {
-        "x-access-token": localStorage.getItem('token')!
-    }
-
-    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'GET', undefined, headers);
-}
-
-export const getSingleDiagramFromDb = async (id: string) => {
-    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'GET', undefined, {'Content-Type': 'application/json'});
-}
-
-export const deleteFromDb = async (id: string) => {
-    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'DELETE')
-}
-
 const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers?: HeadersInit): Promise<any> | void => {
     return fetch(url, {
         method: methodName,
@@ -32,7 +11,33 @@ const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers
     })
 }
 
-export const loginUser = async (username: string, password: string) => {
+export const postToDb = async (jsonString: string): Promise<any> => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
+        jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
+}
+
+export const getDiagramListFromDb = async (): Promise<any> => {
+    const headers: HeadersInit = {
+        "x-access-token": localStorage.getItem('token')!
+    }
+
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'GET', undefined, headers);
+}
+
+export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'GET', undefined, {'Content-Type': 'application/json'});
+}
+
+export const updateDiagramInDb = async (jsonString: string, id: string): Promise<any> => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'PATCH',
+        jsonString, {'Content-Type': 'application/json'})
+}
+
+export const deleteFromDb = async (id: string): Promise<any> => {
+    return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'DELETE')
+}
+
+export const loginUser = async (username: string, password: string): Promise<any> => {
     const body = JSON.stringify({
         username,
         password
@@ -50,7 +55,7 @@ export const loginUser = async (username: string, password: string) => {
     }
 }
 
-export const registerUser = async (username: string, password: string, email: string) => {
+export const registerUser = async (username: string, password: string, email: string): Promise<any> => {
     const body = JSON.stringify({
         username,
         email,
