@@ -2,7 +2,7 @@ import * as joint from "@clientio/rappid";
 import { dia, layout, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 
-export const defaultShapeAttrs = {
+export const defaultShapeLabelAttrs = {
     fontSize: 10,
     textAnchor: "middle",
     refX: "50%",
@@ -255,3 +255,43 @@ export const defaultGroupShapeAttrs = {
     }
 }
 
+export const filterDiagramInfo = (graph: dia.Graph) => {
+    const graphJSON = graph.toJSON();
+    const newCells = graphJSON.cells.map((cell: any) => {
+        if (cell.type !== GlobalShapesTypes.CustomLink) {
+            return {
+                type: cell.type,
+                position: cell.position,
+                size: cell.size,
+                id: cell.id,
+                localType: cell.localType,
+                z: cell.z,
+                maxLinks: cell.maxLinks!,
+                attrs: {
+                    label: {
+                        text: cell.attrs.label?.text,
+                        textWrap: cell.attrs.label?.textWrap!
+                    },
+                    icon: {
+                        href: cell.attrs.icon?.href
+                    },
+                }
+            }
+        } else {
+            return {
+                type: cell.type,
+                source: cell.source,
+                target: cell.target,
+                id: cell.id,
+                z: cell.z,
+                attrs: {
+                    line: {
+                        stroke: cell.attrs?.line?.stroke!
+                    }
+                }
+            }
+        }
+    })
+    graphJSON.cells = newCells;
+    return graphJSON;
+}
