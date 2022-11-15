@@ -1,7 +1,7 @@
 import { dia, layout, ui } from "@clientio/rappid";
-import { postToDb } from "../API/fetchMethods";
-import store, { jsonGraphSliceActions } from "../store/store";
-import { GlobalShapesTypes } from "../types/enums";
+import { filterDiagramInfo } from "../utils/rappid-utils";
+import store from "../store/store";
+import { updateDiagram } from "../store/updateDiagramSlice";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -72,55 +72,18 @@ class ToolbarService {
         this.graph.set('diagramName', diagramName);
     }
 
-    private filterDiagramInfo(): JSON {
-        const graphJSON = this.graph.toJSON();
-        graphJSON.cells.map((object: any) => {
-            if (object.type !== GlobalShapesTypes.CustomLink) {
-                return {
-                    type: object.type,
-                    position: object.position,
-                    size: object.size,
-                    id: object.id,
-                    localType: object.localType,
-                    z: object.z,
-                    ...(object.maxLinks !== undefined && {maxLinks: object.maxLinks}),
-                    attrs: {
-                        label: {
-                            text: object.attrs.label?.text,
-                            textWrap: object.attrs.label?.textWrap!
-                        },
-                        icon: {
-                            href: object.attrs.icon?.href
-                        },
-                    }
-                }
-            } else {
-                return {
-                    type: object.type,
-                    source: object.source,
-                    target: object.target,
-                    id: object.id,
-                    z: object.z,
-                    ...(object.attrs !== undefined && {attrs: object.attrs})
-                }
-            }
-        })
-
-        return graphJSON;
-    }
-
     private initToolbarEvents(): void {
         this.toolbar.on({
                 'save:pointerclick': async () => {
                     this.setDiagramName();
-                    const graphJSON = this.filterDiagramInfo();
+                    const graphJSON = filterDiagramInfo(this.graph);
                     const jsonString = JSON.stringify(graphJSON);
-                    postToDb(jsonString);
+                    const id = store.getState().singleDiagram.id;
+                    store.dispatch(updateDiagram({jsonString, id}));
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();
                     this.graph.removeCells(cells);
-                    store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
                     this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value = "Diagram Name";
                 },
                 'treeLayout:pointerclick': () => {
