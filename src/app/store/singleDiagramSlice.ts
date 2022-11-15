@@ -1,26 +1,27 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { getSingleDiagramFromDb } from "../API/fetchMethods";
+import { addDiagram } from "./addDiagramSlice";
 
 const initialState = {
     currentDiagram: null,
+    id: "",
     loadingDiagram: false,
 }
 
 export const getSingleDiagram = createAsyncThunk(
     `diagrams/getSingleDiagram`,
     async (id: string) => {
-        return getSingleDiagramFromDb(id);
+        const diagram = await getSingleDiagramFromDb(id);
+        return {diagram, id};
     })
 
 export const singleDiagramSlice = createSlice({
     name: 'singleDiagram',
     initialState,
     reducers: {
-        setSingleDiagram: (state, action) => {
-            state.currentDiagram = action.payload;
-        },
         clearCurrentDiagram: (state) => {
             state.currentDiagram = null;
+            state.id = "";
         }
     },
     extraReducers: builder => {
@@ -29,13 +30,18 @@ export const singleDiagramSlice = createSlice({
         })
         builder.addCase(getSingleDiagram.fulfilled, (state, {payload}) => {
             state.loadingDiagram = false
-            state.currentDiagram = payload
+            state.currentDiagram = payload.diagram
+            state.id = payload.id
         })
         builder.addCase(getSingleDiagram.rejected, (state) => {
             state.loadingDiagram = false
         })
+        builder.addCase(addDiagram.fulfilled, (state, {payload}) => {
+            state.id = payload._id
+            state.currentDiagram = payload
+        })
     }
 })
 
-export const {setSingleDiagram, clearCurrentDiagram} = singleDiagramSlice.actions
+export const {clearCurrentDiagram} = singleDiagramSlice.actions
 export const singleDiagramReducer = singleDiagramSlice.reducer
