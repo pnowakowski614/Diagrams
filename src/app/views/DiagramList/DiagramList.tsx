@@ -11,7 +11,7 @@ const DiagramList = () => {
     const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
     const {diagrams, loading} = useSelector((state: any) => state.diagrams)
-    const {currentDiagram, loadingDiagram, id} = useSelector((state: any) => state.singleDiagram)
+    const {id} = useSelector((state: any) => state.singleDiagram)
 
     useEffect(() => {
         dispatch(getDiagrams())
@@ -20,7 +20,7 @@ const DiagramList = () => {
     if (loading) return <h2>Loading...</h2>
 
     const renderComponents = () => {
-        return diagrams.map((object: { cells: [], _id: string }, index: number) => {
+        return diagrams.map((object: { cells: [], _id: string, diagramName: string }, index: number) => {
             return (
                 <DiagramBar key={index} index={index} object={object} handleOpen={handleOpen}
                             handleDelete={handleDelete}/>
