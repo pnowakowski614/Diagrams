@@ -4,6 +4,7 @@ import { addDiagram } from "./addDiagramSlice";
 
 const initialState = {
     currentDiagram: null,
+    diagramName: "Default Name",
     id: "",
     loadingDiagram: false,
 }
@@ -22,6 +23,10 @@ export const singleDiagramSlice = createSlice({
         clearCurrentDiagram: (state) => {
             state.currentDiagram = null;
             state.id = "";
+            state.diagramName = "Default Name";
+        },
+        saveDiagramName: (state, {payload}) => {
+            state.diagramName = payload
         }
     },
     extraReducers: builder => {
@@ -30,7 +35,7 @@ export const singleDiagramSlice = createSlice({
         })
         builder.addCase(getSingleDiagram.fulfilled, (state, {payload}) => {
             state.loadingDiagram = false
-            state.currentDiagram = payload.diagram
+            state.currentDiagram = payload.diagram.cells
             state.id = payload.id
         })
         builder.addCase(getSingleDiagram.rejected, (state) => {
@@ -38,10 +43,10 @@ export const singleDiagramSlice = createSlice({
         })
         builder.addCase(addDiagram.fulfilled, (state, {payload}) => {
             state.id = payload._id
-            state.currentDiagram = payload
+            state.currentDiagram = payload.cells
         })
     }
 })
 
-export const {clearCurrentDiagram} = singleDiagramSlice.actions
+export const {saveDiagramName, clearCurrentDiagram} = singleDiagramSlice.actions
 export const singleDiagramReducer = singleDiagramSlice.reducer

@@ -7,9 +7,9 @@ const initialState = {
 
 export const updateDiagram = createAsyncThunk(
     `diagrams/updateDiagram`,
-    async (dataForUpdate: { jsonString: string, id: string }) => {
-        const {jsonString, id} = dataForUpdate;
-        return updateDiagramInDb(jsonString, id);
+    async (dataForUpdate: { cells: string, diagramName: string, id: string }) => {
+        const {cells, diagramName, id} = dataForUpdate;
+        return updateDiagramInDb(cells, diagramName, id);
     })
 
 export const updateDiagramSlice = createSlice({
