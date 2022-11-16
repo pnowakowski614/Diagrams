@@ -23,6 +23,7 @@ class ToolbarService {
 
         this.toolbar = new ui.Toolbar({
             tools: [
+                'separator',
                 'undo',
                 'redo',
                 'separator',
@@ -69,9 +70,10 @@ class ToolbarService {
         this.toolbar.on({
                 'save:pointerclick': async () => {
                     const graphJSON = filterDiagramInfo(this.graph);
-                    const jsonString = JSON.stringify(graphJSON);
+                    const cells = JSON.stringify(graphJSON);
                     const id = store.getState().singleDiagram.id;
-                    store.dispatch(updateDiagram({jsonString, id}));
+                    const diagramName = store.getState().singleDiagram.diagramName;
+                    store.dispatch(updateDiagram({cells, diagramName, id}));
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();
