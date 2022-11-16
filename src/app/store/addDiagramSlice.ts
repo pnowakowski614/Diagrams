@@ -7,8 +7,9 @@ const initialState = {
 
 export const addDiagram = createAsyncThunk(
     `diagrams/addDiagram`,
-    async (diagram: string) => {
-        return await postToDb(diagram);
+    async (dataToPost: { diagram: string, diagramNameState: string }) => {
+        const {diagram, diagramNameState} = dataToPost
+        return await postToDb(diagram, diagramNameState);
     })
 
 export const addDiagramSlice = createSlice({
