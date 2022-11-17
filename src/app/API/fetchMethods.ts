@@ -11,9 +11,13 @@ const callApiMethod = (url: string, methodName: string, body?: BodyInit, headers
     })
 }
 
-export const postToDb = async (jsonString: string): Promise<any> => {
+export const postToDb = async (diagram: JSON, diagramName: string): Promise<any> => {
+    const body: BodyInit = JSON.stringify({
+        diagram,
+        diagramName
+    })
     return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'POST',
-        jsonString, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
+        body, {'Content-Type': 'application/json', "x-access-token": localStorage.getItem('token')!})
 }
 
 export const getDiagramListFromDb = async (): Promise<any> => {
@@ -28,9 +32,14 @@ export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
     return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'GET', undefined, {'Content-Type': 'application/json'});
 }
 
-export const updateDiagramInDb = async (jsonString: string, id: string): Promise<any> => {
+export const updateDiagramInDb = async (cells: JSON, diagramName: string, id: string): Promise<any> => {
+    const body: BodyInit = JSON.stringify({
+        cells,
+        diagramName
+    })
+
     return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`, 'PATCH',
-        jsonString, {'Content-Type': 'application/json'})
+        body, {'Content-Type': 'application/json'})
 }
 
 export const deleteFromDb = async (id: string): Promise<any> => {
