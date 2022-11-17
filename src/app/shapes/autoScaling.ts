@@ -1,6 +1,7 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { portsConfig } from "../rappid-configs/portsConfig";
+import { defaultTextWrap, getShapeLabelWidth } from "../utils/rappid-utils";
 
 export class AutoScaling extends shapes.standard.Rectangle {
     defaults() {
@@ -20,6 +21,10 @@ export class AutoScaling extends shapes.standard.Rectangle {
                 },
                 label: {
                     text: "Auto Scaling",
+                    textWrap: {
+                        defaultTextWrap,
+                        width: getShapeLabelWidth(GlobalShapesTypes.AutoScaling)
+                    },
                     textAnchor: "middle",
                     refX: "50%",
                     refY: -20,

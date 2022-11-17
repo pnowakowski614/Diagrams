@@ -59,7 +59,6 @@ class RappidService {
                         label: {
                             ...defaultShapeLabelAttrs,
                             text: cell.text,
-                            textWrap: cell.textWrap
                         },
                         icon: {
                             href: cell.icon

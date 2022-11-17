@@ -226,7 +226,8 @@ export const defaultGroupShapeMarkup = [
 
 export const defaultTextWrap = {
     height: 20,
-    ellipsis: true
+    ellipsis: true,
+    width: "300%"
 }
 
 export const defaultGroupShapeAttrs = {
@@ -273,7 +274,6 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
                 z: cell.z,
                 maxLinks: cell.maxLinks!,
                 text: cell.attrs.label?.text,
-                textWrap: cell.attrs.label?.textWrap!,
                 icon: cell.attrs.icon?.href
             }
         } else {

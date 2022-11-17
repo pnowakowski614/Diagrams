@@ -1,7 +1,12 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { groupShapePortConfig } from "../rappid-configs/portsConfig";
-import { defaultGroupShapeAttrs, defaultGroupShapeMarkup } from "../utils/rappid-utils";
+import {
+    defaultGroupShapeAttrs,
+    defaultGroupShapeMarkup,
+    defaultTextWrap,
+    getShapeLabelWidth
+} from "../utils/rappid-utils";
 
 export class Subnet extends shapes.standard.Rectangle {
     defaults() {
@@ -26,6 +31,10 @@ export class Subnet extends shapes.standard.Rectangle {
                 label: {
                     ...defaultGroupShapeAttrs.label,
                     text: "Subnet",
+                    textWrap: {
+                        defaultTextWrap,
+                        width: getShapeLabelWidth(GlobalShapesTypes.Subnet)
+                    }
                 },
                 icon: {
                     ...defaultGroupShapeAttrs.icon,

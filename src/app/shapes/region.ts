@@ -1,7 +1,12 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { portIn, portOut, portsConfig } from "../rappid-configs/portsConfig";
-import { defaultGroupShapeAttrs, defaultGroupShapeMarkup } from "../utils/rappid-utils";
+import {
+    defaultGroupShapeAttrs,
+    defaultGroupShapeMarkup,
+    defaultTextWrap,
+    getShapeLabelWidth
+} from "../utils/rappid-utils";
 
 export class Region extends shapes.standard.Rectangle {
     defaults() {
@@ -26,6 +31,10 @@ export class Region extends shapes.standard.Rectangle {
                 label: {
                     ...defaultGroupShapeAttrs.label,
                     text: "Region",
+                    textWrap: {
+                        defaultTextWrap,
+                        width: getShapeLabelWidth(GlobalShapesTypes.Region)
+                    }
                 },
                 icon: {
                     ...defaultGroupShapeAttrs.icon,
