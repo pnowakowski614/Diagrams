@@ -69,8 +69,7 @@ class ToolbarService {
     private initToolbarEvents(): void {
         this.toolbar.on({
                 'save:pointerclick': async () => {
-                    const graphJSON = filterDiagramInfo(this.graph);
-                    const cells = JSON.stringify(graphJSON);
+                    const cells: JSON = filterDiagramInfo(this.graph);
                     const id = store.getState().singleDiagram.id;
                     const diagramName = store.getState().singleDiagram.diagramName;
                     store.dispatch(updateDiagram({cells, diagramName, id}));

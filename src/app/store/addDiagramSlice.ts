@@ -7,7 +7,7 @@ const initialState = {
 
 export const addDiagram = createAsyncThunk(
     `diagrams/addDiagram`,
-    async (dataToPost: { diagram: string, diagramNameState: string }) => {
+    async (dataToPost: { diagram: JSON, diagramNameState: string }) => {
         const {diagram, diagramNameState} = dataToPost
         return await postToDb(diagram, diagramNameState);
     })

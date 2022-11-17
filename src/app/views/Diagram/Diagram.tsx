@@ -57,10 +57,9 @@ const Diagram = () => {
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorState);
             if (currentDiagram !== null) {
-                rappidInst.getGraphFromDB(currentDiagram);
+                rappidInst.getGraphFromDB(rappidInst.graph);
             } else {
-                const graphInfo = filterDiagramInfo(rappidInst.graph);
-                const diagram = JSON.stringify(graphInfo);
+                const diagram: JSON = filterDiagramInfo(rappidInst.graph);
                 dispatch(addDiagram({diagram, diagramNameState}));
             }
         }
