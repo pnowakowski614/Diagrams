@@ -8,17 +8,16 @@ import {
     getMinDimensions,
     getPreserveAspectRatio,
     getResizeDirections,
-    groupList,
     updateGridLayout,
     updateGroupSize,
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
-import { CustomLink } from "../shapes";
+import { CustomLink, NodeShape } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
-import { groupShapePortConfig, portsConfig } from "../rappid-configs/portsConfig";
 import { GlobalShapesTypes } from "../types/enums";
+import store from "../store/store";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -46,38 +45,64 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromDB(obj: { cells: [], _id: string }): void {
-        this.graph.removeCells(this.graph.getCells());
-        this.graph.addCells(obj!.cells);
-        this.graph.getElements().forEach((element: dia.Element) => {
-                const elementType = element.prop("type")
-                if (groupList.includes(elementType)) {
-                    element.prop("ports", groupShapePortConfig)
-                } else {
-                    element.prop("ports", portsConfig)
-                }
+    public getGraphFromDB(graph: dia.Graph): void {
+        const diagramCells: Array<any> = store.getState().singleDiagram.currentDiagram!;
+        const cellsWithoutLinks = diagramCells.filter(cell => cell.type !== GlobalShapesTypes.CustomLink);
 
-                if (elementType === GlobalShapesTypes.NodeShape) {
-                    element.attr({
+        console.log(diagramCells);
+        diagramCells.map(cell => {
+            let newShape;
+            switch (cell.type) {
+                case GlobalShapesTypes.NodeShape: {
+                    newShape = new NodeShape({...cell});
+                    newShape.attr({
                         label: {
                             ...defaultShapeLabelAttrs,
-                            text: element.attr("label/text")
-                        }
-                    })
-                }
-
-                if (elementType === GlobalShapesTypes.CustomLink) {
-                    element.prop({
-                        router: {
-                            name: "manhattan",
+                            text: cell.text,
+                            textWrap: cell.textWrap
                         },
-                        connector: {
-                            name: 'rounded',
+                        icon: {
+                            href: cell.icon
                         }
                     })
+                    console.log(newShape)
+                    graph.addCell(newShape)
                 }
             }
-        )
+
+        })
+
+        // this.graph.removeCells(this.graph.getCells());
+        // this.graph.addCells(obj!.cells);
+        // this.graph.getElements().forEach((element: dia.Element) => {
+        //         const elementType = element.prop("type")
+        //         if (groupList.includes(elementType)) {
+        //             element.prop("ports", groupShapePortConfig)
+        //         } else {
+        //             element.prop("ports", portsConfig)
+        //         }
+        //
+        //         if (elementType === GlobalShapesTypes.NodeShape) {
+        //             element.attr({
+        //                 label: {
+        //                     ...defaultShapeLabelAttrs,
+        //                     text: element.attr("label/text")
+        //                 }
+        //             })
+        //         }
+        //
+        //         if (elementType === GlobalShapesTypes.CustomLink) {
+        //             element.prop({
+        //                 router: {
+        //                     name: "manhattan",
+        //                 },
+        //                 connector: {
+        //                     name: 'rounded',
+        //                 }
+        //             })
+        //         }
+        //  }
+        // )
     }
 
     public init(): void {
