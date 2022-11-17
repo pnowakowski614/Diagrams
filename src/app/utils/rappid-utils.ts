@@ -15,8 +15,8 @@ export const defaultStencilLayoutOptions = {
     rowHeight: 65
 }
 
-export const getShapeLabelWidth = (cellView: dia.CellView) => {
-    switch (cellView.model.prop("type")) {
+export const getShapeLabelWidth = (cellType: string) => {
+    switch (cellType) {
         case GlobalShapesTypes.NodeShape:
             return '175%';
         case GlobalShapesTypes.Region:
@@ -224,6 +224,11 @@ export const defaultGroupShapeMarkup = [
     }
 ]
 
+export const defaultTextWrap = {
+    height: 20,
+    ellipsis: true
+}
+
 export const defaultGroupShapeAttrs = {
     body: {
         refWidth: "100%",
@@ -267,15 +272,9 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
                 localType: cell.localType,
                 z: cell.z,
                 maxLinks: cell.maxLinks!,
-                attrs: {
-                    label: {
-                        text: cell.attrs.label?.text,
-                        textWrap: cell.attrs.label?.textWrap!
-                    },
-                    icon: {
-                        href: cell.attrs.icon?.href
-                    },
-                }
+                text: cell.attrs.label?.text,
+                textWrap: cell.attrs.label?.textWrap!,
+                icon: cell.attrs.icon?.href
             }
         } else {
             return {
@@ -284,14 +283,9 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
                 target: cell.target,
                 id: cell.id,
                 z: cell.z,
-                attrs: {
-                    line: {
-                        stroke: cell.attrs?.line?.stroke!
-                    }
-                }
+                linkColor: cell.attrs?.line?.stroke!
             }
         }
     })
-    graphJSON.cells = newCells;
-    return graphJSON;
+    return newCells;
 }
