@@ -21,8 +21,9 @@ export class SecurityGroup extends shapes.standard.Rectangle {
             attrs: {
                 ...defaultGroupShapeAttrs,
                 label: {
+                    ...defaultGroupShapeAttrs.label,
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.SecurityGroup)
                     }
                 }

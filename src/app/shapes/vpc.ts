@@ -32,7 +32,7 @@ export class VPC extends shapes.standard.Rectangle {
                     ...defaultGroupShapeAttrs.label,
                     text: "VPC",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.VPC)
                     }
                 },

@@ -32,7 +32,7 @@ export class Subnet extends shapes.standard.Rectangle {
                     ...defaultGroupShapeAttrs.label,
                     text: "Subnet",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.Subnet)
                     }
                 },

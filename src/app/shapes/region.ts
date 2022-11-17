@@ -32,7 +32,7 @@ export class Region extends shapes.standard.Rectangle {
                     ...defaultGroupShapeAttrs.label,
                     text: "Region",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.Region)
                     }
                 },

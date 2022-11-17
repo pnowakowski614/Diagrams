@@ -13,11 +13,13 @@ import {
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
-import { CustomLink, NodeShape } from "../shapes";
+import { AutoScaling, CustomLink, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
 import { GlobalShapesTypes } from "../types/enums";
 import store from "../store/store";
+import { omit } from "lodash";
+import { Region } from "../shapes/region";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -46,62 +48,129 @@ class RappidService {
     }
 
     public getGraphFromDB(graph: dia.Graph): void {
+        console.log(graph);
         const diagramCells: Array<any> = store.getState().singleDiagram.currentDiagram!;
         const cellsWithoutLinks = diagramCells.filter(cell => cell.type !== GlobalShapesTypes.CustomLink);
-
         console.log(diagramCells);
-        diagramCells.map(cell => {
-            let newShape;
-            switch (cell.type) {
-                case GlobalShapesTypes.NodeShape: {
-                    newShape = new NodeShape({...cell});
-                    newShape.attr({
-                        label: {
-                            ...defaultShapeLabelAttrs,
-                            text: cell.text,
-                        },
-                        icon: {
-                            href: cell.icon
-                        }
-                    })
-                    console.log(newShape)
-                    graph.addCell(newShape)
+        diagramCells.forEach(cell => {
+            const createCell = (() => {
+                switch (cell.type) {
+                    case GlobalShapesTypes.NodeShape: {
+                        const newShape = new NodeShape(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            label: {
+                                ...defaultShapeLabelAttrs,
+                                text: cell.text,
+                            },
+                            icon: {
+                                href: cell.icon
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.AutoScaling: {
+                        const newShape = new AutoScaling(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.EcsCluster: {
+                        const newShape = new ECSCluster(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.EcsService: {
+                        const newShape = new ECSService(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.SecurityGroup: {
+                        const newShape = new SecurityGroup(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            body: {
+                                stroke: cell.groupShapeColor
+                            },
+                            background: {
+                                fill: cell.groupShapeColor
+                            },
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.Subnet: {
+                        const newShape = new Subnet(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            body: {
+                                stroke: cell.groupShapeColor
+                            },
+                            background: {
+                                fill: cell.groupShapeColor
+                            },
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.Region: {
+                        const newShape = new Region(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            body: {
+                                stroke: cell.groupShapeColor
+                            },
+                            background: {
+                                fill: cell.groupShapeColor
+                            },
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    case GlobalShapesTypes.VPC: {
+                        const newShape = new VPC(omit(cell, ["text", "icon", "groupShapeColor"]));
+                        newShape.attr({
+                            body: {
+                                stroke: cell.groupShapeColor
+                            },
+                            background: {
+                                fill: cell.groupShapeColor
+                            },
+                            label: {
+                                text: cell.text,
+                            }
+                        })
+                        return newShape;
+                    }
+                    default: {
+                        const newLink = new CustomLink(omit(cell, ["linkColor"]));
+                        newLink.attr({
+                            line: {
+                                stroke: cell.linkColor
+                            }
+                        })
+                        return newLink;
+                    }
                 }
-            }
+            })
 
+            const cellToAdd = createCell();
+            graph.addCell(cellToAdd);
+            console.log(cellToAdd);
         })
-
-        // this.graph.removeCells(this.graph.getCells());
-        // this.graph.addCells(obj!.cells);
-        // this.graph.getElements().forEach((element: dia.Element) => {
-        //         const elementType = element.prop("type")
-        //         if (groupList.includes(elementType)) {
-        //             element.prop("ports", groupShapePortConfig)
-        //         } else {
-        //             element.prop("ports", portsConfig)
-        //         }
-        //
-        //         if (elementType === GlobalShapesTypes.NodeShape) {
-        //             element.attr({
-        //                 label: {
-        //                     ...defaultShapeLabelAttrs,
-        //                     text: element.attr("label/text")
-        //                 }
-        //             })
-        //         }
-        //
-        //         if (elementType === GlobalShapesTypes.CustomLink) {
-        //             element.prop({
-        //                 router: {
-        //                     name: "manhattan",
-        //                 },
-        //                 connector: {
-        //                     name: 'rounded',
-        //                 }
-        //             })
-        //         }
-        //  }
-        // )
     }
 
     public init(): void {

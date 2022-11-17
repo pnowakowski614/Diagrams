@@ -274,7 +274,8 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
                 z: cell.z,
                 maxLinks: cell.maxLinks!,
                 text: cell.attrs.label?.text,
-                icon: cell.attrs.icon?.href
+                icon: cell.attrs.icon?.href,
+                groupShapeColor: cell.attrs.body?.stroke,
             }
         } else {
             return {

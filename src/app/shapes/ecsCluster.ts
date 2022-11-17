@@ -23,7 +23,7 @@ export class ECSCluster extends shapes.standard.Rectangle {
                 label: {
                     text: "ECS Cluster",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.EcsCluster)
                     },
                     textAnchor: "right",

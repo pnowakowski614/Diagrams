@@ -22,7 +22,7 @@ export class AutoScaling extends shapes.standard.Rectangle {
                 label: {
                     text: "Auto Scaling",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.AutoScaling)
                     },
                     textAnchor: "middle",

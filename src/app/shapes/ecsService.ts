@@ -23,7 +23,7 @@ export class ECSService extends shapes.standard.Rectangle {
                 label: {
                     text: "ECS Service",
                     textWrap: {
-                        defaultTextWrap,
+                        ...defaultTextWrap,
                         width: getShapeLabelWidth(GlobalShapesTypes.EcsService)
                     },
                     textAnchor: "right",
