@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, KeyboardEventHandler, useEffect, useRef, useState } from 'react';
 import styles from './diagram.module.scss';
 import 'styles/rappid-overrides.scss';
 import "@clientio/rappid/rappid.css";
@@ -11,7 +11,7 @@ import jwt from "jsonwebtoken";
 import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
 import { AppDispatch } from "../../store/store";
 import { filterDiagramInfo } from "../../utils/rappid-utils";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 
 const Diagram = () => {
     const history = useHistory();
@@ -46,7 +46,13 @@ const Diagram = () => {
         setDiagramNameState(event.target.value);
     }
 
-    const sendDiagramNameToStore = () => {
+    const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            dispatch(saveDiagramName(diagramNameState));
+        }
+    }
+
+    const handleClickAway = () => {
         dispatch(saveDiagramName(diagramNameState));
     }
 
@@ -68,10 +74,10 @@ const Diagram = () => {
         <div className={styles.diagramContainer}>
             <div className={styles.toolbarWrapper}>
                 <div className={styles.diagramToolbar} ref={toolbar}/>
-                <Button variant="contained" size="small" onClick={sendDiagramNameToStore}
-                        sx={{fontSize: 13, height: "40px", marginLeft: "18px"}}>Save</Button>
-                <TextField required label="Diagram Name:" size="small" value={diagramNameState}
-                           onChange={handleDiagramNameChange}/>
+                <TextField variant="standard" size="small" value={diagramNameState}
+                           onBlur={handleClickAway}
+                           onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
+                           onChange={handleDiagramNameChange} sx={{paddingTop: "5px"}}/>
             </div>
             <div className={styles.wrapper}>
                 <div className={styles.stencilHolder} ref={stencil}/>

@@ -1,7 +1,7 @@
 import { dia, layout, ui } from "@clientio/rappid";
 import { filterDiagramInfo } from "../utils/rappid-utils";
 import store from "../store/store";
-import { updateDiagram } from "../store/diagramsSlice";
+import { clearCurrentDiagram, updateDiagram } from "../store/diagramsSlice";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -69,14 +69,19 @@ class ToolbarService {
     private initToolbarEvents(): void {
         this.toolbar.on({
                 'save:pointerclick': async () => {
+                    const diagramName = store.getState().diagrams.diagramName;
+                    if (diagramName === "") {
+                        return;
+                    }
                     const cells: JSON = filterDiagramInfo(this.graph);
                     const id = store.getState().diagrams.id;
-                    const diagramName = store.getState().diagrams.diagramName;
+
                     store.dispatch(updateDiagram({cells, diagramName, id}));
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();
                     this.graph.removeCells(cells);
+                    store.dispatch(clearCurrentDiagram());
                 },
                 'treeLayout:pointerclick': () => {
                     this.treeLayout.layout({deep: true, parentRelative: true});
