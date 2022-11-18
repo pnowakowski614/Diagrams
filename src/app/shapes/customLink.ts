@@ -1,7 +1,7 @@
-import { shapes } from '@clientio/rappid';
+import { dia } from '@clientio/rappid';
 import { GlobalShapesTypes } from "../types/enums";
 
-export class CustomLink extends shapes.standard.Link {
+export class CustomLink extends dia.Link {
     defaults() {
         return {
             ...super.defaults,

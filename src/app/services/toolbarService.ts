@@ -72,7 +72,6 @@ class ToolbarService {
                     const cells: JSON = filterDiagramInfo(this.graph);
                     const id = store.getState().singleDiagram.id;
                     const diagramName = store.getState().singleDiagram.diagramName;
-                    console.log(this.graph);
                     store.dispatch(updateDiagram({cells, diagramName, id}));
                 },
                 'clear:pointerclick': () => {

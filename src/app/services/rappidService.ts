@@ -48,10 +48,7 @@ class RappidService {
     }
 
     public getGraphFromDB(graph: dia.Graph): void {
-        console.log(graph);
         const diagramCells: Array<any> = store.getState().singleDiagram.currentDiagram!;
-        const cellsWithoutLinks = diagramCells.filter(cell => cell.type !== GlobalShapesTypes.CustomLink);
-        console.log(diagramCells);
         diagramCells.forEach(cell => {
             const createCell = (() => {
                 switch (cell.type) {
@@ -169,7 +166,6 @@ class RappidService {
 
             const cellToAdd = createCell();
             graph.addCell(cellToAdd);
-            console.log(cellToAdd);
         })
     }
 
