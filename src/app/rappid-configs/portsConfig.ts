@@ -1,57 +1,58 @@
 export const portIn = {
-    position: {
-        name: 'left'
+  position: {
+    name: "left",
+  },
+  attrs: {
+    portBody: {
+      magnet: "passive",
+      r: 4,
+      fill: "darkBlue",
     },
-    attrs: {
-        portBody: {
-            magnet: "passive",
-            r: 4,
-            fill: 'darkBlue'
-        }
+  },
+  markup: [
+    {
+      tagName: "circle",
+      selector: "portBody",
     },
-    markup: [{
-        tagName: 'circle',
-        selector: 'portBody'
-    }]
+  ],
 };
 
 export const portOut = {
-    position: {
-        name: 'right'
+  position: {
+    name: "right",
+  },
+  attrs: {
+    portBody: {
+      magnet: true,
+      r: 4,
+      fill: "darkRed",
     },
-    attrs: {
-        portBody: {
-            magnet: true,
-            r: 4,
-            fill: 'darkRed',
-        }
+  },
+  markup: [
+    {
+      tagName: "circle",
+      selector: "portBody",
     },
-    markup: [{
-        tagName: 'circle',
-        selector: 'portBody'
-    }]
+  ],
 };
 
 export const portsConfig = {
-    groups: {
-        'in': portIn,
-        'out': portOut
-    },
-    items: [
-        {group: 'in'},
-        {group: 'out'}
-    ]
-}
+  groups: {
+    in: portIn,
+    out: portOut,
+  },
+  items: [{ group: "in" }, { group: "out" }],
+};
 
 export const groupShapePortConfig = {
-    ...portsConfig,
-    groups: {
-        'in': {
-            ...portIn,
-            position: {
-                name: 'top'
-            }
-        },
-        'out': portOut
-    }
-}
+  ...portsConfig,
+  groups: {
+    in: {
+      ...portIn,
+      position: {
+        name: "top",
+      },
+    },
+    out: portOut,
+  },
+};

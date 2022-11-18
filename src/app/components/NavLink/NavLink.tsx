@@ -3,11 +3,13 @@ import styles from "./navLink.module.scss";
 import React from "react";
 
 interface NavLinkProps extends LinkProps {
-    customClassName?: string;
+  customClassName?: string;
 }
 
-const NavLink = ({customClassName, ...linkProps}: NavLinkProps) => {
-    return <Link className={`${styles.link} ${customClassName}`} {...linkProps} />;
-}
+const NavLink = ({ customClassName, ...linkProps }: NavLinkProps) => {
+  return (
+    <Link className={`${styles.link} ${customClassName}`} {...linkProps} />
+  );
+};
 
 export default NavLink;
