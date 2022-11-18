@@ -46,7 +46,8 @@ class StencilService {
         })
 
         Object.values(shapesConfig).forEach((value) => {
-            const newNode = new NodeShape()
+            const newNode = new NodeShape();
+            newNode.removePorts();
             newNode.attr({
                 label: {
                     text: value.label,
