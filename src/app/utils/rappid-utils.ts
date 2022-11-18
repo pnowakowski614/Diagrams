@@ -1,6 +1,11 @@
 import * as joint from "@clientio/rappid";
 import { dia, layout, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
+import { DbCellAttrs, GraphInfoCells } from "../types/types";
+import store from "../store/store";
+import { AutoScaling, CustomLink, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "../shapes";
+import { omit } from "lodash";
+import { Region } from "../shapes/region";
 
 export const defaultShapeLabelAttrs = {
     fontSize: 10,
@@ -90,8 +95,6 @@ export const addLinkTools = (linkView: dia.LinkView): void => {
         name: 'link-pointerdown',
         tools: [
             new linkTools.Vertices(),
-            new linkTools.SourceArrowhead(),
-            new linkTools.TargetArrowhead(),
             new linkTools.Segments(),
             new linkTools.Remove(),
             new linkTools.Boundary({padding: 15, useModelGeometry: true}),
@@ -263,7 +266,7 @@ export const defaultGroupShapeAttrs = {
 
 export const filterDiagramInfo = (graph: dia.Graph) => {
     const graphJSON = graph.toJSON();
-    const newCells = graphJSON.cells.map((cell: any) => {
+    const newCells = graphJSON.cells.map((cell: GraphInfoCells) => {
         if (cell.type !== GlobalShapesTypes.CustomLink) {
             return {
                 type: cell.type,
@@ -284,9 +287,98 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
                 target: cell.target,
                 id: cell.id,
                 z: cell.z,
+                vertices: cell.vertices,
                 linkColor: cell.attrs?.line?.stroke!
             }
         }
     })
     return newCells;
+}
+
+export const returnShapeAttrs = (cell: DbCellAttrs) => {
+    switch (cell.type) {
+        case GlobalShapesTypes.NodeShape:
+            return {
+                label: {
+                    ...defaultShapeLabelAttrs,
+                    text: cell.text,
+                },
+                icon: {
+                    href: cell.icon
+                }
+            }
+        case GlobalShapesTypes.AutoScaling, GlobalShapesTypes.EcsService, GlobalShapesTypes.EcsService:
+            return {
+                label: {
+                    text: cell.text,
+                }
+            }
+        case GlobalShapesTypes.VPC, GlobalShapesTypes.Region, GlobalShapesTypes.Subnet, GlobalShapesTypes.SecurityGroup:
+            return {
+                body: {
+                    stroke: cell.groupShapeColor
+                },
+                background: {
+                    fill: cell.groupShapeColor
+                },
+                label: {
+                    text: cell.text,
+                }
+            }
+        default:
+            return {
+                line: {
+                    stroke: cell.linkColor
+                }
+            }
+    }
+}
+
+export const getGraphFromDB = (graph: dia.Graph) => {
+    const diagramCells: [DbCellAttrs] = store.getState().diagrams.currentDiagram!;
+    diagramCells.forEach(cell => {
+        const createCell = (() => {
+            switch (cell.type) {
+                case GlobalShapesTypes.NodeShape: {
+                    const newShape = new NodeShape(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.AutoScaling: {
+                    const newShape = new AutoScaling(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.EcsCluster: {
+                    const newShape = new ECSCluster(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.EcsService: {
+                    const newShape = new ECSService(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.SecurityGroup: {
+                    const newShape = new SecurityGroup(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.Subnet: {
+                    const newShape = new Subnet(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.Region: {
+                    const newShape = new Region(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                case GlobalShapesTypes.VPC: {
+                    const newShape = new VPC(omit(cell, ["text", "icon", "groupShapeColor"]));
+                    return newShape.attr(returnShapeAttrs(cell))
+                }
+                default: {
+                    const newLink = new CustomLink(omit(cell, ["linkColor"]));
+                    return newLink.attr(returnShapeAttrs(cell))
+                }
+            }
+        })
+
+        const cellToAdd = createCell();
+        graph.addCell(cellToAdd);
+    })
 }

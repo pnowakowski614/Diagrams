@@ -3,8 +3,6 @@ import StencilService from "./stencilService";
 import React, { Dispatch } from "react";
 import {
     addLinkTools,
-    defaultShapeLabelAttrs,
-    filterDiagramInfo,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -14,14 +12,9 @@ import {
     validateConnection,
     validateEmbedding
 } from "../utils/rappid-utils";
-import { AutoScaling, CustomLink, ECSCluster, ECSService, NodeShape, SecurityGroup, Subnet, VPC } from "../shapes";
+import { CustomLink } from "../shapes";
 import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
-import { GlobalShapesTypes } from "../types/enums";
-import store from "../store/store";
-import { isEqual, omit } from "lodash";
-import { Region } from "../shapes/region";
-import { setIsDiagramEdited } from "../store/diagramsSlice";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -47,128 +40,6 @@ class RappidService {
 
     public setInspectorFunction(callback: Dispatch<React.SetStateAction<InspectorState>>): void {
         this.setInspectorOpened = callback;
-    }
-
-    public getGraphFromDB(graph: dia.Graph): void {
-        const diagramCells: Array<any> = store.getState().diagrams.currentDiagram!;
-        diagramCells.forEach(cell => {
-            const createCell = (() => {
-                switch (cell.type) {
-                    case GlobalShapesTypes.NodeShape: {
-                        const newShape = new NodeShape(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            label: {
-                                ...defaultShapeLabelAttrs,
-                                text: cell.text,
-                            },
-                            icon: {
-                                href: cell.icon
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.AutoScaling: {
-                        const newShape = new AutoScaling(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.EcsCluster: {
-                        const newShape = new ECSCluster(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.EcsService: {
-                        const newShape = new ECSService(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.SecurityGroup: {
-                        const newShape = new SecurityGroup(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            body: {
-                                stroke: cell.groupShapeColor
-                            },
-                            background: {
-                                fill: cell.groupShapeColor
-                            },
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.Subnet: {
-                        const newShape = new Subnet(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            body: {
-                                stroke: cell.groupShapeColor
-                            },
-                            background: {
-                                fill: cell.groupShapeColor
-                            },
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.Region: {
-                        const newShape = new Region(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            body: {
-                                stroke: cell.groupShapeColor
-                            },
-                            background: {
-                                fill: cell.groupShapeColor
-                            },
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    case GlobalShapesTypes.VPC: {
-                        const newShape = new VPC(omit(cell, ["text", "icon", "groupShapeColor"]));
-                        newShape.attr({
-                            body: {
-                                stroke: cell.groupShapeColor
-                            },
-                            background: {
-                                fill: cell.groupShapeColor
-                            },
-                            label: {
-                                text: cell.text,
-                            }
-                        })
-                        return newShape;
-                    }
-                    default: {
-                        const newLink = new CustomLink(omit(cell, ["linkColor"]));
-                        newLink.attr({
-                            line: {
-                                stroke: cell.linkColor
-                            }
-                        })
-                        return newLink;
-                    }
-                }
-            })
-
-            const cellToAdd = createCell();
-            graph.addCell(cellToAdd);
-        })
     }
 
     public init(): void {
@@ -230,7 +101,7 @@ class RappidService {
         });
     }
 
-    private OnChangeElementsEmbeds(element: dia.Element): void {
+    private onChangeElementsEmbeds(element: dia.Element): void {
         updateGridLayout(element);
         updateGroupSize(element);
     }
@@ -250,11 +121,23 @@ class RappidService {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 this.initHalo(elementView);
-                this.halo.on('action:fork:pointerup', () => this.validateForking(elementView.model));
+                this.halo.on({
+                    'action:fork:pointerup': () => this.validateForking(elementView.model),
+                    'action:remove:pointerdown': () => {
+                        this.setInspectorOpened({
+                            isOpened: false,
+                            cellView: null,
+                            graph: null
+                        })
+                    }
+                })
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
                 addLinkTools(linkView);
+                if (this.halo) {
+                    this.halo.remove();
+                }
             },
             'link:connect': (linkView: dia.LinkView) => {
                 this.linkValidation(linkView);
@@ -265,17 +148,11 @@ class RappidService {
                     cellView,
                     graph: this.graph
                 });
-            },
-            'render:done': () => {
-                const isDiagramEdited = !isEqual(filterDiagramInfo(this.graph), store.getState().diagrams.currentDiagram);
-                if (isDiagramEdited !== store.getState().diagrams.isDiagramEdited) {
-                    store.dispatch(setIsDiagramEdited(isDiagramEdited))
-                }
             }
         });
         this.graph.on('change:embeds', (element) => {
-            this.OnChangeElementsEmbeds(element);
-        })
+            this.onChangeElementsEmbeds(element);
+        });
     }
 
     private linkValidation(linkView: dia.LinkView): void {
