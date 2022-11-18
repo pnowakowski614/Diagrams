@@ -33,6 +33,7 @@ export const getSingleDiagram = createAsyncThunk(
     `diagrams/getSingleDiagram`,
     async (id: string) => {
         const diagram = await getSingleDiagramFromDb(id);
+        console.log(diagram);
         return {diagram, id};
     })
 
@@ -67,16 +68,12 @@ export const diagramSlice = createSlice({
             state.id = payload._id
             state.currentDiagram = payload.cells
         })
-        builder.addCase(deleteDiagram.fulfilled, () => {
-        })
         builder.addCase(getDiagrams.pending, (state) => {
             state.loadingList = true
         })
         builder.addCase(getDiagrams.fulfilled, (state, {payload}) => {
             state.loadingList = false
             state.diagrams = payload
-        })
-        builder.addCase(updateDiagram.fulfilled, () => {
         })
         builder.addCase(getSingleDiagram.pending, (state) => {
             state.loadingDiagram = true
@@ -85,6 +82,7 @@ export const diagramSlice = createSlice({
             state.loadingDiagram = false
             state.currentDiagram = payload.diagram.cells
             state.id = payload.id
+            state.diagramName = payload.diagram.diagramName
         })
 
     }
