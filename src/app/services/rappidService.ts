@@ -4,6 +4,7 @@ import React, { Dispatch } from "react";
 import {
     addLinkTools,
     defaultShapeLabelAttrs,
+    filterDiagramInfo,
     getHaloMagnet,
     getMinDimensions,
     getPreserveAspectRatio,
@@ -18,8 +19,9 @@ import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
 import { GlobalShapesTypes } from "../types/enums";
 import store from "../store/store";
-import { omit } from "lodash";
+import { isEqual, omit } from "lodash";
 import { Region } from "../shapes/region";
+import { setIsDiagramEdited } from "../store/diagramsSlice";
 
 export interface InspectorState {
     isOpened: boolean;
@@ -263,6 +265,12 @@ class RappidService {
                     cellView,
                     graph: this.graph
                 });
+            },
+            'render:done': () => {
+                const isDiagramEdited = !isEqual(filterDiagramInfo(this.graph), store.getState().diagrams.currentDiagram);
+                if (isDiagramEdited !== store.getState().diagrams.isDiagramEdited) {
+                    store.dispatch(setIsDiagramEdited(isDiagramEdited))
+                }
             }
         });
         this.graph.on('change:embeds', (element) => {

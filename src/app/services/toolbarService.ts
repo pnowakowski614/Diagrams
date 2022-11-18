@@ -1,7 +1,7 @@
 import { dia, layout, ui } from "@clientio/rappid";
 import { filterDiagramInfo } from "../utils/rappid-utils";
 import store from "../store/store";
-import { clearCurrentDiagram, updateDiagram } from "../store/diagramsSlice";
+import { clearCurrentDiagram, setIsDiagramEdited, updateDiagram } from "../store/diagramsSlice";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -72,7 +72,7 @@ class ToolbarService {
                     const diagramName = store.getState().diagrams.diagramName;
                     const cells: JSON = filterDiagramInfo(this.graph);
                     const id = store.getState().diagrams.id;
-
+                    store.dispatch(setIsDiagramEdited(false));
                     store.dispatch(updateDiagram({cells, diagramName, id}));
                 },
                 'clear:pointerclick': () => {

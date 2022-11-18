@@ -6,7 +6,7 @@ import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Prompt, useHistory } from "react-router-dom";
 import jwt from "jsonwebtoken";
 import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
 import { AppDispatch } from "../../store/store";
@@ -32,7 +32,8 @@ const Diagram = () => {
     const stencil = useRef(null);
     const toolbar = useRef(null);
 
-    const {currentDiagram, diagramName} = useSelector((state: any) => state.diagrams)
+    const {currentDiagram, diagramName, isDiagramEdited} = useSelector((state: any) => state.diagrams)
+
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
@@ -40,7 +41,7 @@ const Diagram = () => {
         graph: null,
     });
 
-    const [diagramNameState, setDiagramNameState] = useState<string>(diagramName)
+    const [diagramNameState, setDiagramNameState] = useState<string>(diagramName);
 
     const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
         setDiagramNameState(event.target.value);
@@ -89,6 +90,7 @@ const Diagram = () => {
             </div>
             {inspectorState.isOpened && inspectorState.cellView && inspectorState.graph &&
                 <Inspector cellView={inspectorState.cellView} graph={inspectorState.graph}/>}
+            <Prompt when={isDiagramEdited} message="There are unsaved changes. Are you sure you want to leave?"/>
         </div>
     );
 }
