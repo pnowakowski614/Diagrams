@@ -1,14 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { diagramReducer } from "./diagramsSlice";
+import { usersReducer } from "./usersSlice";
 
 const store = configureStore({
     reducer: {
-        // diagrams: diagramsReducer,
-        // singleDiagram: singleDiagramReducer,
-        // addDiagram: addDiagramReducer,
-        // deleteDiagram: deleteDiagramReducer,
-        // updateDiagram: updateDiagramReducer
-        diagrams: diagramReducer
+        diagrams: diagramReducer,
+        users: usersReducer
     }
 });
 

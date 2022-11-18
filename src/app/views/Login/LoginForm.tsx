@@ -2,9 +2,12 @@ import React, { ChangeEvent, useState } from 'react';
 import FormInput from "./FormInput";
 import './login.scss';
 import { Routes } from "../../types/enums";
-import { loginUser } from "../../API/fetchMethods";
+import { loginUserThunk } from "../../store/usersSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 
 const LoginForm = () => {
+    const dispatch = useDispatch<AppDispatch>();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -20,7 +23,7 @@ const LoginForm = () => {
             <div className="continue-button-container">
                 <button className="continue-button" type="button" onClick={(e) => {
                     e.preventDefault();
-                    loginUser(username, password)
+                    dispatch(loginUserThunk({username, password}));
                 }}>Log In
                 </button>
             </div>
