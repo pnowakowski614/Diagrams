@@ -3,8 +3,8 @@ import { loginUser, registerUser } from "../API/fetchMethods";
 
 const initialState = {
     username: "",
-    email: "",
-    password: "",
+    token: "",
+    isUserLoggedIn: false,
 }
 
 export const addUser = createAsyncThunk(
@@ -26,14 +26,10 @@ export const usersSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: builder => {
-        builder.addCase(addUser.fulfilled, (state, {payload}) => {
-            state.username = payload.username
-            state.password = payload.password
-            state.email = payload.email
-        })
         builder.addCase(loginUserThunk.fulfilled, (state, {payload}) => {
             state.username = payload.username
-            state.password = payload.password
+            state.isUserLoggedIn = true
+            state.token = payload.user
         })
     }
 })
