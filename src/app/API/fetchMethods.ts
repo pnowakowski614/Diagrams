@@ -62,6 +62,8 @@ export const loginUser = async (username: string, password: string): Promise<any
     } else {
         alert("Incorrect username or password!");
     }
+
+    return data;
 }
 
 export const registerUser = async (username: string, password: string, email: string): Promise<any> => {

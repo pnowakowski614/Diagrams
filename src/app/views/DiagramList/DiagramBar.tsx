@@ -3,7 +3,7 @@ import { Button, Toolbar } from "@mui/material";
 import styles from "./diagramList.module.scss";
 
 export interface DiagramBarProps {
-    object: { cells: [], _id: string, diagramName: string }
+    object: { _id: string, diagramName: string }
     handleOpen: (_id: string) => void;
     handleDelete: (_id: string) => void;
     index: number;

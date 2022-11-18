@@ -14,7 +14,6 @@ const initialState = {
     diagramName: "Default Name",
     id: "",
     loadingDiagram: false,
-    isDiagramEdited: false
 }
 
 export const addDiagram = createAsyncThunk(
@@ -60,9 +59,6 @@ export const diagramSlice = createSlice({
         },
         saveDiagramName: (state, {payload}) => {
             state.diagramName = payload
-        },
-        setIsDiagramEdited: (state, {payload}) => {
-            state.isDiagramEdited = payload
         }
     },
     extraReducers: builder => {
@@ -90,7 +86,7 @@ export const diagramSlice = createSlice({
     }
 })
 
-export const {saveDiagramName, clearCurrentDiagram, setIsDiagramEdited} = diagramSlice.actions
+export const {saveDiagramName, clearCurrentDiagram} = diagramSlice.actions
 export const diagramReducer = diagramSlice.reducer
 
 

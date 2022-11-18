@@ -6,11 +6,11 @@ import RappidService, { InspectorState } from 'app/services/rappidService';
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
-import { Prompt, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import jwt from "jsonwebtoken";
 import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
-import { AppDispatch } from "../../store/store";
-import { filterDiagramInfo } from "../../utils/rappid-utils";
+import { AppDispatch, RootState } from "../../store/store";
+import { filterDiagramInfo, getGraphFromDB } from "../../utils/rappid-utils";
 import { TextField } from "@mui/material";
 
 const Diagram = () => {
@@ -32,8 +32,7 @@ const Diagram = () => {
     const stencil = useRef(null);
     const toolbar = useRef(null);
 
-    const {currentDiagram, diagramName, isDiagramEdited} = useSelector((state: any) => state.diagrams)
-
+    const {currentDiagram, diagramName} = useSelector((state: RootState) => state.diagrams)
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,
@@ -67,7 +66,7 @@ const Diagram = () => {
             rappidInst.init();
             rappidInst.setInspectorFunction(setInspectorState);
             if (currentDiagram !== null) {
-                rappidInst.getGraphFromDB(rappidInst.graph);
+                getGraphFromDB(rappidInst.graph);
             } else {
                 const diagram: JSON = filterDiagramInfo(rappidInst.graph);
                 dispatch(addDiagram({diagram, diagramNameState}));
@@ -90,7 +89,6 @@ const Diagram = () => {
             </div>
             {inspectorState.isOpened && inspectorState.cellView && inspectorState.graph &&
                 <Inspector cellView={inspectorState.cellView} graph={inspectorState.graph}/>}
-            <Prompt when={isDiagramEdited} message="There are unsaved changes. Are you sure you want to leave?"/>
         </div>
     );
 }
