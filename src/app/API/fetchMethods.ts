@@ -22,7 +22,7 @@ export const postToDb = async (diagram: JSON, diagramName: string): Promise<any>
 
 export const getDiagramListFromDb = async (): Promise<any> => {
     const headers: HeadersInit = {
-        "x-access-token": localStorage.getItem('token')!
+        "x-access-token": localStorage.getItem('token') ?? ""
     }
 
     return callApiMethod(`${process.env.REACT_APP_BACKEND_URL}/diagrams`, 'GET', undefined, headers);
