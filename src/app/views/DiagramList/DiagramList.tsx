@@ -3,21 +3,19 @@ import { useHistory } from 'react-router-dom';
 import { AppDispatch } from "app/store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { DiagramBar } from "./DiagramBar";
-import { getDiagrams } from "../../store/getDiagramsSlice";
-import { clearCurrentDiagram, getSingleDiagram } from "../../store/singleDiagramSlice";
-import { deleteDiagram } from "../../store/deleteDiagramSlice";
+import { clearCurrentDiagram, deleteDiagram, getDiagrams, getSingleDiagram } from "../../store/diagramsSlice";
 
 const DiagramList = () => {
     const dispatch = useDispatch<AppDispatch>();
     const history = useHistory();
-    const {diagrams, loading} = useSelector((state: any) => state.diagrams)
-    const {id} = useSelector((state: any) => state.singleDiagram)
+    const {diagrams, loadingList} = useSelector((state: any) => state.diagrams)
+    const {id} = useSelector((state: any) => state.diagrams)
 
     useEffect(() => {
         dispatch(getDiagrams())
     }, [])
 
-    if (loading) return <h2>Loading...</h2>
+    if (loadingList) return <h2>Loading...</h2>
 
     const renderComponents = () => {
         return diagrams.map((object: { cells: [], _id: string, diagramName: string }, index: number) => {

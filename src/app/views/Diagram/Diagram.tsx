@@ -8,11 +8,10 @@ import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import jwt from "jsonwebtoken";
-import { addDiagram } from "../../store/addDiagramSlice";
+import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
 import { AppDispatch } from "../../store/store";
 import { filterDiagramInfo } from "../../utils/rappid-utils";
 import { Button, TextField } from "@mui/material";
-import { saveDiagramName } from "../../store/singleDiagramSlice";
 
 const Diagram = () => {
     const history = useHistory();
@@ -33,7 +32,7 @@ const Diagram = () => {
     const stencil = useRef(null);
     const toolbar = useRef(null);
 
-    const {currentDiagram, diagramName} = useSelector((state: any) => state.singleDiagram)
+    const {currentDiagram, diagramName} = useSelector((state: any) => state.diagrams)
 
     const [inspectorState, setInspectorState] = useState<InspectorState>({
         isOpened: false,

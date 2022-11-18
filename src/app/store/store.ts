@@ -1,17 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { diagramsReducer } from "./getDiagramsSlice";
-import { singleDiagramReducer } from "./singleDiagramSlice";
-import { addDiagramReducer } from "./addDiagramSlice";
-import { deleteDiagramReducer } from "./deleteDiagramSlice";
-import { updateDiagramReducer } from "./updateDiagramSlice";
+import { diagramReducer } from "./diagramsSlice";
 
 const store = configureStore({
     reducer: {
-        diagrams: diagramsReducer,
-        singleDiagram: singleDiagramReducer,
-        addDiagram: addDiagramReducer,
-        deleteDiagram: deleteDiagramReducer,
-        updateDiagram: updateDiagramReducer
+        // diagrams: diagramsReducer,
+        // singleDiagram: singleDiagramReducer,
+        // addDiagram: addDiagramReducer,
+        // deleteDiagram: deleteDiagramReducer,
+        // updateDiagram: updateDiagramReducer
+        diagrams: diagramReducer
     }
 });
 
