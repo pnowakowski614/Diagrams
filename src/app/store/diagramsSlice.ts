@@ -33,7 +33,6 @@ export const getSingleDiagram = createAsyncThunk(
     `diagrams/getSingleDiagram`,
     async (id: string) => {
         const diagram = await getSingleDiagramFromDb(id);
-        console.log(diagram);
         return {diagram, id};
     })
 

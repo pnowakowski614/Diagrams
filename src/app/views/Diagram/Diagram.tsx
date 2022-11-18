@@ -48,13 +48,17 @@ const Diagram = () => {
 
     const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
-            dispatch(saveDiagramName(diagramNameState));
+            dispatch(saveDiagramName(diagramNameState || "Default Name"));
         }
     }
 
     const handleClickAway = () => {
-        dispatch(saveDiagramName(diagramNameState));
+        dispatch(saveDiagramName(diagramNameState || "Default Name"));
     }
+
+    useEffect(() => {
+        setDiagramNameState(diagramName);
+    }, [diagramName])
 
     useEffectOnce(() => {
         if (canvas.current && stencil.current) {
@@ -75,7 +79,7 @@ const Diagram = () => {
             <div className={styles.toolbarWrapper}>
                 <div className={styles.diagramToolbar} ref={toolbar}/>
                 <TextField variant="standard" size="small" value={diagramNameState}
-                           onBlur={handleClickAway}
+                           onBlur={handleClickAway} placeholder="Default Name"
                            onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
                            onChange={handleDiagramNameChange} sx={{paddingTop: "5px"}}/>
             </div>

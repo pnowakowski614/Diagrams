@@ -70,9 +70,6 @@ class ToolbarService {
         this.toolbar.on({
                 'save:pointerclick': async () => {
                     const diagramName = store.getState().diagrams.diagramName;
-                    if (diagramName === "") {
-                        return;
-                    }
                     const cells: JSON = filterDiagramInfo(this.graph);
                     const id = store.getState().diagrams.id;
 
