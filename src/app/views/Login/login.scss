@@ -1,4 +1,4 @@
-@import 'src/styles/colors';
+@import "src/styles/colors";
 
 .login-page-container {
   display: flex;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.form-container {
+#form-container {
   display: flex;
   height: auto;
   width: 40%;
@@ -64,6 +64,13 @@
   color: $secondary;
 }
 
+.errorMessage {
+  font-size: 12px;
+  padding: 3px;
+  color: #fa9a4e;
+  display: none;
+}
+
 input {
   padding: 15px;
   margin: 10px;
@@ -82,3 +89,10 @@ input {
   color: $hover-color;
 }
 
+input:invalid[focused="true"] {
+  border: 3px solid #fa9a4e;
+}
+
+input:invalid[focused="true"] ~ .errorMessage {
+  display: block;
+}
