@@ -9,6 +9,7 @@ import {
   getDiagrams,
   getSingleDiagram,
 } from "../../store/diagramsSlice";
+import styles from "./diagramList.module.scss";
 
 const DiagramList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -16,28 +17,6 @@ const DiagramList = () => {
   const { diagrams, loadingList, id } = useSelector(
     (state: RootState) => state.diagrams
   );
-
-  useEffect(() => {
-    dispatch(getDiagrams());
-  }, []);
-
-  if (loadingList) return <h2>Loading...</h2>;
-
-  const renderComponents = () => {
-    return diagrams.map(
-      (object: { _id: string; diagramName: string }, index: number) => {
-        return (
-          <DiagramBar
-            key={index}
-            index={index}
-            object={object}
-            handleOpen={handleOpen}
-            handleDelete={handleDelete}
-          />
-        );
-      }
-    );
-  };
 
   const handleOpen = async (_id: string) => {
     await dispatch(getSingleDiagram(_id));
@@ -52,7 +31,25 @@ const DiagramList = () => {
     dispatch(getDiagrams());
   };
 
-  return <>{renderComponents()}</>;
+  useEffect(() => {
+    dispatch(getDiagrams());
+  }, []);
+
+  if (loadingList) return <h2>Loading...</h2>;
+
+  return (
+    <div className={styles.wrapper}>
+      {diagrams.map((object, index) => (
+        <DiagramBar
+          key={index}
+          index={index}
+          object={object}
+          handleOpen={handleOpen}
+          handleDelete={handleDelete}
+        />
+      ))}
+    </div>
+  );
 };
 
 export default DiagramList;

@@ -25,7 +25,13 @@ export const loginUserThunk = createAsyncThunk(
 export const usersSlice = createSlice({
   name: "addDiagram",
   initialState,
-  reducers: {},
+  reducers: {
+    clearUserInfo: (state) => {
+      state.token = null;
+      state.isUserLoggedIn = false;
+      localStorage.clear();
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUserThunk.fulfilled, (state, { payload }) => {
       state.isUserLoggedIn = true;
@@ -34,4 +40,5 @@ export const usersSlice = createSlice({
   },
 });
 
+export const { clearUserInfo } = usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

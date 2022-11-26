@@ -1,15 +1,20 @@
 @import "src/styles/colors.scss";
 
 h2 {
-  margin: 50px 50px;
+  margin: 50px;
 }
 
-body {
-  background-color: #d7d8dc;
+.wrapper {
+  height: 100%;
+  overflow: auto;
 }
 
 .toolbar {
+  display: grid;
+  grid-template-columns: 1fr 10fr 1fr 1fr;
   background-color: #d7d8dc;
+  align-items: center;
+  justify-items: center;
 }
 
 .button {
@@ -18,5 +23,3 @@ body {
   width: 30px;
   background-color: $accent;
 }
-
-
