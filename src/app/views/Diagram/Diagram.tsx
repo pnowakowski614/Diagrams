@@ -22,6 +22,12 @@ import { TextField } from "@mui/material";
 const Diagram = () => {
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
+  const { currentDiagram, diagramName } = useSelector(
+    (state: RootState) => state.diagrams
+  );
+  const canvas = useRef(null);
+  const stencil = useRef(null);
+  const toolbar = useRef(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -34,35 +40,12 @@ const Diagram = () => {
     }
   }, []);
 
-  const canvas = useRef(null);
-  const stencil = useRef(null);
-  const toolbar = useRef(null);
-
-  const { currentDiagram, diagramName } = useSelector(
-    (state: RootState) => state.diagrams
-  );
-
   const [inspectorState, setInspectorState] = useState<InspectorState>({
-    isOpened: false,
     cellView: null,
     graph: null,
   });
 
   const [diagramNameState, setDiagramNameState] = useState<string>(diagramName);
-
-  const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDiagramNameState(event.target.value);
-  };
-
-  const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      dispatch(saveDiagramName(diagramNameState || "Default Name"));
-    }
-  };
-
-  const handleClickAway = () => {
-    dispatch(saveDiagramName(diagramNameState || "Default Name"));
-  };
 
   useEffect(() => {
     setDiagramNameState(diagramName);
@@ -86,6 +69,20 @@ const Diagram = () => {
     }
   });
 
+  const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDiagramNameState(event.target.value);
+  };
+
+  const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      dispatch(saveDiagramName(diagramNameState || "Default Name"));
+    }
+  };
+
+  const handleClickAway = () => {
+    dispatch(saveDiagramName(diagramNameState || "Default Name"));
+  };
+
   return (
     <div className={styles.diagramContainer}>
       <div className={styles.toolbarWrapper}>
@@ -105,14 +102,12 @@ const Diagram = () => {
         <div className={styles.stencilHolder} ref={stencil} />
         <div className={styles.canvas} ref={canvas} />
       </div>
-      {inspectorState.isOpened &&
-        inspectorState.cellView &&
-        inspectorState.graph && (
-          <Inspector
-            cellView={inspectorState.cellView}
-            graph={inspectorState.graph}
-          />
-        )}
+      {inspectorState.cellView && inspectorState.graph && (
+        <Inspector
+          cellView={inspectorState.cellView}
+          graph={inspectorState.graph}
+        />
+      )}
     </div>
   );
 };
