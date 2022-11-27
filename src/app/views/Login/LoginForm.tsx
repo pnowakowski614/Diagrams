@@ -5,11 +5,23 @@ import { Routes } from "../../types/enums";
 import { loginUserThunk } from "../../store/usersSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import { Redirect, useLocation } from "react-router";
+
+interface stateType {
+  from: { pathname: string };
+}
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [redirectToReferrer, setRedirectToReferrer] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const { state } = useLocation<stateType>();
+
+  if (redirectToReferrer === true) {
+    return <Redirect to={state?.from || "/"} />;
+  }
 
   return (
     <form id="form-container">
@@ -39,6 +51,7 @@ const LoginForm = () => {
           onClick={(e) => {
             e.preventDefault();
             dispatch(loginUserThunk({ username, password }));
+            setRedirectToReferrer(true);
           }}
         >
           Log In
