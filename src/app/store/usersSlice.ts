@@ -4,6 +4,7 @@ import { loginUser, registerUser } from "../API/fetchMethods";
 const initialState = {
   token: localStorage.getItem("token") ?? null,
   isUserLoggedIn: !!localStorage.getItem("token"),
+  isBeingLoggedIn: false,
 };
 
 export const addUser = createAsyncThunk(
@@ -33,9 +34,16 @@ export const usersSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(loginUserThunk.pending, (state) => {
+      state.isBeingLoggedIn = true;
+    });
+    builder.addCase(loginUserThunk.rejected, (state) => {
+      state.isBeingLoggedIn = false;
+    });
     builder.addCase(loginUserThunk.fulfilled, (state, { payload }) => {
       state.isUserLoggedIn = true;
       state.token = payload.user;
+      state.isBeingLoggedIn = false;
     });
   },
 });

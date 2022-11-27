@@ -103,7 +103,6 @@ export const loginUser = async (
 
   if (data.user) {
     localStorage.setItem("token", data.user);
-    alert("Login successful!");
     window.location.href = Routes.diagram;
   } else {
     alert("Incorrect username or password!");
