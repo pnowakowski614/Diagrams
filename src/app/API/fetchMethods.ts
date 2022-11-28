@@ -1,28 +1,19 @@
-import { Routes } from "../types/enums";
-
 const callApiMethod = (
   url: string,
   methodName: string,
   body?: BodyInit,
   headers?: HeadersInit
-): Promise<any> | void => {
+): Promise<any> => {
   return fetch(url, {
     method: methodName,
     headers: headers,
     body: body,
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      alert("Error!: " + error.toString());
-    });
+  }).then((response) => {
+    return response.json();
+  });
 };
 
-export const postToDb = async (
-  diagram: JSON,
-  diagramName: string
-): Promise<any> => {
+export const postToDb = (diagram: JSON, diagramName: string): Promise<any> => {
   const body: BodyInit = JSON.stringify({
     diagram,
     diagramName,
@@ -38,7 +29,7 @@ export const postToDb = async (
   );
 };
 
-export const getDiagramListFromDb = async (): Promise<any> => {
+export const getDiagramListFromDb = (): Promise<any> => {
   const headers: HeadersInit = {
     "x-access-token": localStorage.getItem("token") ?? "",
   };
@@ -51,7 +42,7 @@ export const getDiagramListFromDb = async (): Promise<any> => {
   );
 };
 
-export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
+export const getSingleDiagramFromDb = (id: string): Promise<any> => {
   return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`,
     "GET",
@@ -60,7 +51,7 @@ export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
   );
 };
 
-export const updateDiagramInDb = async (
+export const updateDiagramInDb = (
   cells: JSON,
   diagramName: string,
   id: string
@@ -78,7 +69,7 @@ export const updateDiagramInDb = async (
   );
 };
 
-export const deleteFromDb = async (id: string): Promise<any> => {
+export const deleteFromDb = (id: string): Promise<any> => {
   return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`,
     "DELETE"
@@ -103,11 +94,8 @@ export const loginUser = async (
 
   if (data.user) {
     localStorage.setItem("token", data.user);
-    window.location.href = Routes.diagram;
-  } else {
-    alert("Incorrect username or password!");
+    window.location.href = "/diagram";
   }
-
   return data;
 };
 
@@ -131,8 +119,6 @@ export const registerUser = async (
 
   if (data.status === "ok") {
     localStorage.setItem("token", data.user);
-    window.location.href = Routes.diagram;
-  } else {
-    alert("Registration unsuccessful!");
+    window.location.href = "/diagram";
   }
 };

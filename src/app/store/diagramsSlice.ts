@@ -14,6 +14,7 @@ interface DiagramSliceType {
   diagramName: string;
   id: string;
   loadingDiagram: boolean;
+  isDiagramSaved: boolean;
 }
 
 const initialState = {
@@ -23,6 +24,7 @@ const initialState = {
   diagramName: "Default Name",
   id: "",
   loadingDiagram: false,
+  isDiagramSaved: false,
 } as DiagramSliceType;
 
 export const addDiagram = createAsyncThunk(
@@ -74,6 +76,11 @@ export const diagramSlice = createSlice({
     saveDiagramName: (state, { payload }) => {
       state.diagramName = payload;
     },
+    changeIsDiagramSaved: (state) => {
+      state.isDiagramSaved
+        ? (state.isDiagramSaved = false)
+        : (state.isDiagramSaved = true);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addDiagram.fulfilled, (state, { payload }) => {
@@ -99,5 +106,6 @@ export const diagramSlice = createSlice({
   },
 });
 
-export const { saveDiagramName, clearCurrentDiagram } = diagramSlice.actions;
+export const { changeIsDiagramSaved, saveDiagramName, clearCurrentDiagram } =
+  diagramSlice.actions;
 export const diagramReducer = diagramSlice.reducer;

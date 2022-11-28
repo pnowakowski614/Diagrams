@@ -1,6 +1,7 @@
 import React, {
   ChangeEvent,
   KeyboardEventHandler,
+  SyntheticEvent,
   useEffect,
   useRef,
   useState,
@@ -14,15 +15,20 @@ import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import jwt from "jsonwebtoken";
-import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
+import {
+  addDiagram,
+  changeIsDiagramSaved,
+  saveDiagramName,
+} from "../../store/diagramsSlice";
 import { AppDispatch, RootState } from "../../store/store";
 import { filterDiagramInfo, getGraphFromDB } from "../../utils/parser-utils";
-import { TextField } from "@mui/material";
+import { SnackbarCloseReason, TextField } from "@mui/material";
+import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
 
 const Diagram = () => {
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
-  const { currentDiagram, diagramName } = useSelector(
+  const { currentDiagram, diagramName, isDiagramSaved } = useSelector(
     (state: RootState) => state.diagrams
   );
   const canvas = useRef(null);
@@ -83,32 +89,50 @@ const Diagram = () => {
     dispatch(saveDiagramName(diagramNameState || "Default Name"));
   };
 
+  const handleClose = (
+    event: Event | SyntheticEvent,
+    reason: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      dispatch(changeIsDiagramSaved());
+      return;
+    }
+  };
+
   return (
-    <div className={styles.diagramContainer}>
-      <div className={styles.toolbarWrapper}>
-        <div className={styles.diagramToolbar} ref={toolbar} />
-        <TextField
-          variant="standard"
-          size="small"
-          value={diagramNameState}
-          onBlur={handleClickAway}
-          placeholder="Default Name"
-          onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
-          onChange={handleDiagramNameChange}
-          sx={{ paddingTop: "5px" }}
-        />
+    <>
+      <CustomSnackbar
+        message="Diagram saved!"
+        open={isDiagramSaved}
+        severity="success"
+        onClose={handleClose}
+      />
+      <div className={styles.diagramContainer}>
+        <div className={styles.toolbarWrapper}>
+          <div className={styles.diagramToolbar} ref={toolbar} />
+          <TextField
+            variant="standard"
+            size="small"
+            value={diagramNameState}
+            onBlur={handleClickAway}
+            placeholder="Default Name"
+            onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
+            onChange={handleDiagramNameChange}
+            sx={{ paddingTop: "5px" }}
+          />
+        </div>
+        <div className={styles.wrapper}>
+          <div className={styles.stencilHolder} ref={stencil} />
+          <div className={styles.canvas} ref={canvas} />
+        </div>
+        {inspectorState.cellView && inspectorState.graph && (
+          <Inspector
+            cellView={inspectorState.cellView}
+            graph={inspectorState.graph}
+          />
+        )}
       </div>
-      <div className={styles.wrapper}>
-        <div className={styles.stencilHolder} ref={stencil} />
-        <div className={styles.canvas} ref={canvas} />
-      </div>
-      {inspectorState.cellView && inspectorState.graph && (
-        <Inspector
-          cellView={inspectorState.cellView}
-          graph={inspectorState.graph}
-        />
-      )}
-    </div>
+    </>
   );
 };
 
