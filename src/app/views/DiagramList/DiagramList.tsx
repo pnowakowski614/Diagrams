@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DiagramBar } from "./DiagramBar";
 import {
   clearCurrentDiagram,
+  clearCurrentId,
   deleteDiagram,
   getDiagrams,
   getSingleDiagram,
@@ -14,7 +15,7 @@ import styles from "./diagramList.module.scss";
 const DiagramList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
-  const { diagrams, loadingList, id } = useSelector(
+  const { diagrams, loadingList, diagramId } = useSelector(
     (state: RootState) => state.diagrams
   );
 
@@ -24,8 +25,9 @@ const DiagramList = () => {
   };
 
   const handleDelete = async (_id: string) => {
-    if (_id === id) {
+    if (_id === diagramId) {
       dispatch(clearCurrentDiagram());
+      dispatch(clearCurrentId());
     }
     await dispatch(deleteDiagram(_id));
     dispatch(getDiagrams());
