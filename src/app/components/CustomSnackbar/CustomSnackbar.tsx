@@ -25,12 +25,11 @@ export const CustomSnackbar = ({
   return (
     <Snackbar
       open={open}
+      autoHideDuration={2000}
       onClose={onClose}
       anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
     >
-      <Alert onClose={() => onClose} severity={severity}>
-        {message}
-      </Alert>
+      <Alert severity={severity}>{message}</Alert>
     </Snackbar>
   );
 };
