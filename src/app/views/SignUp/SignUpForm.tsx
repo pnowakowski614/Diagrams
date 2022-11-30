@@ -5,14 +5,16 @@ import FormInput from "../Login/FormInput";
 import { registerUser } from "../../API/fetchMethods";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
 import { SnackbarCloseReason } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 const SignUpForm = () => {
   const form = document.getElementById("form-container") as HTMLSelectElement;
 
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [, setConfirmPassword] = useState("");
   const [isFormInvalid, setIsFormInvalid] = useState(false);
 
   const handleSubmit = (e: React.MouseEvent) => {
@@ -36,6 +38,10 @@ const SignUpForm = () => {
       setIsFormInvalid(false);
       return;
     }
+  };
+
+  const handleLinkClick = () => {
+    history.push(Routes.login);
   };
 
   return (
@@ -106,9 +112,9 @@ const SignUpForm = () => {
         </div>
         <p className="change-mode-message">
           Already have an account?
-          <a id="change-mode-link" href={Routes.login}>
+          <button className="button-link" onClick={handleLinkClick}>
             Log In
-          </a>
+          </button>
         </p>
       </form>
     </>

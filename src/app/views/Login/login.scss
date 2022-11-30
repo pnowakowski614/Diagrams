@@ -58,7 +58,8 @@
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
-.change-mode-message {
+.change-mode-message,
+.button-link {
   margin-top: 0;
   text-align: center;
   color: $secondary;
@@ -78,13 +79,7 @@ input {
   width: 60%;
 }
 
-#change-mode-link {
-  margin-left: 5px;
-  text-decoration: none;
-  color: inherit;
-}
-
-#change-mode-link:hover {
+.button-link:hover {
   text-decoration: underline;
   color: $hover-color;
 }
@@ -95,4 +90,12 @@ input:invalid[focused="true"] {
 
 input:invalid[focused="true"] ~ .errorMessage {
   display: block;
+}
+
+.button-link {
+  font-family: "Epilogue", serif;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }

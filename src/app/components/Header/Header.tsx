@@ -13,9 +13,7 @@ const Header = () => {
   const isUserLoggedIn = useSelector(
     (state: RootState) => state.users.isUserLoggedIn
   );
-  const isDiagramActive = useSelector(
-    (state: RootState) => state.diagrams.diagramId
-  );
+
   const dispatch = useDispatch();
   const [isListOpened, setIsListOpened] = useState(false);
 
@@ -43,17 +41,15 @@ const Header = () => {
         <ul>
           {isUserLoggedIn ? (
             <>
-              {isListOpened && (
+              {isListOpened ? (
                 <>
                   <NavLink onClick={handleNewDiagram} to={Routes.diagram}>
                     Create New Diagram
                   </NavLink>
-                  {isDiagramActive && (
-                    <NavLink to={Routes.diagram}>Active Diagram</NavLink>
-                  )}
                 </>
+              ) : (
+                <NavLink to={Routes.diagramList}>Diagram list</NavLink>
               )}
-              <NavLink to={Routes.diagramList}>Diagram list</NavLink>
               <NavLink
                 onClick={handleClick}
                 customClassName={styles.signUp}

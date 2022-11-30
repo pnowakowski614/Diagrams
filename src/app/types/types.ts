@@ -8,7 +8,6 @@ export interface DbCellAttrs {
   maxLinks: number;
   text: string;
   icon: string;
-  ports: {};
   groupShapeColor: string;
   source: {
     id: string;

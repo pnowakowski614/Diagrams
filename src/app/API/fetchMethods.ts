@@ -94,6 +94,7 @@ export const loginUser = async (
     { "Content-Type": "application/json" }
   );
 
+  //TODO: move to component
   if (data.user) {
     localStorage.setItem("token", data.user);
     window.location.href = "/diagram";

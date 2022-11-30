@@ -1,15 +1,21 @@
 import React, { ChangeEvent, useState } from "react";
 import FormInput from "./FormInput";
 import "./login.scss";
-import { Routes } from "../../types/enums";
 import { loginUserThunk } from "../../store/usersSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import { useHistory } from "react-router-dom";
+import { Routes } from "../../types/enums";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleLinkClick = () => {
+    history.push(Routes.signup);
+  };
 
   return (
     <form id="form-container">
@@ -46,9 +52,9 @@ const LoginForm = () => {
       </div>
       <p className="change-mode-message">
         Don't have an account?
-        <a id="change-mode-link" href={Routes.signup}>
+        <button className="button-link" onClick={handleLinkClick}>
           Sign Up
-        </a>
+        </button>
       </p>
     </form>
   );

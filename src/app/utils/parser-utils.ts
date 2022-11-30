@@ -18,7 +18,7 @@ import { defaultShapeLabelAttrs } from "./config-utils";
 
 export const filterDiagramInfo = (graph: dia.Graph) => {
   const graphJSON = graph.toJSON();
-  const parsedCells = graphJSON.cells.map((cell: dia.Cell.JSON) => {
+  return graphJSON.cells.map((cell: dia.Cell.JSON) => {
     const {
       type,
       position,
@@ -26,7 +26,6 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
       id,
       localType,
       z,
-      ports,
       maxLinks,
       source,
       target,
@@ -40,7 +39,6 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
         id,
         localType,
         z,
-        ports,
         maxLinks: maxLinks!,
         text: cell.attrs?.label?.text,
         icon: cell.attrs?.icon?.href,
@@ -58,7 +56,6 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
       };
     }
   });
-  return parsedCells;
 };
 
 export const setShapeAttrs = (cell: DbCellAttrs) => {

@@ -138,6 +138,7 @@ class RappidService {
         });
       },
       "element:pointerclick": (elementView: dia.ElementView) => {
+        //TODO: move to separate functions
         this.paper.removeTools();
         RappidService.initFreeTransform(elementView);
         this.initHalo(elementView);
@@ -145,6 +146,7 @@ class RappidService {
           "action:fork:pointerup": () =>
             this.validateForking(elementView.model),
           "action:remove:pointerdown": () => {
+            //TODO: cell remove listen
             this.setInspectorOpened({
               cellView: null,
               graph: null,
