@@ -1,29 +1,14 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
+import { diagramReducer } from "./diagramsSlice";
+import { usersReducer } from "./usersSlice";
 
-export const initialJsonGraph = {
-    diagramList: null,
-    id: null
-};
-
-const jsonGraphSlice = createSlice({
-    name: 'jsonObject',
-    initialState: initialJsonGraph,
-    reducers: {
-        clearCurrentDiagram(state) {
-            state.diagramList = null;
-            state.id = null;
-        },
-        addObject(state, action) {
-            const {object, id} = action.payload;
-            state.diagramList = object;
-            state.id = id;
-        }
+const store = configureStore({
+    reducer: {
+        diagrams: diagramReducer,
+        users: usersReducer
     }
 });
 
-const store = configureStore({
-    reducer: jsonGraphSlice.reducer
-});
-
-export const jsonGraphSliceActions = jsonGraphSlice.actions;
 export default store;
+export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>

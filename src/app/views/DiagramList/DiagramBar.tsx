@@ -3,23 +3,26 @@ import { Button, Toolbar } from "@mui/material";
 import styles from "./diagramList.module.scss";
 
 export interface DiagramBarProps {
-    jsonObject: [{ cells: [], diagramName: string, id: number }]
-    object: { cells: [], diagramName: string, id: number }
-    handleOpen: (jsonObject: [{ cells: [], diagramName: string, id: number }], id: number) => void;
-    handleDelete: (jsonObject: [{ cells: [], diagramName: string, id: number }], id: number) => void;
+    object: { _id: string, diagramName: string }
+    handleOpen: (_id: string) => void;
+    handleDelete: (_id: string) => void;
+    index: number;
 }
 
-export const DiagramBar = ({jsonObject, object, handleOpen, handleDelete}: DiagramBarProps) => {
+export const DiagramBar = ({index, object, handleOpen, handleDelete}: DiagramBarProps) => {
     return (
-        <Toolbar key={object.id} className={styles.toolbar}>
-            <h4>{object.id}</h4>
+        <Toolbar key={object._id} className={styles.toolbar} sx={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1000px 100px 100px",
+        }}>
+            <h4>{index + 1}</h4>
             <h4>{object.diagramName}</h4>
             <Button variant="contained" className={styles.button}
-                    onClick={() => handleOpen(jsonObject, object.id)}>
+                    onClick={() => handleOpen(object._id)}>
                 Open
             </Button>
             <Button variant="outlined"
-                    onClick={() => handleDelete(jsonObject, object.id)}>
+                    onClick={() => handleDelete(object._id)}>
                 Delete
             </Button>
         </Toolbar>

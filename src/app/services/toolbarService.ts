@@ -1,6 +1,7 @@
 import { dia, layout, ui } from "@clientio/rappid";
-import { postInJSON } from "../API/fetchMethods";
-import store, { jsonGraphSliceActions } from "../store/store";
+import { filterDiagramInfo } from "../utils/rappid-utils";
+import store from "../store/store";
+import { clearCurrentDiagram, updateDiagram } from "../store/diagramsSlice";
 
 class ToolbarService {
     toolbarElement: HTMLElement;
@@ -22,8 +23,7 @@ class ToolbarService {
 
         this.toolbar = new ui.Toolbar({
             tools: [
-                {type: 'inputText', name: "diagramName", label: "Name diagram: ", value: "Diagram Name"},
-                {type: 'separator', width: "10px"},
+                'separator',
                 'undo',
                 'redo',
                 'separator',
@@ -68,15 +68,16 @@ class ToolbarService {
 
     private initToolbarEvents(): void {
         this.toolbar.on({
-                'save:pointerclick': () => {
-                    const diagramName: string = this.toolbar.getWidgetByName("diagramName").el.querySelector("input")!.value;
-                    this.graph.set('diagramName', diagramName);
-                    postInJSON(this.graph);
+                'save:pointerclick': async () => {
+                    const diagramName = store.getState().diagrams.diagramName;
+                    const cells: JSON = filterDiagramInfo(this.graph);
+                    const id = store.getState().diagrams.id;
+                    store.dispatch(updateDiagram({cells, diagramName, id}));
                 },
                 'clear:pointerclick': () => {
                     const cells = this.graph.getCells();
                     this.graph.removeCells(cells);
-                    store.dispatch(jsonGraphSliceActions.clearCurrentDiagram());
+                    store.dispatch(clearCurrentDiagram());
                 },
                 'treeLayout:pointerclick': () => {
                     this.treeLayout.layout({deep: true, parentRelative: true});

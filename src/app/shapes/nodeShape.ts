@@ -1,5 +1,7 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes } from "../types/enums";
+import { defaultTextWrap, getShapeLabelWidth } from "../utils/rappid-utils";
+import { portsConfig } from "../rappid-configs/portsConfig";
 
 export class NodeShape extends shapes.standard.Rectangle {
     defaults() {
@@ -17,6 +19,10 @@ export class NodeShape extends shapes.standard.Rectangle {
                 },
                 label: {
                     text: "default",
+                    textWrap: {
+                        ...defaultTextWrap,
+                        width: getShapeLabelWidth(GlobalShapesTypes.NodeShape),
+                    },
                     textAnchor: "right",
                     refX: 55,
                     refY: 15,
@@ -28,7 +34,8 @@ export class NodeShape extends shapes.standard.Rectangle {
                     refHeight: "100%",
                     href: "link"
                 }
-            }
+            },
+            ports: portsConfig
         }
     }
 

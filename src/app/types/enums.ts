@@ -41,4 +41,5 @@ export enum Routes {
     diagram = "/diagram",
     diagramList = "/list",
     login = "/login",
+    signup = "/signup"
 }

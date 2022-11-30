@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { getShapeLabelWidth } from "../../../utils/rappid-utils";
 import { Input } from "@mui/material";
 import { dia } from "@clientio/rappid";
 
@@ -15,11 +14,6 @@ export const LabelInput = ({cellView}: LabelInputProps) => {
     const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
         cellView.model.attr({
             label: {
-                textWrap: {
-                    width: getShapeLabelWidth(cellView),
-                    height: 20,
-                    ellipsis: true
-                },
                 text: event.target.value
             }
         });

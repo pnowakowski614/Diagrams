@@ -17,7 +17,7 @@ const Header = () => {
                 <NavLink to={Routes.login}>
                     Login
                 </NavLink>
-                <NavLink customClassName={styles.signUp} to={Routes.login}>
+                <NavLink customClassName={styles.signUp} to={Routes.signup}>
                     Sign Up
                 </NavLink>
             </ul>

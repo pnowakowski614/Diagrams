@@ -42,14 +42,6 @@ class RappidService {
         this.setInspectorOpened = callback;
     }
 
-    public getGraphFromJSON(obj: [{ cells: [], id: number, diagramName: string }], id: number | null): void {
-        const jsonGraph = obj.find(graph => graph.id === id);
-        const lastFreeID = obj[obj.length - 1].id + 1;
-        this.graph.fromJSON(jsonGraph);
-        this.graph.set("id", lastFreeID);
-        this.toolbarElement.querySelector("input")!.value = this.graph.get("diagramName");
-    }
-
     public init(): void {
         this.initCanvas();
         this.initStencil();
@@ -109,7 +101,7 @@ class RappidService {
         });
     }
 
-    private OnChangeElementsEmbeds(element: dia.Element): void {
+    private onChangeElementsEmbeds(element: dia.Element): void {
         updateGridLayout(element);
         updateGroupSize(element);
     }
@@ -129,11 +121,23 @@ class RappidService {
                 this.paper.removeTools();
                 RappidService.initFreeTransform(elementView);
                 this.initHalo(elementView);
-                this.halo.on('action:fork:pointerup', () => this.validateForking(elementView.model));
+                this.halo.on({
+                    'action:fork:pointerup': () => this.validateForking(elementView.model),
+                    'action:remove:pointerdown': () => {
+                        this.setInspectorOpened({
+                            isOpened: false,
+                            cellView: null,
+                            graph: null
+                        })
+                    }
+                })
             },
             'link:pointerclick': (linkView: dia.LinkView) => {
                 this.paper.removeTools();
                 addLinkTools(linkView);
+                if (this.halo) {
+                    this.halo.remove();
+                }
             },
             'link:connect': (linkView: dia.LinkView) => {
                 this.linkValidation(linkView);
@@ -147,8 +151,8 @@ class RappidService {
             }
         });
         this.graph.on('change:embeds', (element) => {
-            this.OnChangeElementsEmbeds(element);
-        })
+            this.onChangeElementsEmbeds(element);
+        });
     }
 
     private linkValidation(linkView: dia.LinkView): void {

@@ -1,6 +1,7 @@
 import { shapes } from '@clientio/rappid';
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { portsConfig } from "../rappid-configs/portsConfig";
+import { defaultTextWrap, getShapeLabelWidth } from "../utils/rappid-utils";
 
 export class ECSCluster extends shapes.standard.Rectangle {
     defaults() {
@@ -21,6 +22,10 @@ export class ECSCluster extends shapes.standard.Rectangle {
                 },
                 label: {
                     text: "ECS Cluster",
+                    textWrap: {
+                        ...defaultTextWrap,
+                        width: getShapeLabelWidth(GlobalShapesTypes.EcsCluster)
+                    },
                     textAnchor: "right",
                     refX: 5,
                     refY: 5,
