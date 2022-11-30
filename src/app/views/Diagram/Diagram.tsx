@@ -13,38 +13,31 @@ import RappidService, { InspectorState } from "app/services/rappidService";
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import jwt from "jsonwebtoken";
 import {
   addDiagram,
   changeIsDiagramSaved,
+  clearIsDiagramFetched,
+  getSingleDiagram,
   saveDiagramName,
 } from "../../store/diagramsSlice";
 import { AppDispatch, RootState } from "../../store/store";
 import { filterDiagramInfo, getGraphFromDB } from "../../utils/parser-utils";
 import { SnackbarCloseReason, TextField } from "@mui/material";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
+import { AlertMessages } from "../../types/enums";
 
 const Diagram = () => {
-  const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
-  const { currentDiagram, diagramName, isDiagramSaved } = useSelector(
-    (state: RootState) => state.diagrams
-  );
+  const {
+    currentDiagram,
+    diagramName,
+    isDiagramSaved,
+    isDiagramFetched,
+    diagramId,
+  } = useSelector((state: RootState) => state.diagrams);
   const canvas = useRef(null);
   const stencil = useRef(null);
   const toolbar = useRef(null);
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const user = jwt.decode(token);
-      if (!user) {
-        localStorage.removeItem("token");
-        history.replace("/login");
-      }
-    }
-  }, []);
 
   const [inspectorState, setInspectorState] = useState<InspectorState>({
     cellView: null,
@@ -52,10 +45,9 @@ const Diagram = () => {
   });
 
   const [diagramNameState, setDiagramNameState] = useState<string>(diagramName);
-
-  useEffect(() => {
-    setDiagramNameState(diagramName);
-  }, [diagramName]);
+  const [rappidInstance, setRappidInstance] = useState<RappidService | null>(
+    null
+  );
 
   useEffectOnce(() => {
     if (canvas.current && stencil.current) {
@@ -66,15 +58,36 @@ const Diagram = () => {
       );
       rappidInst.init();
       rappidInst.setInspectorFunction(setInspectorState);
-      if (currentDiagram !== null) {
-        getGraphFromDB(rappidInst.graph);
-      } else {
-        const diagram: JSON = filterDiagramInfo(rappidInst.graph);
+      setRappidInstance(rappidInst);
+      if (!diagramId || diagramId === "") {
+        const diagram = filterDiagramInfo(rappidInst.graph);
         dispatch(addDiagram({ diagram, diagramNameState }));
+      } else {
+        if (currentDiagram !== null) {
+          getGraphFromDB(rappidInst.graph);
+        } else {
+          dispatch(getSingleDiagram(diagramId));
+        }
       }
     }
   });
 
+  useEffect(() => {
+    if (isDiagramFetched && rappidInstance) {
+      dispatch(clearIsDiagramFetched());
+      getGraphFromDB(rappidInstance!.graph);
+    }
+  }, [isDiagramFetched]);
+
+  useEffect(() => {
+    localStorage.setItem("id", diagramId!);
+  }, [diagramId]);
+
+  useEffect(() => {
+    setDiagramNameState(diagramName);
+  }, [diagramName]);
+
+  useEffect(() => {}, []);
   const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setDiagramNameState(event.target.value);
   };
@@ -93,7 +106,7 @@ const Diagram = () => {
     event: Event | SyntheticEvent,
     reason: SnackbarCloseReason
   ) => {
-    if (reason === "clickaway") {
+    if (reason === "clickaway" || "timeout") {
       dispatch(changeIsDiagramSaved());
       return;
     }
@@ -102,7 +115,7 @@ const Diagram = () => {
   return (
     <>
       <CustomSnackbar
-        message="Diagram saved!"
+        message={AlertMessages.diagramSaved}
         open={isDiagramSaved}
         severity="success"
         onClose={handleClose}
