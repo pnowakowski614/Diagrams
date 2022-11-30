@@ -6,15 +6,17 @@ import {
   postToDb,
   updateDiagramInDb,
 } from "../API/fetchMethods";
+import { DbCellAttrs } from "../types/types";
 
 interface DiagramSliceType {
   loadingList: boolean;
-  currentDiagram: any;
+  currentDiagram: [DbCellAttrs] | null;
   diagrams: { _id: string; diagramName: string }[];
   diagramName: string;
-  id: string;
+  diagramId: string;
   loadingDiagram: boolean;
   isDiagramSaved: boolean;
+  isDiagramFetched: boolean;
 }
 
 const initialState = {
@@ -22,14 +24,15 @@ const initialState = {
   currentDiagram: null,
   diagrams: [],
   diagramName: "Default Name",
-  id: "",
+  diagramId: localStorage.getItem("id"),
   loadingDiagram: false,
   isDiagramSaved: false,
+  isDiagramFetched: false,
 } as DiagramSliceType;
 
 export const addDiagram = createAsyncThunk(
   `diagrams/addDiagram`,
-  async (dataToPost: { diagram: JSON; diagramNameState: string }) => {
+  async (dataToPost: { diagram: []; diagramNameState: string }) => {
     const { diagram, diagramNameState } = dataToPost;
     return await postToDb(diagram, diagramNameState);
   }
@@ -59,7 +62,11 @@ export const getDiagrams = createAsyncThunk(
 
 export const updateDiagram = createAsyncThunk(
   `diagrams/updateDiagram`,
-  async (dataForUpdate: { cells: JSON; diagramName: string; id: string }) => {
+  async (dataForUpdate: {
+    cells: [DbCellAttrs];
+    diagramName: string;
+    id: string;
+  }) => {
     const { cells, diagramName, id } = dataForUpdate;
     return updateDiagramInDb(cells, diagramName, id);
   }
@@ -73,6 +80,10 @@ export const diagramSlice = createSlice({
       state.currentDiagram = null;
       state.diagramName = "Default Name";
     },
+    clearCurrentId: (state) => {
+      localStorage.removeItem("id");
+      state.diagramId = "";
+    },
     saveDiagramName: (state, { payload }) => {
       state.diagramName = payload;
     },
@@ -81,10 +92,13 @@ export const diagramSlice = createSlice({
         ? (state.isDiagramSaved = false)
         : (state.isDiagramSaved = true);
     },
+    clearIsDiagramFetched: (state) => {
+      state.isDiagramFetched = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(addDiagram.fulfilled, (state, { payload }) => {
-      state.id = payload._id;
+      state.diagramId = payload._id;
       state.currentDiagram = payload.cells;
     });
     builder.addCase(getDiagrams.pending, (state) => {
@@ -100,12 +114,18 @@ export const diagramSlice = createSlice({
     builder.addCase(getSingleDiagram.fulfilled, (state, { payload }) => {
       state.loadingDiagram = false;
       state.currentDiagram = payload.diagram.cells;
-      state.id = payload.id;
+      state.diagramId = payload.id;
       state.diagramName = payload.diagram.diagramName;
+      state.isDiagramFetched = true;
     });
   },
 });
 
-export const { changeIsDiagramSaved, saveDiagramName, clearCurrentDiagram } =
-  diagramSlice.actions;
+export const {
+  clearIsDiagramFetched,
+  changeIsDiagramSaved,
+  saveDiagramName,
+  clearCurrentDiagram,
+  clearCurrentId,
+} = diagramSlice.actions;
 export const diagramReducer = diagramSlice.reducer;
