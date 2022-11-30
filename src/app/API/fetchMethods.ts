@@ -1,3 +1,5 @@
+import { DbCellAttrs } from "../types/types";
+
 const callApiMethod = (
   url: string,
   methodName: string,
@@ -13,7 +15,7 @@ const callApiMethod = (
   });
 };
 
-export const postToDb = (diagram: JSON, diagramName: string): Promise<any> => {
+export const postToDb = (diagram: [], diagramName: string): Promise<any> => {
   const body: BodyInit = JSON.stringify({
     diagram,
     diagramName,
@@ -52,7 +54,7 @@ export const getSingleDiagramFromDb = (id: string): Promise<any> => {
 };
 
 export const updateDiagramInDb = (
-  cells: JSON,
+  cells: [DbCellAttrs],
   diagramName: string,
   id: string
 ): Promise<any> => {

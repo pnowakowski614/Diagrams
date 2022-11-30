@@ -1,5 +1,5 @@
 import { dia } from "@clientio/rappid";
-import { DbCellAttrs, GraphInfoCells } from "../types/types";
+import { DbCellAttrs } from "../types/types";
 import { GlobalShapesTypes } from "../types/enums";
 import store from "../store/store";
 import {
@@ -18,7 +18,7 @@ import { defaultShapeLabelAttrs } from "./config-utils";
 
 export const filterDiagramInfo = (graph: dia.Graph) => {
   const graphJSON = graph.toJSON();
-  const parsedCells = graphJSON.cells.map((cell: GraphInfoCells) => {
+  const parsedCells = graphJSON.cells.map((cell: dia.Cell.JSON) => {
     const {
       type,
       position,
@@ -26,6 +26,7 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
       id,
       localType,
       z,
+      ports,
       maxLinks,
       source,
       target,
@@ -39,10 +40,11 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
         id,
         localType,
         z,
+        ports,
         maxLinks: maxLinks!,
-        text: cell.attrs.label?.text,
-        icon: cell.attrs.icon?.href,
-        groupShapeColor: cell.attrs.body?.stroke,
+        text: cell.attrs?.label?.text,
+        icon: cell.attrs?.icon?.href,
+        groupShapeColor: cell.attrs?.body?.stroke,
       };
     } else {
       return {

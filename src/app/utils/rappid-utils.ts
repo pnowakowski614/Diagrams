@@ -3,7 +3,7 @@ import { dia, layout, ui } from "@clientio/rappid";
 import { GlobalShapesTypes, LocalShapesTypes } from "../types/enums";
 import { groupList, validEmebedCombinationConsts } from "./config-utils";
 
-export const getShapeLabelWidth = (cellType: string) => {
+export const getShapeLabelWidth = (cellType: GlobalShapesTypes) => {
   switch (cellType) {
     case GlobalShapesTypes.NodeShape:
       return "175%";

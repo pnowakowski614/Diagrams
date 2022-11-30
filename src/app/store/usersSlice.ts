@@ -1,5 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginUser, registerUser } from "../API/fetchMethods";
+import { loginUser } from "../API/fetchMethods";
+
+interface UsersSliceType {
+  token: string | null;
+  isUserLoggedIn: boolean;
+  isBeingLoggedIn: boolean;
+  gotLoggedOut: boolean;
+  loginRejected: boolean;
+}
 
 const initialState = {
   token: localStorage.getItem("token") ?? null,
@@ -7,15 +15,7 @@ const initialState = {
   isBeingLoggedIn: false,
   gotLoggedOut: false,
   loginRejected: false,
-};
-
-export const addUser = createAsyncThunk(
-  `users/addUser`,
-  async (userData: { username: string; password: string; email: string }) => {
-    const { username, password, email } = userData;
-    return await registerUser(username, password, email);
-  }
-);
+} as UsersSliceType;
 
 export const loginUserThunk = createAsyncThunk(
   `users/loginUser`,
@@ -38,6 +38,9 @@ export const usersSlice = createSlice({
     clearRejectedLogin: (state) => {
       state.loginRejected = false;
     },
+    clearLoggedOut: (state) => {
+      state.gotLoggedOut = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(loginUserThunk.pending, (state) => {
@@ -57,5 +60,6 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { clearRejectedLogin, clearUserInfo } = usersSlice.actions;
+export const { clearRejectedLogin, clearUserInfo, clearLoggedOut } =
+  usersSlice.actions;
 export const usersReducer = usersSlice.reducer;

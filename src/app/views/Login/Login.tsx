@@ -3,8 +3,9 @@ import LoginForm from "./LoginForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
-import { clearRejectedLogin } from "../../store/usersSlice";
+import { clearLoggedOut, clearRejectedLogin } from "../../store/usersSlice";
 import { SnackbarCloseReason } from "@mui/material";
+import { AlertMessages } from "../../types/enums";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ const Login = () => {
     (state: RootState) => state.users
   );
 
-  const handleClose = (
+  const handleRejectedLoginClose = (
     event: Event | SyntheticEvent,
     reason: SnackbarCloseReason
   ) => {
@@ -22,22 +23,33 @@ const Login = () => {
     }
   };
 
+  const handleLoginSuccessClose = (
+    event: Event | SyntheticEvent,
+    reason: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway" || "timeout") {
+      dispatch(clearLoggedOut());
+      return;
+    }
+  };
+
   return (
     <>
       <CustomSnackbar
-        message="You're being logged in, please wait."
+        message={AlertMessages.loggingIn}
         open={isBeingLoggedIn}
         severity="info"
       />
       <CustomSnackbar
-        message="Successfully logged out!"
+        message={AlertMessages.loggedOut}
         open={gotLoggedOut}
+        onClose={handleLoginSuccessClose}
         severity="success"
       />
       <CustomSnackbar
-        message="Wrong username or password!"
+        message={AlertMessages.loginError}
         open={loginRejected}
-        onClose={handleClose}
+        onClose={handleRejectedLoginClose}
         severity="error"
       />
       <div className="login-page-container">

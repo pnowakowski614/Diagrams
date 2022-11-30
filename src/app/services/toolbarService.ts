@@ -78,14 +78,13 @@ class ToolbarService {
     this.toolbar.on({
       "save:pointerclick": async () => {
         const diagramName = store.getState().diagrams.diagramName;
-        const cells: JSON = filterDiagramInfo(this.graph);
-        const id = store.getState().diagrams.id;
+        const cells = filterDiagramInfo(this.graph);
+        const id = store.getState().diagrams.diagramId;
         store.dispatch(updateDiagram({ cells, diagramName, id }));
         store.dispatch(changeIsDiagramSaved());
       },
       "clear:pointerclick": () => {
-        const cells = this.graph.getCells();
-        this.graph.removeCells(cells);
+        this.graph.clear();
         store.dispatch(clearCurrentDiagram());
       },
       "treeLayout:pointerclick": () => {

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import "../Login/login.scss";
-import { Routes } from "../../types/enums";
+import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
 import { registerUser } from "../../API/fetchMethods";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
@@ -41,7 +41,7 @@ const SignUpForm = () => {
   return (
     <>
       <CustomSnackbar
-        message="Invalid form!"
+        message={AlertMessages.invalidForm}
         open={isFormInvalid}
         severity="error"
         onClose={handleClose}
