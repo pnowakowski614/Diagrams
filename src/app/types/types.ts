@@ -9,16 +9,8 @@ export interface DbCellAttrs {
   text: string;
   icon: string;
   groupShapeColor: string;
-  source: {
-    id: string;
-    magnetBody: string;
-    port: string;
-  };
-  target: {
-    id: string;
-    magnetBody: string;
-    port: string;
-  };
+  sourceId: string;
+  targetId: string;
   vertices: [{ x: number; y: number }];
   linkColor: string;
 }

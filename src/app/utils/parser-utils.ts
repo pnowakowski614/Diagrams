@@ -15,6 +15,7 @@ import {
 import { omit } from "lodash";
 import { Region } from "../shapes/region";
 import { defaultShapeLabelAttrs } from "./config-utils";
+import { getSourcePortObject, getTargetPortObject } from "./rappid-utils";
 
 export const filterDiagramInfo = (graph: dia.Graph) => {
   const graphJSON = graph.toJSON();
@@ -47,8 +48,8 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
     } else {
       return {
         type,
-        source,
-        target,
+        sourceId: source.id,
+        targetId: target.id,
         id,
         z,
         vertices,
@@ -99,7 +100,7 @@ export const setShapeAttrs = (cell: DbCellAttrs) => {
   }
 };
 
-const createCell = (cell: DbCellAttrs) => {
+const createCell = (cell: DbCellAttrs, graph: dia.Graph) => {
   const omittedAttrs = omit(cell, ["text", "icon", "groupShapeColor"]);
   switch (cell.type) {
     case GlobalShapesTypes.NodeShape: {
@@ -135,7 +136,11 @@ const createCell = (cell: DbCellAttrs) => {
       return newShape.attr(setShapeAttrs(cell));
     }
     default: {
-      const newLink = new CustomLink(omit(cell, ["linkColor"]));
+      const newLink = new CustomLink(
+        omit(cell, ["linkColor", "sourceId", "targetId"])
+      );
+      newLink.source(getSourcePortObject(cell.sourceId, graph));
+      newLink.target(getTargetPortObject(cell.targetId, graph));
       return newLink.attr(setShapeAttrs(cell));
     }
   }
@@ -144,7 +149,7 @@ const createCell = (cell: DbCellAttrs) => {
 export const getGraphFromDB = (graph: dia.Graph) => {
   const diagramCells: [DbCellAttrs] = store.getState().diagrams.currentDiagram!;
   diagramCells.forEach((cell) => {
-    const cellToAdd = createCell(cell);
+    const cellToAdd = createCell(cell, graph);
     graph.addCell(cellToAdd);
   });
 };

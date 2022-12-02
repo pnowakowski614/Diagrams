@@ -247,3 +247,21 @@ export const defaultGroupShapeAttrs = {
     refY: 5,
   },
 };
+
+export const getSourcePortObject = (id: string, graph: dia.Graph) => {
+  const element = graph.getCell(id);
+  return {
+    port: element.prop("ports/items")[1].id,
+    magnet: "portBody",
+    id,
+  };
+};
+
+export const getTargetPortObject = (id: string, graph: dia.Graph) => {
+  const element = graph.getCell(id);
+  return {
+    port: element.prop("ports/items")[0].id,
+    magnet: "portBody",
+    id,
+  };
+};

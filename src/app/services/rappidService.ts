@@ -127,48 +127,52 @@ class RappidService {
     updateGroupSize(element);
   }
 
+  private onBlankPointerdown = (evt: dia.Event) => {
+    this.scroller.startPanning(evt);
+    this.paper.removeTools();
+    this.setInspectorOpened({
+      cellView: null,
+      graph: null,
+    });
+  };
+
+  private onElementPointerclick = (elementView: dia.ElementView) => {
+    this.paper.removeTools();
+    RappidService.initFreeTransform(elementView);
+    this.initHalo(elementView);
+  };
+
+  private onLinkPointerclick = (linkView: dia.LinkView) => {
+    this.paper.removeTools();
+    addLinkTools(linkView);
+    if (this.halo) {
+      this.halo.remove();
+    }
+  };
+
+  private onCellPointerclick = (cellView: dia.CellView) => {
+    this.setInspectorOpened({
+      cellView,
+      graph: this.graph,
+    });
+  };
+
   private initPaperEvents(): void {
     this.paper.on({
       "blank:pointerdown": (evt: dia.Event) => {
-        this.scroller.startPanning(evt);
-        this.paper.removeTools();
-        this.setInspectorOpened({
-          cellView: null,
-          graph: null,
-        });
+        this.onBlankPointerdown(evt);
       },
       "element:pointerclick": (elementView: dia.ElementView) => {
-        //TODO: move to separate functions
-        this.paper.removeTools();
-        RappidService.initFreeTransform(elementView);
-        this.initHalo(elementView);
-        this.halo.on({
-          "action:fork:pointerup": () =>
-            this.validateForking(elementView.model),
-          "action:remove:pointerdown": () => {
-            //TODO: cell remove listen
-            this.setInspectorOpened({
-              cellView: null,
-              graph: null,
-            });
-          },
-        });
+        this.onElementPointerclick(elementView);
       },
       "link:pointerclick": (linkView: dia.LinkView) => {
-        this.paper.removeTools();
-        addLinkTools(linkView);
-        if (this.halo) {
-          this.halo.remove();
-        }
+        this.onLinkPointerclick(linkView);
       },
       "link:connect": (linkView: dia.LinkView) => {
         this.linkValidation(linkView);
       },
       "cell:pointerclick": (cellView: dia.CellView) => {
-        this.setInspectorOpened({
-          cellView,
-          graph: this.graph,
-        });
+        this.onCellPointerclick(cellView);
       },
     });
     this.graph.on("change:embeds", (element) => {
@@ -187,7 +191,7 @@ class RappidService {
     }
   }
 
-  private initHalo(cellView: dia.CellView): void {
+  private initHalo(cellView: dia.ElementView): void {
     const halo = (this.halo = new ui.Halo({
       cellView,
       type: "toolbar",
@@ -196,6 +200,15 @@ class RappidService {
       magnet: getHaloMagnet,
     }));
     halo.render();
+    this.halo.on({
+      "action:fork:pointerup": () => this.validateForking(cellView.model),
+      "action:remove:pointerdown": () => {
+        this.setInspectorOpened({
+          cellView: null,
+          graph: null,
+        });
+      },
+    });
   }
 
   private validateForking(cell: dia.Element): void {
