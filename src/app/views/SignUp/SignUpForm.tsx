@@ -1,17 +1,15 @@
-import React, { ChangeEvent, SyntheticEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from "react";
 import "../Login/login.scss";
 import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
 import { SnackbarCloseReason } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import { createUser } from "../../store/usersSlice";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import { createUser } from "../../store/usersSlice";
 
 const SignUpForm = () => {
-  const form = document.getElementById("form-container") as HTMLSelectElement;
-
   const history = useHistory();
   const dispatch = useDispatch<AppDispatch>();
   const [username, setUsername] = useState("");
@@ -20,20 +18,12 @@ const SignUpForm = () => {
   const [, setConfirmPassword] = useState("");
   const [isFormInvalid, setIsFormInvalid] = useState(false);
 
-  const handleSubmit = async (e: React.MouseEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (form) {
-      if (form.checkValidity()) {
-        const data = await dispatch(createUser({ username, password, email }));
-        if (data.payload.status === "ok") {
-          localStorage.setItem("token", data.payload.user);
-          history.push("/diagram");
-        }
-      } else {
-        setIsFormInvalid(true);
-      }
-    } else {
-      setIsFormInvalid(true);
+    const data = await dispatch(createUser({ username, password, email }));
+    if (data.payload.status === "ok") {
+      localStorage.setItem("token", data.payload.user);
+      history.push("/diagram");
     }
   };
 
@@ -41,7 +31,7 @@ const SignUpForm = () => {
     event: Event | SyntheticEvent,
     reason: SnackbarCloseReason
   ) => {
-    if (reason === "clickaway") {
+    if (reason === "clickaway" || "timeout") {
       setIsFormInvalid(false);
       return;
     }
@@ -59,7 +49,7 @@ const SignUpForm = () => {
         severity="error"
         onClose={handleClose}
       />
-      <form id="form-container">
+      <form id="form-container" onInvalid={() => setIsFormInvalid(true)}>
         <h1 className="login-header">Create Your Account</h1>
         <div className="inputs">
           <FormInput
@@ -109,8 +99,8 @@ const SignUpForm = () => {
         <div className="continue-button-container">
           <button
             className="continue-button"
-            type="button"
-            onClick={(e) => {
+            type="submit"
+            onSubmit={(e) => {
               handleSubmit(e);
             }}
           >
@@ -119,11 +109,7 @@ const SignUpForm = () => {
         </div>
         <p className="change-mode-message">
           Already have an account?
-          <button
-            type="submit"
-            className="button-link"
-            onClick={handleLinkClick}
-          >
+          <button className="button-link" onClick={handleLinkClick}>
             Log In
           </button>
         </p>
