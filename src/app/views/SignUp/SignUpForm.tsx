@@ -2,26 +2,33 @@ import React, { ChangeEvent, SyntheticEvent, useState } from "react";
 import "../Login/login.scss";
 import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
-import { registerUser } from "../../API/fetchMethods";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
 import { SnackbarCloseReason } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { createUser } from "../../store/usersSlice";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
 
 const SignUpForm = () => {
   const form = document.getElementById("form-container") as HTMLSelectElement;
 
   const history = useHistory();
+  const dispatch = useDispatch<AppDispatch>();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [, setConfirmPassword] = useState("");
   const [isFormInvalid, setIsFormInvalid] = useState(false);
 
-  const handleSubmit = (e: React.MouseEvent) => {
+  const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (form) {
       if (form.checkValidity()) {
-        registerUser(username, password, email);
+        const data = await dispatch(createUser({ username, password, email }));
+        if (data.payload.status === "ok") {
+          localStorage.setItem("token", data.payload.user);
+          history.push("/diagram");
+        }
       } else {
         setIsFormInvalid(true);
       }
@@ -112,7 +119,11 @@ const SignUpForm = () => {
         </div>
         <p className="change-mode-message">
           Already have an account?
-          <button className="button-link" onClick={handleLinkClick}>
+          <button
+            type="submit"
+            className="button-link"
+            onClick={handleLinkClick}
+          >
             Log In
           </button>
         </p>

@@ -1,18 +1,22 @@
 import { DbCellAttrs } from "../types/types";
 
-const callApiMethod = (
+const callApiMethod = async (
   url: string,
   methodName: string,
   body?: BodyInit,
   headers?: HeadersInit
 ): Promise<any> => {
-  return fetch(url, {
+  const response = await fetch(url, {
     method: methodName,
     headers: headers,
     body: body,
-  }).then((response) => {
-    return response.json();
   });
+
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw new Error("Error!");
+  }
 };
 
 export const postToDb = (diagram: [], diagramName: string): Promise<any> => {
@@ -87,19 +91,12 @@ export const loginUser = async (
     password,
   });
 
-  const data = await callApiMethod(
+  return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/users/login`,
     "POST",
     body,
     { "Content-Type": "application/json" }
   );
-
-  //TODO: move to component
-  if (data.user) {
-    localStorage.setItem("token", data.user);
-    window.location.href = "/diagram";
-  }
-  return data;
 };
 
 export const registerUser = async (
@@ -113,15 +110,10 @@ export const registerUser = async (
     password,
   });
 
-  const data = await callApiMethod(
+  return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/users/register`,
     "POST",
     body,
     { "Content-Type": "application/json" }
   );
-
-  if (data.status === "ok") {
-    localStorage.setItem("token", data.user);
-    window.location.href = "/diagram";
-  }
 };

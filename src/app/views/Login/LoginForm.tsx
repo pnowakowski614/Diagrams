@@ -13,6 +13,15 @@ const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSubmit = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const res = await dispatch(loginUserThunk({ username, password }));
+    if (res.payload.status === "ok") {
+      localStorage.setItem("token", res.payload.user);
+      history.push("/diagram");
+    }
+  };
+
   const handleLinkClick = () => {
     history.push(Routes.signup);
   };
@@ -42,10 +51,7 @@ const LoginForm = () => {
         <button
           className="continue-button"
           type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            dispatch(loginUserThunk({ username, password }));
-          }}
+          onClick={(e) => handleSubmit(e)}
         >
           Log In
         </button>

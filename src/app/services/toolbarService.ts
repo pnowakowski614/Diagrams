@@ -74,19 +74,23 @@ class ToolbarService {
     });
   }
 
+  private onSavePointerClick(): void {
+    const diagramName = store.getState().diagrams.diagramName;
+    const cells = filterDiagramInfo(this.graph);
+    const id = store.getState().diagrams.diagramId;
+    store.dispatch(updateDiagram({ cells, diagramName, id }));
+    store.dispatch(changeIsDiagramSaved());
+  }
+
+  private onClearPointerClick(): void {
+    this.graph.clear();
+    store.dispatch(clearCurrentDiagram());
+  }
+
   private initToolbarEvents(): void {
     this.toolbar.on({
-      "save:pointerclick": async () => {
-        const diagramName = store.getState().diagrams.diagramName;
-        const cells = filterDiagramInfo(this.graph);
-        const id = store.getState().diagrams.diagramId;
-        store.dispatch(updateDiagram({ cells, diagramName, id }));
-        store.dispatch(changeIsDiagramSaved());
-      },
-      "clear:pointerclick": () => {
-        this.graph.clear();
-        store.dispatch(clearCurrentDiagram());
-      },
+      "save:pointerclick": () => this.onSavePointerClick(),
+      "clear:pointerclick": () => this.onClearPointerClick(),
       "treeLayout:pointerclick": () => {
         this.treeLayout.layout({ deep: true, parentRelative: true });
       },
