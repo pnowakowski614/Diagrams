@@ -127,35 +127,35 @@ class RappidService {
     updateGroupSize(element);
   }
 
-  private onBlankPointerdown = (evt: dia.Event) => {
+  private onBlankPointerdown(evt: dia.Event): void {
     this.scroller.startPanning(evt);
     this.paper.removeTools();
     this.setInspectorOpened({
       cellView: null,
       graph: null,
     });
-  };
+  }
 
-  private onElementPointerclick = (elementView: dia.ElementView) => {
+  private onElementPointerclick(elementView: dia.ElementView): void {
     this.paper.removeTools();
     RappidService.initFreeTransform(elementView);
     this.initHalo(elementView);
-  };
+  }
 
-  private onLinkPointerclick = (linkView: dia.LinkView) => {
+  private onLinkPointerclick(linkView: dia.LinkView): void {
     this.paper.removeTools();
     addLinkTools(linkView);
     if (this.halo) {
       this.halo.remove();
     }
-  };
+  }
 
-  private onCellPointerclick = (cellView: dia.CellView) => {
+  private onCellPointerclick(cellView: dia.CellView): void {
     this.setInspectorOpened({
       cellView,
       graph: this.graph,
     });
-  };
+  }
 
   private initPaperEvents(): void {
     this.paper.on({

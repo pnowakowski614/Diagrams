@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginUser } from "../API/fetchMethods";
+import { loginUser, registerUser } from "../API/fetchMethods";
 
 interface UsersSliceType {
   token: string | null;
@@ -21,12 +21,20 @@ export const loginUserThunk = createAsyncThunk(
   `users/loginUser`,
   async (loginData: { username: string; password: string }) => {
     const { username, password } = loginData;
-    return await loginUser(username, password);
+    return loginUser(username, password);
+  }
+);
+
+export const createUser = createAsyncThunk(
+  `users/createUser`,
+  async (signUpData: { username: string; password: string; email: string }) => {
+    const { username, password, email } = signUpData;
+    return registerUser(username, password, email);
   }
 );
 
 export const usersSlice = createSlice({
-  name: "addDiagram",
+  name: "addUser",
   initialState,
   reducers: {
     clearUserInfo: (state) => {
@@ -56,6 +64,10 @@ export const usersSlice = createSlice({
       state.token = payload.user;
       state.isBeingLoggedIn = false;
       state.gotLoggedOut = false;
+    });
+    builder.addCase(createUser.fulfilled, (state, { payload }) => {
+      state.isUserLoggedIn = true;
+      state.token = payload.user;
     });
   },
 });
