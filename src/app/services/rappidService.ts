@@ -175,8 +175,16 @@ class RappidService {
         this.onCellPointerclick(cellView);
       },
     });
-    this.graph.on("change:embeds", (element) => {
-      this.onChangeElementsEmbeds(element);
+    this.graph.on({
+      "change:embeds": (element) => {
+        this.onChangeElementsEmbeds(element);
+      },
+      remove: () => {
+        this.setInspectorOpened({
+          cellView: null,
+          graph: null,
+        });
+      },
     });
   }
 
@@ -202,12 +210,6 @@ class RappidService {
     halo.render();
     this.halo.on({
       "action:fork:pointerup": () => this.validateForking(cellView.model),
-      "action:remove:pointerdown": () => {
-        this.setInspectorOpened({
-          cellView: null,
-          graph: null,
-        });
-      },
     });
   }
 
