@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./header.module.scss";
 import NavLink from "../NavLink/NavLink";
 import { Routes } from "../../types/enums";
@@ -7,8 +7,32 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearUserInfo } from "../../store/usersSlice";
 import { clearCurrentDiagram, clearCurrentId } from "../../store/diagramsSlice";
 import { useLocation } from "react-router";
+import useEffectOnce from "../../helpers/useEffectOnce";
 
 const Header = () => {
+  const hamburger = useRef(null);
+  const navMenu = useRef(null);
+
+  useEffectOnce(() => {
+    const hamburgerElement = hamburger.current! as Element;
+    const navMenuElement = navMenu.current! as Element;
+    const navLinkElements = Array.from(
+      navMenuElement.getElementsByTagName("a")
+    );
+
+    hamburgerElement.addEventListener("click", () => {
+      hamburgerElement.classList.toggle(`${styles.active}`);
+      navMenuElement.classList.toggle(`${styles.active}`);
+    });
+
+    navLinkElements.forEach((n) => {
+      n.addEventListener("click", () => {
+        hamburgerElement.classList.remove(`${styles.active}`);
+        navMenuElement.classList.remove(`${styles.active}`);
+      });
+    });
+  });
+
   const location = useLocation();
   const isUserLoggedIn = useSelector(
     (state: RootState) => state.users.isUserLoggedIn
@@ -38,7 +62,7 @@ const Header = () => {
     <header>
       <nav className={styles.navbar}>
         <span className={styles.siteName}>DIAGRAMS</span>
-        <ul>
+        <ul ref={navMenu}>
           {isUserLoggedIn ? (
             <>
               {isListOpened ? (
@@ -67,6 +91,11 @@ const Header = () => {
             </>
           )}
         </ul>
+        <div ref={hamburger} className={styles.hamburger}>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
+          <span className={styles.bar}></span>
+        </div>
       </nav>
     </header>
   );
