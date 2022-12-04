@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, SyntheticEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  SyntheticEvent,
+  useEffect,
+  useState,
+} from "react";
 import "../Login/login.scss";
 import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
@@ -17,13 +23,43 @@ const SignUpForm = () => {
   const [email, setEmail] = useState("");
   const [, setConfirmPassword] = useState("");
   const [isFormInvalid, setIsFormInvalid] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
+  const [inputArray, setIsInputArray] = useState<HTMLInputElement[] | null>(
+    null
+  );
+
+  useEffect(() => {
+    const form = document.querySelector(".inputs");
+    const inputs = Array.from(form!.querySelectorAll("input"));
+    setIsInputArray(inputs);
+  }, []);
+
+  const validateInputs = () => {
+    const isValid = inputArray!.map((input) => {
+      if (!input.checkValidity()) {
+        return false;
+      }
+    });
+    if (isValid.includes(false)) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const data = await dispatch(createUser({ username, password, email }));
-    if (data.payload.status === "ok") {
-      localStorage.setItem("token", data.payload.user);
-      history.push("/diagram");
+    if (validateInputs()) {
+      const data = await dispatch(createUser({ username, password, email }));
+      console.log(data);
+      if (data.payload.status === "ok") {
+        localStorage.setItem("token", data.payload.user);
+        history.push("/diagram");
+      } else {
+        setDuplicate(true);
+      }
+    } else {
+      setIsFormInvalid(true);
     }
   };
 
@@ -33,6 +69,7 @@ const SignUpForm = () => {
   ) => {
     if (reason === "clickaway" || "timeout") {
       setIsFormInvalid(false);
+      setDuplicate(false);
       return;
     }
   };
@@ -46,6 +83,12 @@ const SignUpForm = () => {
       <CustomSnackbar
         message={AlertMessages.invalidForm}
         open={isFormInvalid}
+        severity="error"
+        onClose={handleClose}
+      />
+      <CustomSnackbar
+        message={AlertMessages.duplicate}
+        open={duplicate}
         severity="error"
         onClose={handleClose}
       />
@@ -99,8 +142,7 @@ const SignUpForm = () => {
         <div className="continue-button-container">
           <button
             className="continue-button"
-            type="submit"
-            onSubmit={(e) => {
+            onClick={(e) => {
               handleSubmit(e);
             }}
           >
