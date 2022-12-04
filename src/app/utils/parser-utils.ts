@@ -17,9 +17,18 @@ import { Region } from "../shapes/region";
 import { defaultShapeLabelAttrs } from "./config-utils";
 import { getSourcePortObject, getTargetPortObject } from "./rappid-utils";
 
+const addEmbeds = (graph: dia.Graph) => {
+  graph.getCells().forEach((cell) => {
+    const parentId = cell.prop("parent");
+    if (parentId) {
+      const parent = graph.getCell(parentId);
+      parent.embed(cell);
+    }
+  });
+};
+
 export const filterDiagramInfo = (graph: dia.Graph) => {
-  const graphJSON = graph.toJSON();
-  return graphJSON.cells.map((cell: dia.Cell.JSON) => {
+  return graph.getCells().map((cell: dia.Cell) => {
     const {
       type,
       position,
@@ -31,20 +40,22 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
       source,
       target,
       vertices,
-    } = cell;
-    if (cell.type !== GlobalShapesTypes.CustomLink) {
+    } = cell.attributes;
+    const parent = cell.parent();
+    if (type !== GlobalShapesTypes.CustomLink) {
       return {
         type,
         position,
         size,
+        parent,
         id,
         localType,
         z,
         maxLinks: maxLinks!,
-        text: cell.attrs?.label?.text,
-        icon: cell.attrs?.icon?.href,
-        groupShapeColor: cell.attrs?.body?.stroke,
-      };
+        text: cell.attr("label/text"),
+        icon: cell.attr("icon/href"),
+        groupShapeColor: cell.attr("body/stroke"),
+      } as DbCellAttrs;
     } else {
       return {
         type,
@@ -53,8 +64,8 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
         id,
         z,
         vertices,
-        linkColor: cell.attrs?.line?.stroke!,
-      };
+        linkColor: cell.attr("line/stroke"),
+      } as DbCellAttrs;
     }
   });
 };
@@ -74,7 +85,7 @@ export const setShapeAttrs = (cell: DbCellAttrs) => {
       };
     case (GlobalShapesTypes.AutoScaling,
     GlobalShapesTypes.EcsService,
-    GlobalShapesTypes.EcsService):
+    GlobalShapesTypes.EcsCluster):
       return {
         label: { text },
       };
@@ -152,4 +163,5 @@ export const getGraphFromDB = (graph: dia.Graph) => {
     const cellToAdd = createCell(cell, graph);
     graph.addCell(cellToAdd);
   });
+  addEmbeds(graph);
 };
