@@ -19,7 +19,10 @@ const callApiMethod = async (
   }
 };
 
-export const postToDb = (diagram: [], diagramName: string): Promise<any> => {
+export const postToDb = (
+  diagram: DbCellAttrs[],
+  diagramName: string
+): Promise<any> => {
   const body: BodyInit = JSON.stringify({
     diagram,
     diagramName,
@@ -58,7 +61,7 @@ export const getSingleDiagramFromDb = (id: string): Promise<any> => {
 };
 
 export const updateDiagramInDb = (
-  cells: [DbCellAttrs],
+  cells: DbCellAttrs[],
   diagramName: string,
   id: string
 ): Promise<any> => {

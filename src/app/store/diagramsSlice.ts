@@ -32,7 +32,7 @@ const initialState = {
 
 export const addDiagram = createAsyncThunk(
   `diagrams/addDiagram`,
-  async (dataToPost: { diagram: []; diagramNameState: string }) => {
+  async (dataToPost: { diagram: DbCellAttrs[]; diagramNameState: string }) => {
     const { diagram, diagramNameState } = dataToPost;
     return await postToDb(diagram, diagramNameState);
   }
@@ -63,7 +63,7 @@ export const getDiagrams = createAsyncThunk(
 export const updateDiagram = createAsyncThunk(
   `diagrams/updateDiagram`,
   async (dataForUpdate: {
-    cells: [DbCellAttrs];
+    cells: DbCellAttrs[];
     diagramName: string;
     id: string;
   }) => {
