@@ -37,20 +37,25 @@ const DiagramList = () => {
     dispatch(getDiagrams());
   }, []);
 
-  if (loadingList) return <h2>Loading...</h2>;
-
   return (
-    <div className={styles.wrapper}>
-      {diagrams.map((object, index) => (
-        <DiagramBar
-          key={index}
-          index={index}
-          object={object}
-          handleOpen={handleOpen}
-          handleDelete={handleDelete}
-        />
-      ))}
-    </div>
+    <>
+      {loadingList ? (
+        <h2>Loading...</h2>
+      ) : (
+        <div className={styles.wrapper}>
+          {diagrams.map((object, index) => (
+            <DiagramBar
+              key={index}
+              index={index}
+              object={object}
+              handleOpen={handleOpen}
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
+      ;
+    </>
   );
 };
 
