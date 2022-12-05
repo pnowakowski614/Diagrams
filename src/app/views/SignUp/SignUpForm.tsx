@@ -9,10 +9,10 @@ import "../Login/login.scss";
 import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
 import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
-import { SnackbarCloseReason } from "@mui/material";
+import { CircularProgress, SnackbarCloseReason } from "@mui/material";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import { createUser } from "../../store/usersSlice";
 
 const SignUpForm = () => {
@@ -27,6 +27,7 @@ const SignUpForm = () => {
   const [inputArray, setIsInputArray] = useState<HTMLInputElement[] | null>(
     null
   );
+  const { isBeingSignedUp } = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
     const form = document.querySelector(".inputs");
@@ -139,14 +140,18 @@ const SignUpForm = () => {
           />
         </div>
         <div className="continue-button-container">
-          <button
-            className="continue-button"
-            onClick={(e) => {
-              handleSubmit(e);
-            }}
-          >
-            Sign Up
-          </button>
+          {isBeingSignedUp ? (
+            <CircularProgress color="inherit" />
+          ) : (
+            <button
+              className="continue-button"
+              onClick={(e) => {
+                handleSubmit(e);
+              }}
+            >
+              Sign Up
+            </button>
+          )}
         </div>
         <p className="change-mode-message">
           Already have an account?

@@ -2,16 +2,18 @@ import React, { ChangeEvent, useState } from "react";
 import FormInput from "./FormInput";
 import "./login.scss";
 import { loginUserThunk } from "../../store/usersSlice";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../store/store";
 import { useHistory } from "react-router-dom";
 import { Routes } from "../../types/enums";
+import { CircularProgress } from "@mui/material";
 
 const LoginForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { isBeingLoggedIn } = useSelector((state: RootState) => state.users);
 
   const handleSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -48,13 +50,17 @@ const LoginForm = () => {
         />
       </div>
       <div className="continue-button-container">
-        <button
-          className="continue-button"
-          type="button"
-          onClick={(e) => handleSubmit(e)}
-        >
-          Log In
-        </button>
+        {isBeingLoggedIn ? (
+          <CircularProgress color="inherit" />
+        ) : (
+          <button
+            className="continue-button"
+            type="button"
+            onClick={(e) => handleSubmit(e)}
+          >
+            Log In
+          </button>
+        )}
       </div>
       <p className="change-mode-message">
         Don't have an account?

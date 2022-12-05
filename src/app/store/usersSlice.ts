@@ -5,6 +5,7 @@ interface UsersSliceType {
   token: string | null;
   isUserLoggedIn: boolean;
   isBeingLoggedIn: boolean;
+  isBeingSignedUp: boolean;
   gotLoggedOut: boolean;
   loginRejected: boolean;
 }
@@ -14,6 +15,7 @@ const initialState = {
   isUserLoggedIn: !!localStorage.getItem("token"),
   isBeingLoggedIn: false,
   gotLoggedOut: false,
+  isBeingSignedUp: false,
   loginRejected: false,
 } as UsersSliceType;
 
@@ -68,6 +70,13 @@ export const usersSlice = createSlice({
     builder.addCase(createUser.fulfilled, (state, { payload }) => {
       state.isUserLoggedIn = true;
       state.token = payload.user;
+      state.isBeingSignedUp = false;
+    });
+    builder.addCase(createUser.pending, (state, { payload }) => {
+      state.isBeingSignedUp = true;
+    });
+    builder.addCase(createUser.rejected, (state, { payload }) => {
+      state.isBeingSignedUp = false;
     });
   },
 });
