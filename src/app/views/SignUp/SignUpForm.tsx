@@ -51,8 +51,7 @@ const SignUpForm = () => {
     e.preventDefault();
     if (validateInputs()) {
       const data = await dispatch(createUser({ username, password, email }));
-      console.log(data);
-      if (data.payload.status === "ok") {
+      if (data.payload && data.payload.status === "ok") {
         localStorage.setItem("token", data.payload.user);
         history.push("/diagram");
       } else {
