@@ -49,6 +49,7 @@ export enum AlertMessages {
   invalidForm = "Invalid form!",
   loggedOut = "Successfully logged out!",
   loginError = "Wrong username or password!",
-  diagramSaved = "Diagram Saved!",
+  diagramSaved = "Diagram saved!",
   duplicate = "Duplicate email or username!",
+  diagramOpened = "Diagram opened successfuly!",
 }

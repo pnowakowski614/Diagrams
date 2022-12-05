@@ -102,12 +102,22 @@ const Diagram = () => {
     dispatch(saveDiagramName(diagramNameState || "Default Name"));
   };
 
-  const handleClose = (
+  const handleCloseSavedAlert = (
     event: Event | SyntheticEvent,
     reason: SnackbarCloseReason
   ) => {
     if (reason === "clickaway" || "timeout") {
       dispatch(changeIsDiagramSaved());
+      return;
+    }
+  };
+
+  const handleCloseOpenedAlert = (
+    event: Event | SyntheticEvent,
+    reason: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway" || "timeout") {
+      dispatch(clearIsDiagramFetched());
       return;
     }
   };
@@ -118,7 +128,13 @@ const Diagram = () => {
         message={AlertMessages.diagramSaved}
         open={isDiagramSaved}
         severity="success"
-        onClose={handleClose}
+        onClose={handleCloseSavedAlert}
+      />
+      <CustomSnackbar
+        message={AlertMessages.diagramOpened}
+        open={isDiagramFetched}
+        severity="success"
+        onClose={handleCloseOpenedAlert}
       />
       <div className={styles.diagramContainer}>
         <div className={styles.toolbarWrapper}>
