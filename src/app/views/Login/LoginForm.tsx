@@ -15,12 +15,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const { isBeingLoggedIn } = useSelector((state: RootState) => state.users);
 
-  const handleSubmit = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
     const res = await dispatch(loginUserThunk({ username, password }));
     if (res.payload.status === "ok") {
       localStorage.setItem("token", res.payload.user);
       history.push("/diagram");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
     }
   };
 
@@ -29,7 +36,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form id="form-container">
+    <form onKeyDown={(e) => handleKeyPress(e)} id="form-container">
       <h1 className="login-header">Log In To Continue</h1>
       <div className="inputs">
         <FormInput

@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  FormEvent,
-  SyntheticEvent,
-  useEffect,
-  useState,
-} from "react";
+import React, { ChangeEvent, SyntheticEvent, useEffect, useState } from "react";
 import "../Login/login.scss";
 import { AlertMessages, Routes } from "../../types/enums";
 import FormInput from "../Login/FormInput";
@@ -48,8 +42,8 @@ const SignUpForm = () => {
     }
   };
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = async (e?: React.MouseEvent) => {
+    e?.preventDefault();
     if (validateInputs()) {
       const data = await dispatch(createUser({ username, password, email }));
       if (data.payload && data.payload.status === "ok") {
@@ -60,6 +54,13 @@ const SignUpForm = () => {
       }
     } else {
       setIsFormInvalid(true);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
     }
   };
 
@@ -92,7 +93,11 @@ const SignUpForm = () => {
         severity="error"
         onClose={handleClose}
       />
-      <form id="form-container" onInvalid={() => setIsFormInvalid(true)}>
+      <form
+        onKeyDown={(e) => handleKeyPress(e)}
+        id="form-container"
+        onInvalid={() => setIsFormInvalid(true)}
+      >
         <h1 className="login-header">Create Your Account</h1>
         <div className="inputs">
           <FormInput
