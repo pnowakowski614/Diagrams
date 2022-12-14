@@ -6,6 +6,7 @@ import DiagramList from "./app/views/DiagramList/DiagramList";
 import Header from "./app/components/Header/Header";
 import styles from "./App.module.scss";
 import SignUp from "./app/views/SignUp/SignUp";
+import { ProtectedRoute } from "./app/components/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
   return (
@@ -15,8 +16,12 @@ const App = () => {
         <Route path="/" exact component={Login} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/diagram" component={Diagram} />
-        <Route path="/list" component={DiagramList} />
+        <ProtectedRoute path="/diagram">
+          <Diagram />
+        </ProtectedRoute>
+        <ProtectedRoute path="/list">
+          <DiagramList />
+        </ProtectedRoute>
       </main>
     </div>
   );

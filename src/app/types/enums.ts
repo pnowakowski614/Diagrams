@@ -43,3 +43,13 @@ export enum Routes {
   login = "/login",
   signup = "/signup",
 }
+
+export enum AlertMessages {
+  loggingIn = "You're being logged in, please wait.",
+  invalidForm = "Invalid form!",
+  loggedOut = "Successfully logged out!",
+  loginError = "Wrong username or password!",
+  diagramSaved = "Diagram saved!",
+  duplicate = "Duplicate email or username!",
+  diagramOpened = "Diagram opened successfully!",
+}

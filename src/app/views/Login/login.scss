@@ -1,4 +1,4 @@
-@import 'src/styles/colors';
+@import "src/styles/colors";
 
 .login-page-container {
   display: flex;
@@ -7,7 +7,7 @@
   width: 100%;
 }
 
-.form-container {
+#form-container {
   display: flex;
   height: auto;
   width: 40%;
@@ -58,10 +58,18 @@
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 
-.change-mode-message {
+.change-mode-message,
+.button-link {
   margin-top: 0;
   text-align: center;
   color: $secondary;
+}
+
+.errorMessage {
+  font-size: 12px;
+  padding: 3px;
+  color: #fa9a4e;
+  display: none;
 }
 
 input {
@@ -71,14 +79,37 @@ input {
   width: 60%;
 }
 
-#change-mode-link {
-  margin-left: 5px;
-  text-decoration: none;
-  color: inherit;
-}
-
-#change-mode-link:hover {
+.button-link:hover {
   text-decoration: underline;
   color: $hover-color;
 }
 
+input:invalid[focused="true"] {
+  border: 3px solid #fa9a4e;
+}
+
+input:invalid[focused="true"] ~ .errorMessage {
+  display: block;
+}
+
+.button-link {
+  font-family: "Epilogue", serif;
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 930px) {
+  #form-container {
+    width: 70%;
+  }
+}
+
+@media (max-width: 490px) {
+  #form-container {
+    margin: 0;
+    border-radius: 0;
+    width: 100%;
+  }
+}

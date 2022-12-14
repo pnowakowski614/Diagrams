@@ -1,7 +1,11 @@
 import { dia, layout, ui } from "@clientio/rappid";
-import { filterDiagramInfo } from "../utils/rappid-utils";
+import { filterDiagramInfo } from "../utils/parser-utils";
 import store from "../store/store";
-import { clearCurrentDiagram, updateDiagram } from "../store/diagramsSlice";
+import {
+  changeIsDiagramSaved,
+  clearCurrentDiagram,
+  updateDiagram,
+} from "../store/diagramsSlice";
 
 class ToolbarService {
   toolbarElement: HTMLElement;
@@ -70,19 +74,23 @@ class ToolbarService {
     });
   }
 
+  private onSavePointerClick(): void {
+    const diagramName = store.getState().diagrams.diagramName;
+    const cells = filterDiagramInfo(this.graph);
+    const id = store.getState().diagrams.diagramId;
+    store.dispatch(updateDiagram({ cells, diagramName, id }));
+    store.dispatch(changeIsDiagramSaved());
+  }
+
+  private onClearPointerClick(): void {
+    this.graph.clear();
+    store.dispatch(clearCurrentDiagram());
+  }
+
   private initToolbarEvents(): void {
     this.toolbar.on({
-      "save:pointerclick": async () => {
-        const diagramName = store.getState().diagrams.diagramName;
-        const cells: JSON = filterDiagramInfo(this.graph);
-        const id = store.getState().diagrams.id;
-        store.dispatch(updateDiagram({ cells, diagramName, id }));
-      },
-      "clear:pointerclick": () => {
-        const cells = this.graph.getCells();
-        this.graph.removeCells(cells);
-        store.dispatch(clearCurrentDiagram());
-      },
+      "save:pointerclick": () => this.onSavePointerClick(),
+      "clear:pointerclick": () => this.onClearPointerClick(),
       "treeLayout:pointerclick": () => {
         this.treeLayout.layout({ deep: true, parentRelative: true });
       },

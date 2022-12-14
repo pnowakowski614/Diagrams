@@ -1,6 +1,8 @@
 import React from "react";
-import { Button, Toolbar } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import styles from "./diagramList.module.scss";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 
 export interface DiagramBarProps {
   object: { _id: string; diagramName: string };
@@ -15,17 +17,14 @@ export const DiagramBar = ({
   handleOpen,
   handleDelete,
 }: DiagramBarProps) => {
+  const currentId = useSelector((state: RootState) => state.diagrams.diagramId);
+
   return (
-    <Toolbar
-      key={object._id}
-      className={styles.toolbar}
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1000px 100px 100px",
-      }}
-    >
+    <Box className={styles.toolbar}>
       <h4>{index + 1}</h4>
-      <h4>{object.diagramName}</h4>
+      <h4>
+        {object.diagramName} {currentId === object._id && "(active)"}
+      </h4>
       <Button
         variant="contained"
         className={styles.button}
@@ -36,7 +35,6 @@ export const DiagramBar = ({
       <Button variant="outlined" onClick={() => handleDelete(object._id)}>
         Delete
       </Button>
-    </Toolbar>
+    </Box>
   );
 };
-

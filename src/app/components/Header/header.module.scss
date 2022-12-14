@@ -1,4 +1,4 @@
-@import 'src/styles/colors';
+@import "src/styles/colors";
 
 header {
   box-sizing: border-box;
@@ -21,6 +21,7 @@ header {
 .navbar ul {
   align-items: center;
   margin: 0;
+  padding-inline-start: 0px;
   list-style: none;
   display: flex;
   font-size: 17px;
@@ -42,4 +43,58 @@ header {
 .signUp:active {
   transform: scale(0.95);
   box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
+}
+
+.bar {
+  display: block;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
+  -webkit-transition: all 0.3s ease-in-out;
+  background-color: white;
+}
+
+@media (max-width: 560px) {
+  .hamburger {
+    display: block;
+  }
+
+  .hamburger.active .bar:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+
+  .hamburger.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+  }
+
+  .navbar ul {
+    position: fixed;
+    left: -100%;
+    top: 45px;
+    padding-bottom: 10px;
+    gap: 15px;
+    flex-direction: column;
+    background-color: $main;
+    width: 100%;
+    transition: 0.3s;
+    z-index: 1;
+  }
+
+  .navbar ul.active {
+    padding-top: 5px;
+    left: 0;
+  }
+
+  NavLink {
+    margin: 0 16px;
+  }
 }

@@ -12,12 +12,11 @@ import {
   VPC,
 } from "app/shapes";
 import { LocalShapesTypes } from "../types/enums";
+import { defaultTextWrap, getShapeLabelWidth } from "../utils/rappid-utils";
 import {
   defaultShapeLabelAttrs,
   defaultStencilLayoutOptions,
-  defaultTextWrap,
-  getShapeLabelWidth,
-} from "../utils/rappid-utils";
+} from "../utils/config-utils";
 import { portsConfig } from "../rappid-configs/portsConfig";
 import { Region } from "../shapes/region";
 

@@ -5,40 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { DiagramBar } from "./DiagramBar";
 import {
   clearCurrentDiagram,
+  clearCurrentId,
   deleteDiagram,
   getDiagrams,
   getSingleDiagram,
 } from "../../store/diagramsSlice";
+import styles from "./diagramList.module.scss";
 
 const DiagramList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const history = useHistory();
-  const { diagrams, loadingList } = useSelector(
+  const { diagrams, loadingList, diagramId } = useSelector(
     (state: RootState) => state.diagrams
   );
-  const { id } = useSelector((state: RootState) => state.diagrams);
-
-  useEffect(() => {
-    dispatch(getDiagrams());
-  }, []);
-
-  if (loadingList) return <h2>Loading...</h2>;
-
-  const renderComponents = () => {
-    return diagrams.map(
-      (object: { _id: string; diagramName: string }, index: number) => {
-        return (
-          <DiagramBar
-            key={index}
-            index={index}
-            object={object}
-            handleOpen={handleOpen}
-            handleDelete={handleDelete}
-          />
-        );
-      }
-    );
-  };
 
   const handleOpen = async (_id: string) => {
     await dispatch(getSingleDiagram(_id));
@@ -46,14 +25,38 @@ const DiagramList = () => {
   };
 
   const handleDelete = async (_id: string) => {
-    if (_id === id) {
+    if (_id === diagramId) {
       dispatch(clearCurrentDiagram());
+      dispatch(clearCurrentId());
     }
     await dispatch(deleteDiagram(_id));
     dispatch(getDiagrams());
   };
 
-  return <>{renderComponents()}</>;
+  useEffect(() => {
+    dispatch(getDiagrams());
+  }, []);
+
+  return (
+    <>
+      {loadingList ? (
+        <h2>Loading...</h2>
+      ) : (
+        <div className={styles.wrapper}>
+          {diagrams.map((object, index) => (
+            <DiagramBar
+              key={index}
+              index={index}
+              object={object}
+              handleOpen={handleOpen}
+              handleDelete={handleDelete}
+            />
+          ))}
+        </div>
+      )}
+      ;
+    </>
+  );
 };
 
 export default DiagramList;

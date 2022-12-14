@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./inspector.module.scss";
-import { colorChangeShapes } from "../../../utils/rappid-utils";
+import { colorChangeShapes } from "../../../utils/config-utils";
 import { GlobalShapesTypes } from "../../../types/enums";
 import { MaxLinksInput } from "./MaxLinksInput";
 import { LabelInput } from "./LabelInput";

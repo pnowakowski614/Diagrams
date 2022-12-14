@@ -1,30 +1,33 @@
-const callApiMethod = (
+import { DbCellAttrs } from "../types/types";
+
+const callApiMethod = async (
   url: string,
   methodName: string,
   body?: BodyInit,
   headers?: HeadersInit
-): Promise<any> | void => {
-  return fetch(url, {
+): Promise<any> => {
+  const response = await fetch(url, {
     method: methodName,
     headers: headers,
     body: body,
-  })
-    .then((response) => {
-      return response.json();
-    })
-    .catch((error) => {
-      alert("Error!: " + error.toString());
-    });
+  });
+
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw new Error("Error!");
+  }
 };
 
-export const postToDb = async (
-  diagram: JSON,
+export const postToDb = (
+  diagram: DbCellAttrs[],
   diagramName: string
 ): Promise<any> => {
   const body: BodyInit = JSON.stringify({
     diagram,
     diagramName,
   });
+
   return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/diagrams`,
     "POST",
@@ -36,7 +39,7 @@ export const postToDb = async (
   );
 };
 
-export const getDiagramListFromDb = async (): Promise<any> => {
+export const getDiagramListFromDb = (): Promise<any> => {
   const headers: HeadersInit = {
     "x-access-token": localStorage.getItem("token") ?? "",
   };
@@ -49,7 +52,7 @@ export const getDiagramListFromDb = async (): Promise<any> => {
   );
 };
 
-export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
+export const getSingleDiagramFromDb = (id: string): Promise<any> => {
   return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`,
     "GET",
@@ -58,8 +61,8 @@ export const getSingleDiagramFromDb = async (id: string): Promise<any> => {
   );
 };
 
-export const updateDiagramInDb = async (
-  cells: JSON,
+export const updateDiagramInDb = (
+  cells: DbCellAttrs[],
   diagramName: string,
   id: string
 ): Promise<any> => {
@@ -76,7 +79,7 @@ export const updateDiagramInDb = async (
   );
 };
 
-export const deleteFromDb = async (id: string): Promise<any> => {
+export const deleteFromDb = (id: string): Promise<any> => {
   return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/diagrams/${id}`,
     "DELETE"
@@ -92,22 +95,12 @@ export const loginUser = async (
     password,
   });
 
-  const data = await callApiMethod(
+  return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/users/login`,
     "POST",
     body,
     { "Content-Type": "application/json" }
   );
-
-  if (data.user) {
-    localStorage.setItem("token", data.user);
-    alert("Login successful!");
-    window.location.href = "/diagram";
-  } else {
-    alert("Incorrect username or password!");
-  }
-
-  return data;
 };
 
 export const registerUser = async (
@@ -121,16 +114,10 @@ export const registerUser = async (
     password,
   });
 
-  const data = await callApiMethod(
+  return callApiMethod(
     `${process.env.REACT_APP_BACKEND_URL}/users/register`,
     "POST",
     body,
     { "Content-Type": "application/json" }
   );
-
-  if (data.status === "ok") {
-    window.location.href = "/login";
-  } else {
-    alert("Registration unsuccessful!");
-  }
 };

@@ -9,17 +9,23 @@ interface MaxLinksInputProps {
 }
 
 export const MaxLinksInput = ({ cell, graph }: MaxLinksInputProps) => {
-  const currentLinksNumber = graph.getConnectedLinks(cell, {
+  let currentLinksNumber = graph.getConnectedLinks(cell, {
     outbound: true,
   }).length;
 
   const currentMaxLinks = () => {
-    if (cell.prop("maxLinks") < currentLinksNumber) {
-      cell.prop("maxLinks", currentLinksNumber);
-    } else if (cell.prop("maxLinks") === undefined) {
-      cell.prop("maxLinks", 3);
+    let newMaxLinksValue = 3;
+    const maxLinksValue = cell.prop("maxLinks");
+    if (maxLinksValue < currentLinksNumber) {
+      newMaxLinksValue = currentLinksNumber;
+    } else {
+      newMaxLinksValue = maxLinksValue;
     }
-    return cell.prop("maxLinks");
+    if (maxLinksValue === undefined) {
+      newMaxLinksValue = 3;
+    }
+    cell.prop("maxLinks", newMaxLinksValue);
+    return newMaxLinksValue;
   };
 
   const [linksNumber, setLinksNumber] = useState(currentLinksNumber);

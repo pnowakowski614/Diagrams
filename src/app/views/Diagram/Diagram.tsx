@@ -1,10 +1,4 @@
-import React, {
-  ChangeEvent,
-  KeyboardEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ChangeEvent, KeyboardEventHandler, SyntheticEvent, useEffect, useRef, useState, } from "react";
 import styles from "./diagram.module.scss";
 import "styles/rappid-overrides.scss";
 import "@clientio/rappid/rappid.css";
@@ -12,109 +6,157 @@ import RappidService, { InspectorState } from "app/services/rappidService";
 import useEffectOnce from "app/helpers/useEffectOnce";
 import Inspector from "./Inspector/Inspector";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
-import jwt from "jsonwebtoken";
-import { addDiagram, saveDiagramName } from "../../store/diagramsSlice";
+import {
+    addDiagram,
+    changeIsDiagramSaved,
+    clearIsDiagramFetched,
+    getSingleDiagram,
+    saveDiagramName,
+} from "../../store/diagramsSlice";
 import { AppDispatch, RootState } from "../../store/store";
-import { filterDiagramInfo, getGraphFromDB } from "../../utils/rappid-utils";
-import { TextField } from "@mui/material";
+import { filterDiagramInfo, getGraphFromDB } from "../../utils/parser-utils";
+import { SnackbarCloseReason, TextField } from "@mui/material";
+import { CustomSnackbar } from "../../components/CustomSnackbar/CustomSnackbar";
+import { AlertMessages } from "../../types/enums";
 
 const Diagram = () => {
-  const history = useHistory();
-  const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useDispatch<AppDispatch>();
+    const {
+        currentDiagram,
+        diagramName,
+        isDiagramSaved,
+        isDiagramFetched,
+        diagramId,
+    } = useSelector((state: RootState) => state.diagrams);
+    const canvas = useRef(null);
+    const stencil = useRef(null);
+    const toolbar = useRef(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const user = jwt.decode(token);
-      if (!user) {
-        localStorage.removeItem("token");
-        history.replace("/login");
-      }
-    }
-  }, []);
+    const [inspectorState, setInspectorState] = useState<InspectorState>({
+        cellView: null,
+        graph: null,
+    });
 
-  const canvas = useRef(null);
-  const stencil = useRef(null);
-  const toolbar = useRef(null);
+    const [diagramNameState, setDiagramNameState] = useState<string>(diagramName);
+    const [rappidInstance, setRappidInstance] = useState<RappidService | null>(
+        null
+    );
 
-  const { currentDiagram, diagramName } = useSelector(
-    (state: RootState) => state.diagrams
-  );
+    useEffectOnce(() => {
+        if (canvas.current && stencil.current) {
+            const rappidInst = new RappidService(
+                canvas.current!,
+                stencil.current!,
+                toolbar.current!
+            );
+            rappidInst.init();
+            rappidInst.setInspectorFunction(setInspectorState);
+            setRappidInstance(rappidInst);
+            if (!diagramId || diagramId === "") {
+                const diagram = filterDiagramInfo(rappidInst.graph);
+                dispatch(addDiagram({diagram, diagramNameState}));
+            } else {
+                if (currentDiagram !== null) {
+                    getGraphFromDB(rappidInst.graph);
+                } else {
+                    dispatch(getSingleDiagram(diagramId));
+                }
+            }
+        }
+    });
 
-  const [inspectorState, setInspectorState] = useState<InspectorState>({
-    isOpened: false,
-    cellView: null,
-    graph: null,
-  });
+    useEffect(() => {
+        if (isDiagramFetched && rappidInstance) {
+            dispatch(clearIsDiagramFetched());
+            getGraphFromDB(rappidInstance!.graph);
+        }
+    }, [isDiagramFetched]);
 
-  const [diagramNameState, setDiagramNameState] = useState<string>(diagramName);
+    useEffect(() => {
+        localStorage.setItem("id", diagramId!);
+    }, [diagramId]);
 
-  const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDiagramNameState(event.target.value);
-  };
+    useEffect(() => {
+        setDiagramNameState(diagramName);
+    }, [diagramName]);
 
-  const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      dispatch(saveDiagramName(diagramNameState || "Default Name"));
-    }
-  };
+    useEffect(() => {
+    }, []);
+    const handleDiagramNameChange = (event: ChangeEvent<HTMLInputElement>) => {
+        setDiagramNameState(event.target.value);
+    };
 
-  const handleClickAway = () => {
-    dispatch(saveDiagramName(diagramNameState || "Default Name"));
-  };
+    const keyPress: KeyboardEventHandler = (e: React.KeyboardEvent) => {
+        if (e.key === "Enter") {
+            dispatch(saveDiagramName(diagramNameState || "Default Name"));
+        }
+    };
 
-  useEffect(() => {
-    setDiagramNameState(diagramName);
-  }, [diagramName]);
+    const handleClickAway = () => {
+        dispatch(saveDiagramName(diagramNameState || "Default Name"));
+    };
 
-  useEffectOnce(() => {
-    if (canvas.current && stencil.current) {
-      const rappidInst = new RappidService(
-        canvas.current!,
-        stencil.current!,
-        toolbar.current!
-      );
-      rappidInst.init();
-      rappidInst.setInspectorFunction(setInspectorState);
-      if (currentDiagram !== null) {
-        getGraphFromDB(rappidInst.graph);
-      } else {
-        const diagram: JSON = filterDiagramInfo(rappidInst.graph);
-        dispatch(addDiagram({ diagram, diagramNameState }));
-      }
-    }
-  });
+    const handleCloseSavedAlert = (
+        event: Event | SyntheticEvent,
+        reason: SnackbarCloseReason
+    ) => {
+        if (reason === "clickaway" || "timeout") {
+            dispatch(changeIsDiagramSaved());
+            return;
+        }
+    };
 
-  return (
-    <div className={styles.diagramContainer}>
-      <div className={styles.toolbarWrapper}>
-        <div className={styles.diagramToolbar} ref={toolbar} />
-        <TextField
-          variant="standard"
-          size="small"
-          value={diagramNameState}
-          onBlur={handleClickAway}
-          placeholder="Default Name"
-          onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
-          onChange={handleDiagramNameChange}
-          sx={{ paddingTop: "5px" }}
-        />
-      </div>
-      <div className={styles.wrapper}>
-        <div className={styles.stencilHolder} ref={stencil} />
-        <div className={styles.canvas} ref={canvas} />
-      </div>
-      {inspectorState.isOpened &&
-        inspectorState.cellView &&
-        inspectorState.graph && (
-          <Inspector
-            cellView={inspectorState.cellView}
-            graph={inspectorState.graph}
-          />
-        )}
-    </div>
-  );
+    const handleCloseOpenedAlert = (
+        event: Event | SyntheticEvent,
+        reason: SnackbarCloseReason
+    ) => {
+        if (reason === "clickaway" || "timeout") {
+            dispatch(clearIsDiagramFetched());
+            return;
+        }
+    };
+
+    return (
+        <>
+            <CustomSnackbar
+                message={AlertMessages.diagramSaved}
+                open={isDiagramSaved}
+                severity="success"
+                onClose={handleCloseSavedAlert}
+            />
+            <CustomSnackbar
+                message={AlertMessages.diagramOpened}
+                open={isDiagramFetched}
+                severity="success"
+                onClose={handleCloseOpenedAlert}
+            />
+            <div className={styles.diagramContainer}>
+                <div className={styles.toolbarWrapper}>
+                    <div className={styles.diagramToolbar} ref={toolbar}/>
+                    <TextField
+                        variant="standard"
+                        size="small"
+                        value={diagramNameState}
+                        onBlur={handleClickAway}
+                        placeholder="Default Name"
+                        onKeyDown={(e: React.KeyboardEvent) => keyPress(e)}
+                        onChange={handleDiagramNameChange}
+                        sx={{paddingTop: "5px"}}
+                    />
+                </div>
+                <div className={styles.wrapper}>
+                    <div className={styles.stencilHolder} ref={stencil}/>
+                    <div className={styles.canvas} ref={canvas}/>
+                </div>
+                {inspectorState.cellView && inspectorState.graph && (
+                    <Inspector
+                        cellView={inspectorState.cellView}
+                        graph={inspectorState.graph}
+                    />
+                )}
+            </div>
+        </>
+    );
 };
 
 export default Diagram;
