@@ -70,7 +70,7 @@ export const filterDiagramInfo = (graph: dia.Graph) => {
   });
 };
 
-export const setShapeAttrs = (cell: DbCellAttrs) => {
+export const getAttrsObject = (cell: DbCellAttrs) => {
   const { type, text, icon, groupShapeColor, linkColor } = cell;
   switch (type) {
     case GlobalShapesTypes.NodeShape:
@@ -113,38 +113,39 @@ export const setShapeAttrs = (cell: DbCellAttrs) => {
 
 const createCell = (cell: DbCellAttrs, graph: dia.Graph) => {
   const omittedAttrs = omit(cell, ["text", "icon", "groupShapeColor"]);
+  const attrsObject = getAttrsObject(cell);
   switch (cell.type) {
     case GlobalShapesTypes.NodeShape: {
       const newShape = new NodeShape(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.AutoScaling: {
       const newShape = new AutoScaling(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.EcsCluster: {
       const newShape = new ECSCluster(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.EcsService: {
       const newShape = new ECSService(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.SecurityGroup: {
       const newShape = new SecurityGroup(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.Subnet: {
       const newShape = new Subnet(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.Region: {
       const newShape = new Region(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     case GlobalShapesTypes.VPC: {
       const newShape = new VPC(omittedAttrs);
-      return newShape.attr(setShapeAttrs(cell));
+      return newShape.attr(attrsObject);
     }
     default: {
       const newLink = new CustomLink(
@@ -152,7 +153,7 @@ const createCell = (cell: DbCellAttrs, graph: dia.Graph) => {
       );
       newLink.source(getSourcePortObject(cell.sourceId, graph));
       newLink.target(getTargetPortObject(cell.targetId, graph));
-      return newLink.attr(setShapeAttrs(cell));
+      return newLink.attr(getAttrsObject(cell));
     }
   }
 };

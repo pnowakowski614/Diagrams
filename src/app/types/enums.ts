@@ -51,5 +51,5 @@ export enum AlertMessages {
   loginError = "Wrong username or password!",
   diagramSaved = "Diagram saved!",
   duplicate = "Duplicate email or username!",
-  diagramOpened = "Diagram opened successfuly!",
+  diagramOpened = "Diagram opened successfully!",
 }
