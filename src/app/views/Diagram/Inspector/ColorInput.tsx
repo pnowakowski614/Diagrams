@@ -50,4 +50,3 @@ export const ColorInput = ({ cell }: ColorInputProps) => {
     />
   );
 };
-
