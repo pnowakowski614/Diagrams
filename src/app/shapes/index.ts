@@ -9,19 +9,7 @@ import { NodeShape } from "./nodeShape";
 import { CustomLink } from "./customLink";
 
 Object.assign(shapes, {
-    app: {
-        AutoScaling,
-        ECSCluster,
-        ECSService,
-        VPC,
-        NodeShape,
-        Subnet,
-        SecurityGroup,
-        CustomLink
-    }
-});
-
-export {
+  app: {
     AutoScaling,
     ECSCluster,
     ECSService,
@@ -29,5 +17,17 @@ export {
     NodeShape,
     Subnet,
     SecurityGroup,
-    CustomLink
-}
+    CustomLink,
+  },
+});
+
+export {
+  AutoScaling,
+  ECSCluster,
+  ECSService,
+  VPC,
+  NodeShape,
+  Subnet,
+  SecurityGroup,
+  CustomLink,
+};

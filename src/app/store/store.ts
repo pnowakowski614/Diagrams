@@ -3,12 +3,12 @@ import { diagramReducer } from "./diagramsSlice";
 import { usersReducer } from "./usersSlice";
 
 const store = configureStore({
-    reducer: {
-        diagrams: diagramReducer,
-        users: usersReducer
-    }
+  reducer: {
+    diagrams: diagramReducer,
+    users: usersReducer,
+  },
 });
 
 export default store;
-export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
