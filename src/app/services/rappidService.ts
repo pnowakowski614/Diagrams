@@ -17,7 +17,7 @@ import { haloConfig } from "../rappid-configs/haloConfig";
 import ToolbarService from "./toolbarService";
 
 export interface InspectorState {
-  cellView: dia.CellView | null;
+  cell: dia.Cell | null;
   graph: dia.Graph | null;
 }
 
@@ -131,7 +131,7 @@ class RappidService {
     this.scroller.startPanning(evt);
     this.paper.removeTools();
     this.setInspectorOpened({
-      cellView: null,
+      cell: null,
       graph: null,
     });
   }
@@ -152,7 +152,7 @@ class RappidService {
 
   private onCellPointerclick(cellView: dia.CellView): void {
     this.setInspectorOpened({
-      cellView,
+      cell: cellView.model,
       graph: this.graph,
     });
   }
@@ -181,7 +181,7 @@ class RappidService {
       },
       remove: () => {
         this.setInspectorOpened({
-          cellView: null,
+          cell: null,
           graph: null,
         });
       },

@@ -3,16 +3,16 @@ import { Input } from "@mui/material";
 import { dia } from "@clientio/rappid";
 
 export interface LabelInputProps {
-  cellView: dia.CellView;
+  cell: dia.Cell;
 }
 
-export const LabelInput = ({ cellView }: LabelInputProps) => {
-  const inspectedElementText = cellView.model.attr("label/text") || "";
+export const LabelInput = ({ cell }: LabelInputProps) => {
+  const inspectedElementText = cell.attr("label/text") || "";
 
   const [textValue, setTextValue] = useState(inspectedElementText);
 
   const handleLabelChange = (event: ChangeEvent<HTMLInputElement>) => {
-    cellView.model.attr({
+    cell.attr({
       label: {
         text: event.target.value,
       },
