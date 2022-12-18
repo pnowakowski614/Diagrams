@@ -48,7 +48,7 @@ const SignUpForm = () => {
       const data = await dispatch(createUser({ username, password, email }));
       if (data.payload && data.payload.status === "ok") {
         localStorage.setItem("token", data.payload.user);
-        history.push("/diagram");
+        history.push("/list");
       } else {
         setDuplicate(true);
       }
