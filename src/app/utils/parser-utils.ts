@@ -163,14 +163,16 @@ export const getGraphFromDB = (graph: dia.Graph) => {
   const elementArr: dia.Cell[] = [];
   const linkArr: dia.Cell[] = [];
   diagramCells.forEach((cell) => {
-    const cellToAdd = createCell(cell, graph);
-    if (cellToAdd.prop("type") !== GlobalShapesTypes.CustomLink) {
-      elementArr.push(cellToAdd);
-    } else {
-      linkArr.push(cellToAdd);
+    if (cell.type !== GlobalShapesTypes.CustomLink) {
+      elementArr.push(createCell(cell, graph));
     }
   });
   graph.addCells(elementArr);
+  diagramCells.forEach((cell) => {
+    if (cell.type === GlobalShapesTypes.CustomLink) {
+      linkArr.push(createCell(cell, graph));
+    }
+  });
   graph.addCells(linkArr);
   addEmbeds(graph);
 };
