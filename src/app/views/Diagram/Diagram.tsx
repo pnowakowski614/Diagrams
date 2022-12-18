@@ -69,6 +69,9 @@ const Diagram = () => {
           dispatch(getSingleDiagram(diagramId));
         }
       }
+      if (currentDiagram?.length) {
+        rappidInst.scroller.zoomToFit();
+      }
     }
   });
 
