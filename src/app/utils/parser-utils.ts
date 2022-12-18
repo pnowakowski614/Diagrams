@@ -160,9 +160,17 @@ const createCell = (cell: DbCellAttrs, graph: dia.Graph) => {
 
 export const getGraphFromDB = (graph: dia.Graph) => {
   const diagramCells: [DbCellAttrs] = store.getState().diagrams.currentDiagram!;
+  const elementArr: dia.Cell[] = [];
+  const linkArr: dia.Cell[] = [];
   diagramCells.forEach((cell) => {
     const cellToAdd = createCell(cell, graph);
-    graph.addCell(cellToAdd);
+    if (cellToAdd.prop("type") !== GlobalShapesTypes.CustomLink) {
+      elementArr.push(cellToAdd);
+    } else {
+      linkArr.push(cellToAdd);
+    }
   });
+  graph.addCells(elementArr);
+  graph.addCells(linkArr);
   addEmbeds(graph);
 };
