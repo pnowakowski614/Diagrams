@@ -4,9 +4,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import Inspector from "./Inspector";
 import { dia } from "@clientio/rappid";
 
+const graph = new dia.Graph();
+const testNodeshape = new NodeShape();
+
 test("inspector name input works correctly", () => {
-  const graph = new dia.Graph();
-  const testNodeshape = new NodeShape();
   render(<Inspector cell={testNodeshape} graph={graph} />);
   const input = screen.getByDisplayValue("default");
   fireEvent.change(input, { target: { value: "newName" } });
@@ -16,8 +17,6 @@ test("inspector name input works correctly", () => {
 });
 
 test("inspector max links input works correctly", () => {
-  const graph = new dia.Graph();
-  const testNodeshape = new NodeShape();
   render(<Inspector cell={testNodeshape} graph={graph} />);
   const maxLinks = screen.getByDisplayValue("3");
   fireEvent.change(maxLinks, { target: { value: 5 } });
@@ -25,11 +24,11 @@ test("inspector max links input works correctly", () => {
 });
 
 test("inspector color picker input works correctly", () => {
-  const graph = new dia.Graph();
   const testSecurityGroup = new SecurityGroup();
   render(<Inspector cell={testSecurityGroup} graph={graph} />);
   const color = screen.getByDisplayValue("blue");
-  fireEvent.change(color, { target: { value: "rgb(217, 108, 108)" } });
-  expect(testSecurityGroup.attr("body/stroke")).toBe("rgb(217, 108, 108)");
-  expect(testSecurityGroup.attr("background/fill")).toBe("rgb(217, 108, 108)");
+  const newColor = "rgb(217, 108, 108)";
+  fireEvent.change(color, { target: { value: newColor } });
+  expect(testSecurityGroup.attr("body/stroke")).toBe(newColor);
+  expect(testSecurityGroup.attr("background/fill")).toBe(newColor);
 });
