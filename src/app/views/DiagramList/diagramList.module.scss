@@ -4,16 +4,23 @@ h2 {
   margin: 50px;
 }
 
+.diagramName,
+.index {
+  padding: 20px;
+  font-size: 17px;
+  font-weight: bold;
+}
+
 .wrapper {
   height: 100%;
   overflow: auto;
-  background-color: #d7d8dc;
+  background-color: #dbdde1;
 }
 
-.toolbar {
+.box {
   display: grid;
   grid-template-columns: 1fr 10fr 1fr 1fr;
-  background-color: #d7d8dc;
+  background-color: #dbdde1;
   align-items: center;
   justify-items: center;
 }

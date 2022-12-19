@@ -20,11 +20,11 @@ export const DiagramBar = ({
   const currentId = useSelector((state: RootState) => state.diagrams.diagramId);
 
   return (
-    <Box className={styles.toolbar}>
-      <h4>{index + 1}</h4>
-      <h4>
+    <Box className={styles.box}>
+      <span className={styles.index}>{index + 1}</span>
+      <span className={styles.diagramName}>
         {object.diagramName} {currentId === object._id && "(active)"}
-      </h4>
+      </span>
       <Button
         variant="contained"
         className={styles.button}
