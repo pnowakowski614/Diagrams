@@ -40,7 +40,7 @@ const Diagram = () => {
   const toolbar = useRef(null);
 
   const [inspectorState, setInspectorState] = useState<InspectorState>({
-    cellView: null,
+    cell: null,
     graph: null,
   });
 
@@ -68,6 +68,9 @@ const Diagram = () => {
         } else {
           dispatch(getSingleDiagram(diagramId));
         }
+      }
+      if (currentDiagram?.length) {
+        rappidInst.scroller.zoomToFit();
       }
     }
   });
@@ -154,11 +157,8 @@ const Diagram = () => {
           <div className={styles.stencilHolder} ref={stencil} />
           <div className={styles.canvas} ref={canvas} />
         </div>
-        {inspectorState.cellView && inspectorState.graph && (
-          <Inspector
-            cellView={inspectorState.cellView}
-            graph={inspectorState.graph}
-          />
+        {inspectorState.cell && inspectorState.graph && (
+          <Inspector cell={inspectorState.cell} graph={inspectorState.graph} />
         )}
       </div>
     </>

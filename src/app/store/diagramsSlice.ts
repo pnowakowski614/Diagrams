@@ -78,6 +78,8 @@ export const diagramSlice = createSlice({
   reducers: {
     clearCurrentDiagram: (state) => {
       state.currentDiagram = null;
+    },
+    clearDiagramName: (state) => {
       state.diagramName = "Default Name";
     },
     clearCurrentId: (state) => {
@@ -127,5 +129,6 @@ export const {
   saveDiagramName,
   clearCurrentDiagram,
   clearCurrentId,
+  clearDiagramName,
 } = diagramSlice.actions;
 export const diagramReducer = diagramSlice.reducer;

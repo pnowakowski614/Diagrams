@@ -224,6 +224,7 @@ export const defaultGroupShapeAttrs = {
     fill: "transparent",
     stroke: "blue",
     strokeWidth: "3px",
+    pointerEvents: "none",
   },
   background: {
     fill: "blue",

@@ -20,7 +20,7 @@ const LoginForm = () => {
     const res = await dispatch(loginUserThunk({ username, password }));
     if (res.payload.status === "ok") {
       localStorage.setItem("token", res.payload.user);
-      history.push("/diagram");
+      history.push("/list");
     }
   };
 

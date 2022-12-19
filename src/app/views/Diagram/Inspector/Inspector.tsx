@@ -8,12 +8,12 @@ import { ColorInput } from "./ColorInput";
 import { dia } from "@clientio/rappid";
 
 export interface InspectorProps {
-  cellView: dia.CellView;
+  cell: dia.Cell;
   graph: dia.Graph;
 }
 
-const Inspector = ({ cellView, graph }: InspectorProps) => {
-  const inspectedGlobalType: GlobalShapesTypes = cellView.model.prop("type");
+const Inspector = ({ cell, graph }: InspectorProps) => {
+  const inspectedGlobalType: GlobalShapesTypes = cell.prop("type");
 
   return (
     <div className={styles.inspector}>
@@ -24,7 +24,7 @@ const Inspector = ({ cellView, graph }: InspectorProps) => {
               <h4 className={styles.inspectorCategoryHeader}>Label</h4>
             </div>
             <div className={styles.labelInputWrapper}>
-              <LabelInput cellView={cellView} />
+              <LabelInput cell={cell} />
             </div>
           </div>
           <div className={styles.inspectorElement}>
@@ -34,7 +34,7 @@ const Inspector = ({ cellView, graph }: InspectorProps) => {
               </h4>
             </div>
             <div className={styles.maxLinkInputWrapper}>
-              <MaxLinksInput cell={cellView.model} graph={graph} />
+              <MaxLinksInput cell={cell} graph={graph} />
             </div>
           </div>
         </>
@@ -45,7 +45,7 @@ const Inspector = ({ cellView, graph }: InspectorProps) => {
             <h4 className={styles.inspectorCategoryHeader}>Color</h4>
           </div>
           <div className={styles.colorInputWrapper}>
-            <ColorInput cell={cellView.model} />
+            <ColorInput cell={cell} />
           </div>
         </div>
       )}
