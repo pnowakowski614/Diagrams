@@ -5,7 +5,11 @@ import { Routes } from "../../types/enums";
 import { RootState } from "../../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { clearUserInfo } from "../../store/usersSlice";
-import { clearCurrentDiagram, clearCurrentId } from "../../store/diagramsSlice";
+import {
+  clearCurrentDiagram,
+  clearCurrentId,
+  clearDiagramName,
+} from "../../store/diagramsSlice";
 import { useLocation } from "react-router";
 import useEffectOnce from "../../helpers/useEffectOnce";
 
@@ -47,6 +51,7 @@ const Header = () => {
 
   const handleNewDiagram = () => {
     dispatch(clearCurrentDiagram());
+    dispatch(clearDiagramName());
     dispatch(clearCurrentId());
   };
 
